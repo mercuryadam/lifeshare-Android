@@ -1,0 +1,289 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppThemeReceiver" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+
+    </style>
+
+    <style name="splashTheme" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Toolbar_Title_Style">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/size_20dp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+
+    <style name="TextRegular">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextMedium">
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextBold">
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextLight">
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextRegular.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextRegular.PrimaryColor">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextBold.PrimaryDark">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="TextRegular.PrimaryDark">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="TextBold.Red">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="TextRegular.Red">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="TextRegular.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextMedium.White">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextMedium.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextRegular.Gray">
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="TextRegular.Black.size16">
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextRegular.Black.size14">
+        <item name="android:textSize">@dimen/size_14sp</item>
+    </style>
+
+    <style name="TextRegular.Black.size12">
+        <item name="android:textSize">@dimen/size_12sp</item>
+    </style>
+
+    <style name="TextRegular.Gray.size18">
+        <item name="android:textSize">@dimen/size_18sp</item>
+    </style>
+
+    <style name="TextRegular.Gray.size16">
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextRegular.Gray.size14">
+        <item name="android:textSize">@dimen/size_14sp</item>
+    </style>
+
+    <style name="TextRegular.Gray.size12">
+        <item name="android:textSize">@dimen/size_12sp</item>
+    </style>
+
+    <style name="TextRegular.Black.size18">
+        <item name="android:textSize">@dimen/size_18sp</item>
+    </style>
+
+    <style name="TextRegular.PrimaryDark.size16">
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextRegular.Red.size16">
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextRegular.White.size16">
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextRegular.White.size20">
+        <item name="android:textSize">@dimen/size_20sp</item>
+    </style>
+
+    <style name="TextRegular.White.size18">
+        <item name="android:textSize">@dimen/size_18sp</item>
+    </style>
+
+    <style name="TextRegular.White.size24">
+        <item name="android:textSize">@dimen/size_24sp</item>
+    </style>
+
+    <style name="TextMedium.White.size16">
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextMedium.White.size18">
+        <item name="android:textSize">@dimen/size_18sp</item>
+    </style>
+
+    <style name="TextMedium.White.size20">
+        <item name="android:textSize">@dimen/size_20sp</item>
+    </style>
+
+    <style name="TextMedium.White.size14">
+        <item name="android:textSize">@dimen/size_14sp</item>
+    </style>
+
+    <style name="TextMedium.Black.size16">
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextMedium.Black.size22">
+        <item name="android:textSize">@dimen/size_22sp</item>
+    </style>
+
+    <style name="TextMedium.Black.size14">
+        <item name="android:textSize">@dimen/size_14sp</item>
+    </style>
+
+    <style name="TextRegular.PrimaryColor.size14">
+        <item name="android:textSize">@dimen/size_14sp</item>
+    </style>
+
+    <style name="TextRegular.PrimaryColor.size16">
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextRegular.PrimaryColor.size18">
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextRegular.White.size14">
+        <item name="android:textSize">@dimen/size_14sp</item>
+    </style>
+
+    <style name="TextRegular.White.size12">
+        <item name="android:textSize">@dimen/size_12sp</item>
+    </style>
+
+    <style name="TextRegular.White.size10">
+        <item name="android:textSize">@dimen/size_10sp</item>
+    </style>
+
+
+    <style name="Switch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/colorSwitchEnabled</item>
+        <item name="colorSwitchThumbNormal">@color/colorSwitchDesable</item>
+        <item name="android:colorButtonNormal">@color/colorSwitchDesable</item>
+        <item name="android:colorForeground">@color/colorSwitchDesable</item>
+    </style>
+
+    <style name="progress_dialog_text_style" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="button_style" parent="TextRegular.White.size16">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:elevation">@dimen/size_4dp</item>
+    </style>
+
+    <style name="button_style_dark" parent="TextRegular.White.size16">
+        <item name="android:background">@drawable/button_background_dark</item>
+        <item name="android:elevation">@dimen/size_4dp</item>
+    </style>
+
+    <style name="button_style_light" parent="TextRegular.White.size16">
+        <item name="android:background">@drawable/button_background_lighty</item>
+        <item name="android:textColor">@color/color_turtle_green</item>
+        <item name="android:elevation">@dimen/size_2dp</item>
+    </style>
+
+    <style name="edittext_style" parent="TextRegular.Black.size16">
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:elevation">@dimen/size_4dp</item>
+        <item name="android:gravity">center|left</item>
+    </style>
+
+    <style name="DialogTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="edittext_style_new" parent="TextRegular.Black.size16">
+        <item name="android:background">@drawable/button_background_lighty</item>
+        <item name="android:elevation">@dimen/size_2dp</item>
+        <item name="android:gravity">center|left</item>
+    </style>
+
+    <style name="edittext_message_style" parent="TextRegular.Black.size14">
+        <item name="android:background">@color/white</item>
+        <item name="android:elevation">@dimen/size_0dp</item>
+        <item name="android:gravity">center|left</item>
+        <item name="android:textColorHint">@color/black</item>
+    </style>
+
+    <style name="InvitationDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:editTextColor">@color/black</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="Search_Style" parent="Theme.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:queryBackground" tools:targetApi="lollipop">@color/white</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/size_2dp</item>
+        <item name="android:iconifiedByDefault">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:textSize">@dimen/size_16dp</item>
+    </style>
+
+    <style name="BottomSheet_Title_Style">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/size_18dp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="WideDialog" parent="Base.Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+    </style>
+</resources>

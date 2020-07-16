@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "331242318902",
+    "firebase_url": "https://lifeshare-da14a.firebaseio.com",
+    "project_id": "lifeshare-da14a",
+    "storage_bucket": "lifeshare-da14a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331242318902:android:5bdd0ebddbd7e171",
+        "android_client_info": {
+          "package_name": "com.lifeshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "331242318902-8jq56pc3utfinuhp4se1grgentnq1s9n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1Rua5xEwUaLaon-onFlwUVQZrRZLi7_k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

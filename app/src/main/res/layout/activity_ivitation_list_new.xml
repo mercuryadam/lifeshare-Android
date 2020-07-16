@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_primary_color_new"
+    tools:context=".ui.my_connection.MyConnectionListActivity">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/TextRegular.Gray.size18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_24dp"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:layout_marginBottom="@dimen/size_8dp"
+        android:text="@string/my_invites" />
+
+    <com.lifeshare.customview.recyclerview.FilterRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tvTitle"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/size_50dp" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_no_data"
+        style="@style/TextRegular.Black.size16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/no_data_available"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

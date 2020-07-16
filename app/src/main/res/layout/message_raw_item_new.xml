@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/ll_chat_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/size_10dp"
+        android:paddingTop="@dimen/size_4dp"
+        android:paddingRight="@dimen/size_10dp"
+        android:visibility="visible">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile_other"
+            android:layout_width="@dimen/size_30dp"
+            android:layout_height="@dimen/size_30dp"
+            android:src="@drawable/user_placeholder" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_10dp"
+            android:layout_weight="1"
+            android:background="@drawable/message_background_other"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/size_12dp"
+            android:paddingTop="@dimen/size_4dp"
+            android:paddingBottom="@dimen/size_4dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_username_other"
+                style="@style/TextMedium.White.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/size_6dp"
+                android:paddingRight="@dimen/size_20dp"
+                android:singleLine="true"
+                tools:text="Chirag Patel" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_message_other"
+                style="@style/TextRegular.White.size12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/size_6dp"
+                android:paddingRight="@dimen/size_20dp"
+                tools:text="Message Here" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_chat_self"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/size_10dp"
+        android:paddingTop="@dimen/size_4dp"
+        android:paddingRight="@dimen/size_10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_10dp"
+            android:layout_weight="1"
+            android:background="@drawable/message_background_self"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/size_4dp"
+            android:paddingRight="@dimen/size_12dp"
+            android:paddingBottom="@dimen/size_4dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_username_self"
+                style="@style/TextMedium.White.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingLeft="@dimen/size_20dp"
+                android:paddingRight="@dimen/size_6dp"
+                android:singleLine="true"
+                tools:text="Chirag Patel" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_message_self"
+                style="@style/TextRegular.White.size12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/size_20dp"
+                tools:text="Message Here cxcx " />
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile_self"
+            android:layout_width="@dimen/size_30dp"
+            android:layout_height="@dimen/size_30dp"
+            android:layout_marginLeft="@dimen/size_6dp"
+            android:src="@drawable/user_placeholder" />
+
+    </LinearLayout>
+</RelativeLayout>

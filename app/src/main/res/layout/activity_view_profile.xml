@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_primary_color_new"
+    tools:context=".ui.profile.ViewProfileActivity">
+
+    <ImageView
+        android:layout_width="@dimen/size_250dp"
+        android:layout_height="@dimen/size_250dp"
+        android:layout_centerInParent="true"
+        android:alpha="0.3"
+        android:src="@drawable/app_logo" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="@dimen/size_100dp"
+                android:layout_height="@dimen/size_100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:src="@drawable/user_placeholder" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                style="@style/TextMedium.Black.size16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_16dp"
+                tools:text="@string/my_connections" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_channel_name_one"
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_4dp"
+                tools:text="@string/my_connections" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/size_16dp">
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:text="Your Name" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_name_one"
+                    style="@style/TextMedium.Black.size22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    tools:text="Chirag Patel" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:text="@string/channel_name" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_channel_name"
+                    style="@style/TextMedium.Black.size22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    tools:text="Your Name" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:text="@string/email" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_email"
+                    style="@style/TextMedium.Black.size22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    tools:text="chirag.patel@9spl.com" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:text="@string/phone_number" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_phone_number"
+                    style="@style/TextMedium.Black.size22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    tools:text="chirag.patel@9spl.com" />
+
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:text="@string/City" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_city_name"
+                    style="@style/TextMedium.Black.size22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    tools:text="Ahmedabad" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:text="@string/State" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_state_name"
+                    style="@style/TextMedium.Black.size22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    tools:text="Gujrat" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:text="@string/country" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_country_name"
+                    style="@style/TextMedium.Black.size22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    tools:text="India" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:text="@string/short_description" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_short_description"
+                    style="@style/TextMedium.Black.size22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    tools:text="chirag.patel@9spl.com" />
+
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_edit"
+                    style="@style/button_style_dark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_8dp"
+                    android:layout_marginTop="@dimen/size_50dp"
+                    android:layout_marginRight="@dimen/size_8dp"
+                    android:layout_marginBottom="@dimen/size_8dp"
+                    android:singleLine="true"
+                    android:text="@string/edit_profile"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

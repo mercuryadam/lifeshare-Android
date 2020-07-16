@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_8dp"
+    android:orientation="vertical">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rl_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_1dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
+            android:background="@drawable/viewer_square_background"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/size_4dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/user_placeholder"
+                app:civ_border_color="#FF000000"
+                app:civ_border_width="0dp" />
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_name"
+        style="@style/TextRegular.Black.size12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_2dp"
+        android:gravity="center"
+        android:maxLines="2"
+        android:paddingLeft="@dimen/size_2dp"
+        android:paddingRight="@dimen/size_2dp"
+        android:textSize="@dimen/size_10dp"
+        tools:text="Chirag Patel" />
+</LinearLayout>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_primary_color_new"
+    tools:context="com.lifeshare.ui.LoginActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:padding="@dimen/size_20dp">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:src="@drawable/app_logo" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_30dp"
+                android:text="@string/upload_profile_picture"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="@dimen/size_60dp"
+                android:layout_height="@dimen/size_60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:src="@drawable/ic_gallary_new" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_12dp"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:text="@string/your_name"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_first_name"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="@dimen/size_16dp"
+                android:gravity="center|left"
+                android:hint="@string/enter_your_name"
+                android:inputType="text"
+                android:padding="@dimen/size_14dp"
+                android:singleLine="true" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_12dp"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:text="@string/last_name"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_last_name"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="@dimen/size_16dp"
+                android:gravity="center|left"
+                android:hint="@string/enter_your_last_name"
+                android:inputType="text"
+                android:padding="@dimen/size_14dp"
+                android:singleLine="true" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_12dp"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:text="@string/channel_name"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_username"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:drawableStart="@drawable/ic_channal"
+                android:drawablePadding="@dimen/size_16dp"
+                android:gravity="center|left"
+                android:hint="@string/enter_your_channel_name"
+                android:inputType="text"
+                android:padding="@dimen/size_14dp"
+                android:singleLine="true" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_12dp"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:text="@string/email"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_email"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:drawableStart="@drawable/ic_email"
+                android:drawablePadding="@dimen/size_16dp"
+                android:gravity="center|left"
+                android:hint="@string/enter_your_email"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/size_14dp"
+                android:singleLine="true" />
+
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_12dp"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:text="@string/Phone_number"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_phone_number"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:drawableStart="@drawable/ic_call"
+                android:drawablePadding="@dimen/size_16dp"
+                android:gravity="center|left"
+                android:hint="@string/phone_number"
+                android:inputType="number"
+                android:maxLength="11"
+                android:padding="@dimen/size_14dp"
+                android:singleLine="true" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_12dp"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:text="Password"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_password"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:drawableStart="@drawable/ic_password"
+                android:drawablePadding="@dimen/size_16dp"
+                android:hint="@string/create_a_password"
+                android:inputType="textPassword"
+                android:padding="@dimen/size_14dp"
+                android:singleLine="true" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_confirm_password"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:drawableStart="@drawable/ic_password"
+                android:drawablePadding="@dimen/size_16dp"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:padding="@dimen/size_14dp"
+                android:singleLine="true" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_12dp"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:text="@string/address"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_country"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:cursorVisible="false"
+                android:drawableStart="@drawable/ic_address"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                android:drawablePadding="@dimen/size_16dp"
+                android:enabled="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/country"
+                android:padding="@dimen/size_14dp"
+                android:singleLine="true" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_state"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:cursorVisible="false"
+                android:drawableStart="@drawable/ic_address"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                android:drawablePadding="@dimen/size_16dp"
+                android:enabled="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/State"
+                android:padding="@dimen/size_14dp"
+                android:singleLine="true" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_city"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:cursorVisible="false"
+                android:drawableStart="@drawable/ic_address"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
+                android:drawablePadding="@dimen/size_16dp"
+                android:enabled="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/City"
+                android:padding="@dimen/size_14dp"
+                android:singleLine="true" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_12dp"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:text="@string/short_description"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_short_discription"
+                style="@style/edittext_style_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:drawableStart="@drawable/ic_password"
+                android:drawablePadding="@dimen/size_16dp"
+                android:hint="@string/enter_short_description_of_channel"
+                android:inputType="textMultiLine"
+                android:maxLines="8"
+                android:minLines="4"
+                android:padding="@dimen/size_14dp"
+                android:scrollbars="vertical" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_sign_up"
+                style="@style/button_style_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_40dp"
+                android:layout_marginRight="@dimen/size_8dp"
+                android:layout_marginBottom="@dimen/size_8dp"
+                android:singleLine="true"
+                android:text="@string/create_account"
+                android:textAllCaps="false" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

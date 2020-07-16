@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "D:\\AndroidStudioProjects\\lifeshare-android -client\\app\\build\\intermediates\\incremental\\mergeLiveDebugResources\\merged.dir\\values-port\\values-port.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\chikk\\.gradle\\caches\\transforms-2\\files-2.1\\a5e363d4092d2f2d612f9d4574904376\\res\\values-port\\values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}

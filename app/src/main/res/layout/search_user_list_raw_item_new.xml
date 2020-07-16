@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/size_8dp"
+    android:background="@color/light_primary_color_new"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/size_12dp">
+
+    <RelativeLayout
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/size_12dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="@dimen/size_60dp"
+            android:layout_height="@dimen/size_60dp"
+            android:layout_marginTop="@dimen/size_20dp"
+            android:src="@drawable/user_placeholder" />
+
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_profile"
+            android:orientation="vertical"
+            android:padding="@dimen/size_16dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                style="@style/TextRegular.Black.size16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                tools:text="John Martine" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_email"
+                style="@style/TextRegular.Gray.size14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_6dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                tools:text="JohnMartine123@gmail" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_contact"
+                style="@style/TextRegular.Gray.size14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_6dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                tools:text="992446385" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_main"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_send_request"
+                style="@style/TextRegular.PrimaryColor.size16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/size_10dp"
+                android:text="@string/send_request" />
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_block_user"
+                style="@style/TextRegular.PrimaryColor.size16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/size_10dp"
+                android:text="@string/block_user"
+                android:textColor="@color/red_block_user"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_unblock_user"
+                style="@style/TextRegular.PrimaryColor.size16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/size_10dp"
+                android:text="@string/unblock_user"
+                android:textColor="@color/red_block_user"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_4dp"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/size_12dp"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:layout_marginRight="@dimen/size_12dp"
+        android:background="@color/color_turtle_green" />
+</LinearLayout>

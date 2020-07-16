@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#8BC34A</color>
+    <color name="colorPrimaryDark">#E5F1D9</color>
+    <color name="colorAccent">#8BC34A</color>
+
+    <color name="colorSwitchEnabled">#48ed5e</color>
+    <color name="colorSwitchDesable">#ec1515</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="gray">#8f94a2</color>
+    <color name="grayOld">#717070</color>
+    <color name="black_transparent">#64000000</color>
+    <color name="light_primary_color">#B2EBF2</color>
+    <color name="light_primary_color_new">#E5F1D9</color>
+    <color name="color_leap_green">#579B5C</color>
+    <color name="color_turtle_green">#78b14e</color>
+    <color name="lichen">#9ec598</color>
+    <color name="red">#f5313e</color>
+    <color name="pinkish_grey">#bdbdbd</color>
+    <color name="dashboard_bg">#589a58</color>
+    <color name="dashboard_button_bg">#579b5c</color>
+    <color name="color_chat_message_bg_other">#accbbe</color>
+    <color name="color_chat_message_bg_self">#78b14e</color>
+    <color name="logout_button_color">#6ec7e4</color>
+    <color name="forgot_password">#5475F1</color>
+    <color name="red_block_user">#B14E4E</color>
+
+
+    <color name="selector_normal">#00000000</color>
+    <color name="selector_selected">#11000000</color>
+    <color name="selector_hover">#10000000</color>
+
+</resources>

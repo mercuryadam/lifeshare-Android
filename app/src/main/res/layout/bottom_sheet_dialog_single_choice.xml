@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardviewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="@dimen/size_0dp"
+        app:cardElevation="@dimen/size_4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/size_16dp"
+            android:paddingRight="@dimen/size_8dp">
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="@dimen/size_40dp"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/size_6dp"
+                android:src="@drawable/ic_close_white" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/BottomSheet_Title_Style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/iv_close"
+                android:layout_toLeftOf="@+id/iv_close"
+                android:text="" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <com.lifeshare.customview.recyclerview.CustomSearchView
+        android:id="@+id/search_view"
+        style="@style/Search_Style"
+        android:focusable="false"
+        android:queryHint="@string/search" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.lifeshare.customview.recyclerview.FilterRecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include
+            layout="@layout/search_reasult_not_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</LinearLayout>

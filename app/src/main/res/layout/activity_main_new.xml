@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_primary_color_new"
+    android:orientation="vertical"
+    tools:context="com.lifeshare.ui.MainActivity">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/iv_more"
+        android:layout_width="@dimen/size_32dp"
+        android:layout_height="@dimen/size_32dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:layout_marginEnd="@dimen/size_16dp"
+        android:src="@drawable/ic_more" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_name"
+        style="@style/TextRegular.Black.size18"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_more"
+        android:layout_margin="@dimen/size_20sp"
+        android:gravity="center" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Publisher" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_start"
+            android:layout_marginTop="20dp"
+            android:text="Viewer" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_friends_broadcast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatTextView
+            style="@style/TextRegular.Black.size16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/friend_s_live_broadcast" />
+
+
+        <com.lifeshare.customview.recyclerview.FilterRecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</RelativeLayout>
