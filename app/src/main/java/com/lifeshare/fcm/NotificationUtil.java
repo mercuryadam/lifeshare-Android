@@ -103,6 +103,7 @@ public class NotificationUtil {
                 pendingIntent = taskStackBuilder.getPendingIntent(mNotifId, PendingIntent.FLAG_UPDATE_CURRENT);
             }
         }
+
         noti_builder.setContentIntent(pendingIntent);
 
         if (whiteIcon) {
