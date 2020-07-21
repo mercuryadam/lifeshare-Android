@@ -838,6 +838,7 @@ public class BroadcastActivityNew extends BaseActivity
 
             @Override
             public void onRecyclerItemClick(View view, int position, StreamUserResponse item) {
+                playAudio(BroadcastActivityNew.this, R.raw.click);
                 Intent intent = new Intent(BroadcastActivityNew.this, ShowStreamActivityNew.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Const.STREAM_DATA, item);
