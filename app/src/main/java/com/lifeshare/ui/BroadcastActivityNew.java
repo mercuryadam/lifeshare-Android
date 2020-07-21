@@ -708,7 +708,6 @@ public class BroadcastActivityNew extends BaseActivity
                 }
                 break;
             case R.id.rl_broadcast:
-
                 if (!isBroadcasting) {
                     startBroadCast();
                 } else {
@@ -723,6 +722,8 @@ public class BroadcastActivityNew extends BaseActivity
     }
 
     private void stopBroadcast() {
+        playAudio(this, R.raw.dingdong);
+
         Log.v(TAG, "onCheckedChanged: false ");
         fabMessage.hide();
         rlChatView.setVisibility(View.GONE);
@@ -731,6 +732,7 @@ public class BroadcastActivityNew extends BaseActivity
     }
 
     private void startBroadCast() {
+        playAudio(this, R.raw.jingle_two);
         if (!projectionStarted) {
             projectionManager = (MediaProjectionManager)
                     getSystemService(Context.MEDIA_PROJECTION_SERVICE);

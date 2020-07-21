@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -75,6 +76,11 @@ public class BaseActivity extends AppCompatActivity implements BaseRemoteCallbac
         } catch (Exception e) {
 
         }
+    }
+
+    public void playAudio(Context mContext, Integer audio) {
+        final MediaPlayer mp = MediaPlayer.create(mContext, audio);
+        mp.start();
     }
 
     public void otherDialog(Context mContext, String mMessage, final String possitiveBtnName,
