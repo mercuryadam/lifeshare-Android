@@ -434,6 +434,7 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
         if (countDownTimerViewerLastTime != null) {
             countDownTimerViewerLastTime.cancel();
         }
+        mSession.disconnect();
         removeUserFromViewer();
         finish();
     }

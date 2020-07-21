@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
@@ -117,11 +119,23 @@ public class NotificationUtil {
 
         createNotificationChannel();
 
+        playSound();
 
         noti.flags |= Notification.FLAG_AUTO_CANCEL;// hide the menu_notification after its selected
         //notificationManager.notify(mNotifId, noti);
         NotificationManagerCompat.from(mContext).notify(mNotifId, noti);
 
+    }
+
+    private void playSound() {
+        AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+
+        switch (am.getRingerMode()) {
+            case AudioManager.RINGER_MODE_NORMAL:
+                final MediaPlayer mp = MediaPlayer.create(mContext, R.raw.jingle_two);
+                mp.start();
+                break;
+        }
     }
 
     private void createNotificationChannel() {

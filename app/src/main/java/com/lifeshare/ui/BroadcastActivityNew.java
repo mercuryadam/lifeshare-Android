@@ -736,6 +736,7 @@ public class BroadcastActivityNew extends BaseActivity
     }
 
     private void startBroadCast() {
+        playAudio(this, R.raw.jingle_two);
 
         RuntimeEasyPermission.newInstance(permissions_audio,
                 REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
@@ -1085,7 +1086,6 @@ public class BroadcastActivityNew extends BaseActivity
     @Override
     public void onPermissionAllow(int permissionCode) {
         if (permissionCode == REQUEST_AUDIO_PERM) {
-            playAudio(this, R.raw.jingle_two);
             if (!projectionStarted) {
                 projectionManager = (MediaProjectionManager)
                         getSystemService(Context.MEDIA_PROJECTION_SERVICE);
