@@ -107,6 +107,8 @@ public class RuntimeEasyPermission extends DialogFragment {
 
         if (getTargetFragment() instanceof PermissionCallbacks) {
             mAppPermissionListener = (PermissionCallbacks) getTargetFragment();
+        } else {
+            mAppPermissionListener = (PermissionCallbacks) getActivity();
         }
 
         if (getArguments() != null) {

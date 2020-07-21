@@ -1,5 +1,6 @@
 package com.lifeshare.ui;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -66,6 +67,7 @@ import com.lifeshare.network.request.DeleteStreamingRequest;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CreateSessionResponse;
 import com.lifeshare.network.response.StreamUserResponse;
+import com.lifeshare.permission.RuntimeEasyPermission;
 import com.lifeshare.ui.admin_user.ReportsUserListActivity;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
@@ -99,7 +101,7 @@ import static com.lifeshare.utils.Const.LAST_VIEW_UPDATE_INTERVAL_TIME;
 
 public class BroadcastActivityNew extends BaseActivity
         implements Publisher.PublisherListener,
-        Session.SessionListener, EasyPermissions.PermissionCallbacks, View.OnClickListener {
+        Session.SessionListener, EasyPermissions.PermissionCallbacks, View.OnClickListener, RuntimeEasyPermission.PermissionCallbacks {
 
     private static final int MEDIA_PROJECTION_REQUEST_CODE = 1;
     private static final String TAG = "BroadcastActivity";
@@ -135,6 +137,8 @@ public class BroadcastActivityNew extends BaseActivity
     private ViewerListAdapter viewerListAdapter;
     private RelativeLayout rlViewers;
     private AppCompatTextView tvNoData;
+    private static final int REQUEST_AUDIO_PERM = 1123;
+    private String[] permissions_audio = new String[]{Manifest.permission.RECORD_AUDIO};
     ValueEventListener viewerValuEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -508,9 +512,9 @@ public class BroadcastActivityNew extends BaseActivity
                 .name(PreferenceHelper.getInstance().getUser().getFirstName() + " " + PreferenceHelper.getInstance().getUser().getLastName())
                 .capturer(screenCapturer)
                 .frameRate(Publisher.CameraCaptureFrameRate.FPS_30)
-                .audioTrack(false)
                 .build();
-//        mPublisher.setPublishAudio(true);
+        mPublisher.setPublishAudio(true);
+        mPublisher.setPublishVideo(true);
         mPublisher.setPublisherListener(this);
 
         mPublisherViewContainer.addView(mPublisher.getView());
@@ -732,21 +736,10 @@ public class BroadcastActivityNew extends BaseActivity
     }
 
     private void startBroadCast() {
-        playAudio(this, R.raw.jingle_two);
-        if (!projectionStarted) {
-            projectionManager = (MediaProjectionManager)
-                    getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-            startProjection();
-        } else {
 
-            if (checkInternetConnection()) {
-                connectWithSession();
+        RuntimeEasyPermission.newInstance(permissions_audio,
+                REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
 
-            } else {
-                stopBroadcast();
-//                switchCompat.setChecked(false);
-            }
-        }
     }
 
     public void deleteStreaming() {
@@ -1087,6 +1080,34 @@ public class BroadcastActivityNew extends BaseActivity
                 LifeShare.getInstance().logout();
             }
         });
+    }
+
+    @Override
+    public void onPermissionAllow(int permissionCode) {
+        if (permissionCode == REQUEST_AUDIO_PERM) {
+            playAudio(this, R.raw.jingle_two);
+            if (!projectionStarted) {
+                projectionManager = (MediaProjectionManager)
+                        getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+                startProjection();
+            } else {
+
+                if (checkInternetConnection()) {
+                    connectWithSession();
+
+                } else {
+                    stopBroadcast();
+//                switchCompat.setChecked(false);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onPermissionDeny(int permissionCode) {
+        if (permissionCode == REQUEST_AUDIO_PERM) {
+            Toast.makeText(this, R.string.msg_permission_denied, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private class ImageAvailableListener implements ImageReader.OnImageAvailableListener {

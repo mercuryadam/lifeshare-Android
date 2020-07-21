@@ -177,6 +177,8 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
 //        if (mSubscriber == null) {
         Log.v(TAG, "onStreamReceived: in");
         mSubscriber = new Subscriber.Builder(this, stream).build();
+        mSubscriber.setSubscribeToAudio(true);
+        mSubscriber.setSubscribeToVideo(true);
         mSession.subscribe(mSubscriber);
         rlReceiver.addView(mSubscriber.getView());
 //        }
