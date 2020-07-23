@@ -7,10 +7,6 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +15,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.lifeshare.customview.CustomProgressDialog;
 import com.lifeshare.network.BaseRemoteCallback;
 
@@ -104,7 +105,7 @@ public class BaseActivity extends AppCompatActivity implements BaseRemoteCallbac
         }
         alertDialog.show();
 
-        alertDialog.getButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+        alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.cancel();
@@ -113,7 +114,7 @@ public class BaseActivity extends AppCompatActivity implements BaseRemoteCallbac
                 }
             }
         });
-        alertDialog.getButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+        alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 alertDialog.cancel();
@@ -144,7 +145,7 @@ public class BaseActivity extends AppCompatActivity implements BaseRemoteCallbac
                         R.string.no_internet_connection_available, Snackbar.LENGTH_INDEFINITE);
                 View sbView = snackbar.getView();
                 TextView textView = (TextView) sbView
-                        .findViewById(android.support.design.R.id.snackbar_text);
+                        .findViewById(com.google.android.material.R.id.snackbar_text);
                 textView.setTextColor(ContextCompat.getColor(this, R.color.white));
                 snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
                 snackbar.setAction(R.string.retry, new View.OnClickListener() {
@@ -161,7 +162,7 @@ public class BaseActivity extends AppCompatActivity implements BaseRemoteCallbac
                         R.string.no_internet_connection_available, Snackbar.LENGTH_LONG);
                 View sbView = snackbar.getView();
                 TextView textView = (TextView) sbView
-                        .findViewById(android.support.design.R.id.snackbar_text);
+                        .findViewById(com.google.android.material.R.id.snackbar_text);
                 textView.setTextColor(ContextCompat.getColor(this, R.color.white));
                 snackbar.show();
 

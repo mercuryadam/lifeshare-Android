@@ -1,11 +1,12 @@
 package com.lifeshare.ui;
 
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
 
 import com.lifeshare.BaseActivity;
 import com.lifeshare.BuildConfig;

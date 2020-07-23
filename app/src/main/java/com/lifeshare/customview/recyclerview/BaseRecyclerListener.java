@@ -1,7 +1,8 @@
 package com.lifeshare.customview.recyclerview;
 
-import android.support.annotation.StringRes;
 import android.view.View;
+
+import androidx.annotation.StringRes;
 
 public interface BaseRecyclerListener<T> {
     void showEmptyDataView(@StringRes int resId);

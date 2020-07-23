@@ -36,7 +36,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_name"
         style="@style/TextRegular.Black.size12"
         android:layout_width="match_parent"

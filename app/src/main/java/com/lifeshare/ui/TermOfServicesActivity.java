@@ -2,10 +2,11 @@ package com.lifeshare.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.lifeshare.BaseActivity;
 import com.lifeshare.R;

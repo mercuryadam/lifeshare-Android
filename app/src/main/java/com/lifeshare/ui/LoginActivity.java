@@ -3,9 +3,6 @@ package com.lifeshare.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.MotionEvent;
@@ -13,6 +10,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.lifeshare.BaseActivity;
 import com.lifeshare.BuildConfig;

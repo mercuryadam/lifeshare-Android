@@ -1,6 +1,6 @@
 package com.lifeshare.network;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.lifeshare.BuildConfig;
 import com.lifeshare.LifeShare;

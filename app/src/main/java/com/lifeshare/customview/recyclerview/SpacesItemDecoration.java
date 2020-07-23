@@ -1,9 +1,10 @@
 package com.lifeshare.customview.recyclerview;
 
 import android.graphics.Rect;
-import android.support.annotation.IntDef;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.annotation.IntDef;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

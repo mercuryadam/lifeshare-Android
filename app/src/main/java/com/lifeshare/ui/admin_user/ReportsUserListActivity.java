@@ -2,10 +2,11 @@ package com.lifeshare.ui.admin_user;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.lifeshare.BaseActivity;
 import com.lifeshare.R;
