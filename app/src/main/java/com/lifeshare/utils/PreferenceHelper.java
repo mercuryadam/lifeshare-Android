@@ -80,7 +80,6 @@ public class PreferenceHelper {
         mEdit.putString(USER_DATA, userData);
         save();
     }
-
     public CreateSessionResponse getSessionData() {
         String sessionData = mPrefs.getString(SESSION_DATA, null);
         if (!TextUtils.isEmpty(sessionData)) {

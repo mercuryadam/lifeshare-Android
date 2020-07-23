@@ -1,0 +1,19 @@
+[
+  {
+    "outputType": {
+      "type": "APK"
+    },
+    "apkData": {
+      "type": "MAIN",
+      "splits": [],
+      "versionCode": 1,
+      "versionName": "1.0",
+      "enabled": true,
+      "outputFile": "LifeShare_Live_release_22_Jul_2020_V1.0(1).apk",
+      "fullName": "LiveRelease",
+      "baseName": "Live-release"
+    },
+    "path": "LifeShare_Live_release_22_Jul_2020_V1.0(1).apk",
+    "properties": {}
+  }
+]
