@@ -2,7 +2,6 @@ package com.lifeshare.ui.show_broadcast;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
@@ -62,7 +61,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                 ChatMessage chatMessage = snapshot.getValue(ChatMessage.class);
                 messageArrayList.add(chatMessage);
-                playAudio(requireContext(), R.raw.jingle);
+                playAudio(R.raw.jingle);
             }
             adapter.setItems(messageArrayList);
             rvMessage.scrollToPosition(messageArrayList.size() - 1);
@@ -271,9 +270,11 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
 
     }
 
-    public void playAudio(Context mContext, Integer audio) {
-        final MediaPlayer mp = MediaPlayer.create(mContext, audio);
-        mp.start();
+    public void playAudio(Integer audio) {
+        if (getActivity() != null) {
+            final MediaPlayer mp = MediaPlayer.create(getActivity(), audio);
+            mp.start();
+        }
     }
 
 }

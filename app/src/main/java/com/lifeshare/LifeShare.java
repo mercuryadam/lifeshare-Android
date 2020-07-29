@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.JsonElement;
@@ -44,6 +46,11 @@ public class LifeShare extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+        FirebaseApp.initializeApp(getApplicationContext());
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        FirebaseCrashlytics.getInstance().log("This is first message"); // Force a crash
+        FirebaseCrashlytics.getInstance().sendUnsentReports();
+
     }
 
     public void updateFcmTokenToServer() {

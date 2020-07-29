@@ -808,7 +808,6 @@ public class BroadcastActivityNew extends BaseActivity
         ivLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(BroadcastActivity.this, TestActivity.class));
             }
         });
         container = findViewById(R.id.container);

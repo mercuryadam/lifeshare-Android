@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "331242318902-ukjnuf2tvmkbighomi6m0t0gb9n1gfah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lifeshare",
+            "certificate_hash": "979e26961665e2c1c7323ee2f1bd600abab93e0d"
+          }
+        },
+        {
+          "client_id": "331242318902-8r22c7sektfvvh1jsr1uk21ke3crub2k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lifeshare",
+            "certificate_hash": "49862d2fd92167352817197d4c97172e93d5964a"
+          }
+        },
+        {
           "client_id": "331242318902-8jq56pc3utfinuhp4se1grgentnq1s9n.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -25,15 +41,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "331242318902-8jq56pc3utfinuhp4se1grgentnq1s9n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
