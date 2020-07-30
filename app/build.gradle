@@ -72,7 +72,7 @@ android {
             def project = "LifeShare"
             def SEP = "_"
             def flavor = variant.productFlavors[0].name
-            def buildType = variant.variantData.variantConfiguration.buildType.name
+            def buildType = variant.buildType.name
             def versionName = variant.versionName
             def versionCode = variant.versionCode
             def date = new Date()

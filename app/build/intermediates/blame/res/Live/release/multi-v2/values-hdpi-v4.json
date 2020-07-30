@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\AndroidStudioProjects\\lifeshare-android -client\\app\\build\\intermediates\\incremental\\mergeLiveReleaseResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+            "outputFile": "D:\\Studio Projects\\lifeshare\\app\\build\\intermediates\\incremental\\mergeLiveReleaseResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\chikk\\.gradle\\caches\\transforms-2\\files-2.1\\135b5b3f65155e7f7dd29a535fa61364\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
+                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-2\\files-2.1\\be8718805948c6413946c91a43d5a39c\\appcompat-1.0.0\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
