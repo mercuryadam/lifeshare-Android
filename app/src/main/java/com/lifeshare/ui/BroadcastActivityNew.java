@@ -69,6 +69,7 @@ import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CreateSessionResponse;
 import com.lifeshare.network.response.StreamUserResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
+import com.lifeshare.receiver.ForegroundService;
 import com.lifeshare.ui.admin_user.ReportsUserListActivity;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
@@ -107,6 +108,7 @@ public class BroadcastActivityNew extends BaseActivity
     private static final int MEDIA_PROJECTION_REQUEST_CODE = 1;
     private static final String TAG = "BroadcastActivity";
     private static final int RC_VIDEO_APP_PERM = 124;
+    private static final int REQUEST_AUDIO_PERM = 1123;
     BubbleLayout bubbleView;
     TextView bubbleText;
     BubbleLayout bubbleLayout;
@@ -138,8 +140,6 @@ public class BroadcastActivityNew extends BaseActivity
     private ViewerListAdapter viewerListAdapter;
     private RelativeLayout rlViewers;
     private AppCompatTextView tvNoData;
-    private static final int REQUEST_AUDIO_PERM = 1123;
-    private String[] permissions_audio = new String[]{Manifest.permission.RECORD_AUDIO};
     ValueEventListener viewerValuEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -172,6 +172,7 @@ public class BroadcastActivityNew extends BaseActivity
 
         }
     };
+    private String[] permissions_audio = new String[]{Manifest.permission.RECORD_AUDIO};
     private Boolean isBroadcasting = false;
     private StreamUserListAdapter adapter;
     private ImageView ivLogo;
@@ -355,6 +356,7 @@ public class BroadcastActivityNew extends BaseActivity
         setContentView(R.layout.activity_broadcast_new);
 
         initView();
+        startForGroundService();
         new InitTrueTimeAsyncTask().execute();
         getSupportActionBar().setTitle(getResources().getString(R.string.app_name) + "(OFF)");
         getSupportFragmentManager().beginTransaction().add(R.id.container, messageFragment).commit();
@@ -362,6 +364,12 @@ public class BroadcastActivityNew extends BaseActivity
         getSupportActionBar().hide();
         setStreamingConnection();
 
+    }
+
+    private void startForGroundService() {
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+        ContextCompat.startForegroundService(this, serviceIntent);
     }
 
     private void setStreamingConnection() {

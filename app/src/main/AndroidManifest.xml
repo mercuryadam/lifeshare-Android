@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:name=".LifeShare"
         android:allowBackup="false"
@@ -48,6 +48,10 @@
             android:name=".customview.bubbleview.BubblesService"
             android:enabled="true"
             android:exported="false" />
+        <service
+            android:name=".receiver.ForegroundService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <activity
             android:name=".ui.LoginActivity"
