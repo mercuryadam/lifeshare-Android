@@ -65,7 +65,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e(TAG, "onResume: " + 11 / 0);
         handler.removeCallbacks(runnable);
     }
 
