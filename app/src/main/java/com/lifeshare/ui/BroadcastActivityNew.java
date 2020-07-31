@@ -372,6 +372,11 @@ public class BroadcastActivityNew extends BaseActivity
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 
+    private void stopForgroundService() {
+        Intent serviceIntent = new Intent(this, ForegroundService.class);
+        stopService(serviceIntent);
+    }
+
     private void setStreamingConnection() {
 
         progressBarConnectionStreaming.setVisibility(View.VISIBLE);
@@ -735,6 +740,7 @@ public class BroadcastActivityNew extends BaseActivity
     }
 
     private void stopBroadcast() {
+        stopForgroundService();
         playAudio(this, R.raw.dingdong);
 
         Log.v(TAG, "onCheckedChanged: false ");
