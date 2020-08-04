@@ -356,7 +356,6 @@ public class BroadcastActivityNew extends BaseActivity
         setContentView(R.layout.activity_broadcast_new);
 
         initView();
-        startForGroundService();
         new InitTrueTimeAsyncTask().execute();
         getSupportActionBar().setTitle(getResources().getString(R.string.app_name) + "(OFF)");
         getSupportFragmentManager().beginTransaction().add(R.id.container, messageFragment).commit();
@@ -368,7 +367,7 @@ public class BroadcastActivityNew extends BaseActivity
 
     private void startForGroundService() {
         Intent serviceIntent = new Intent(this, ForegroundService.class);
-        serviceIntent.putExtra("inputExtra", "Foreground Service Example in Android");
+        serviceIntent.putExtra("inputExtra", "Start Foreground Service");
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 
@@ -751,6 +750,7 @@ public class BroadcastActivityNew extends BaseActivity
     }
 
     private void startBroadCast() {
+        startForGroundService();
         playAudio(this, R.raw.jingle_two);
 
         RuntimeEasyPermission.newInstance(permissions_audio,

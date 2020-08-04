@@ -47,8 +47,6 @@
 
         <service
             android:name=".customview.bubbleview.BubblesService"
-            android:foregroundServiceType="mediaProjection"
-            tools:targetApi="q"
             android:enabled="true"
             android:exported="false" />
         <service
@@ -56,7 +54,7 @@
             android:foregroundServiceType="mediaProjection"
             tools:targetApi="q"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".ui.LoginActivity"
