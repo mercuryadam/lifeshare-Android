@@ -48,7 +48,6 @@ public class LifeShare extends Application {
         mContext = this;
         FirebaseApp.initializeApp(getApplicationContext());
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-        FirebaseCrashlytics.getInstance().log("This is first message"); // Force a crash
         FirebaseCrashlytics.getInstance().sendUnsentReports();
 
     }
