@@ -534,6 +534,8 @@ public class BroadcastActivityNew extends BaseActivity
         mSession.publish(mPublisher);
 
         isBroadcasting = true;
+
+        notifyOther();
         changeBroadcastButtonView();
 //        switchCompat.setText(getResources().getString(R.string.stop));
         fabMessage.show();
@@ -1122,6 +1124,21 @@ public class BroadcastActivityNew extends BaseActivity
         if (permissionCode == REQUEST_AUDIO_PERM) {
             Toast.makeText(this, R.string.msg_permission_denied, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void notifyOther() {
+        if (!checkInternetConnection()) {
+            return;
+        }
+        WebAPIManager.getInstance().notifyOther(new RemoteCallback<CommonResponse>() {
+            @Override
+            public void onSuccess(CommonResponse response) {
+            }
+
+            @Override
+            public void onEmptyResponse(String message) {
+            }
+        });
     }
 
     private class ImageAvailableListener implements ImageReader.OnImageAvailableListener {

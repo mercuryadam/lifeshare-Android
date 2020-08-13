@@ -3,6 +3,7 @@ package com.lifeshare.network;
 import android.text.TextUtils;
 
 import com.google.gson.JsonElement;
+import com.lifeshare.model.ChannelArchive;
 import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
@@ -21,6 +22,7 @@ import com.lifeshare.network.request.StateRequest;
 import com.lifeshare.network.request.UpdateDeviceTokenRequest;
 import com.lifeshare.network.request.UpdatePushNotificationRequest;
 import com.lifeshare.network.request.UserProfileRequest;
+import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CityResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
@@ -192,6 +194,28 @@ public class WebAPIManager {
     public void deleteUser(DeleteUserRequest request, RemoteCallback<CommonResponse> callback) {
         mService.deleteUser(request).enqueue(callback);
     }
+
+    public void notifyOther(RemoteCallback<CommonResponse> callback) {
+        mService.notifyOther().enqueue(callback);
+    }
+
+    public void listChannelArchive(RemoteCallback<ArrayList<ChannelArchiveResponse>> callback) {
+        mService.listChannelArchive().enqueue(callback);
+    }
+
+    public void createChannelArchive(ChannelArchive request, RemoteCallback<CommonResponse> callback) {
+        HashMap<String, RequestBody> bodyMap = new HashMap<>();
+        bodyMap.put("link", getResponseBody(request.getLink()));
+        bodyMap.put("title", getResponseBody(request.getTitle()));
+        MultipartBody.Part bodyImage = prepareBody("image", request.getPicture());
+
+        mService.createChannelArchive(bodyMap, bodyImage).enqueue(callback);
+    }
+
+    public void deleteChannelArchive(String id, RemoteCallback<CommonResponse> callback) {
+        mService.deleteChannelArchive(id).enqueue(callback);
+    }
+
 
     public void getAllReportForUser(DeleteUserRequest request, RemoteCallback<ArrayList<ReportDetailListResponse>> callback) {
         mService.getAllReportForUser(request).enqueue(callback);

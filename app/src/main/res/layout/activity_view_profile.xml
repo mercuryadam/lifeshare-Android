@@ -86,52 +86,60 @@
                     android:layout_marginTop="@dimen/size_8dp"
                     tools:text="Your Name" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextMedium.Black.size16"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/llEmailPhoneCity"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_16dp"
-                    android:text="@string/email" />
+                    android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_email"
-                    style="@style/TextMedium.Black.size22"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_8dp"
-                    tools:text="chirag.patel@9spl.com" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextMedium.Black.size16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_16dp"
+                        android:text="@string/email" />
 
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextMedium.Black.size16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_16dp"
-                    android:text="@string/phone_number" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_phone_number"
-                    style="@style/TextMedium.Black.size22"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_8dp"
-                    tools:text="chirag.patel@9spl.com" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_email"
+                        style="@style/TextMedium.Black.size22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_8dp"
+                        tools:text="chirag.patel@9spl.com" />
 
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextMedium.Black.size16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_16dp"
-                    android:text="@string/City" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextMedium.Black.size16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_16dp"
+                        android:text="@string/phone_number" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_city_name"
-                    style="@style/TextMedium.Black.size22"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_8dp"
-                    tools:text="Ahmedabad" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_phone_number"
+                        style="@style/TextMedium.Black.size22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_8dp"
+                        tools:text="chirag.patel@9spl.com" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextMedium.Black.size16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_16dp"
+                        android:text="@string/City" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_city_name"
+                        style="@style/TextMedium.Black.size22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_8dp"
+                        tools:text="Ahmedabad" />
+
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/TextMedium.Black.size16"
@@ -178,6 +186,36 @@
                     android:layout_marginTop="@dimen/size_8dp"
                     tools:text="chirag.patel@9spl.com" />
 
+                <LinearLayout
+                    android:id="@+id/llCATitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/addArchivesFromDialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_8dp"
+                        android:src="@drawable/ic_plus" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextMedium.Black.size16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/channel_archives" />
+
+                </LinearLayout>
+
+
+                <com.lifeshare.customview.recyclerview.FilterRecyclerView
+                    android:id="@+id/rvChannelArchive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_edit"

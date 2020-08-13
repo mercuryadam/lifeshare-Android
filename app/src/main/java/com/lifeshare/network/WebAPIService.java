@@ -18,6 +18,7 @@ import com.lifeshare.network.request.StateRequest;
 import com.lifeshare.network.request.UpdateDeviceTokenRequest;
 import com.lifeshare.network.request.UpdatePushNotificationRequest;
 import com.lifeshare.network.request.UserProfileRequest;
+import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CityResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
@@ -38,6 +39,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -139,5 +142,19 @@ public interface WebAPIService {
 
     @POST("user/delete")
     Call<CommonResponse> deleteUser(@Body DeleteUserRequest request);
+
+    @POST("opentok/send/notification")
+    Call<CommonResponse> notifyOther();
+
+    @POST("channel/list")
+    Call<ArrayList<ChannelArchiveResponse>> listChannelArchive();
+
+    @Multipart
+    @POST("channel/create")
+    Call<CommonResponse> createChannelArchive(@PartMap Map<String, RequestBody> bodyMap, @Part MultipartBody.Part image);
+
+    @FormUrlEncoded
+    @POST("channel/delete")
+    Call<CommonResponse> deleteChannelArchive(@Field("id") String id);
 
 }

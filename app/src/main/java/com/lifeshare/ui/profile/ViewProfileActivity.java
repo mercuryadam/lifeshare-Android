@@ -1,26 +1,35 @@
 package com.lifeshare.ui.profile;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lifeshare.BaseActivity;
 import com.lifeshare.LifeShare;
 import com.lifeshare.R;
+import com.lifeshare.customview.recyclerview.BaseRecyclerListener;
+import com.lifeshare.customview.recyclerview.FilterRecyclerView;
 import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
 import com.lifeshare.network.request.UserProfileRequest;
+import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.LoginResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
 import com.lifeshare.ui.ProfileActivity;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +48,11 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private AppCompatTextView tvStateName;
     private AppCompatTextView tvCountryName;
     private AppCompatTextView tvPhoneNumber;
+    private LinearLayout llEmailPhoneCity, llCATitle;
+    private FilterRecyclerView rvChannelArchive;
+    private ChannelArchiveAdapter channelArchiveAdapter;
+    private ArrayList<ChannelArchiveResponse> channelArchiveList = new ArrayList<>();
+    private ImageView addArchivesFromDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +70,16 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             Bundle bundle = getIntent().getExtras();
             if (bundle.getString(Const.PROFILE).equalsIgnoreCase(Const.MY_PROFILE)) {
                 btnEdit.setVisibility(View.VISIBLE);
+                llEmailPhoneCity.setVisibility(View.VISIBLE);
+                llCATitle.setVisibility(View.VISIBLE);
+                rvChannelArchive.setVisibility(View.VISIBLE);
                 setData();
             } else {
 
                 btnEdit.setVisibility(View.GONE);
+                llEmailPhoneCity.setVisibility(View.GONE);
+                rvChannelArchive.setVisibility(View.GONE);
+                llCATitle.setVisibility(View.GONE);
                 MyConnectionListResponse data = (MyConnectionListResponse) bundle.getSerializable(Const.USER_DATA);
 
                 getOtherProfileData(data.getUserId());
@@ -156,6 +176,32 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         tvStateName = (AppCompatTextView) findViewById(R.id.tv_state_name);
         tvCountryName = (AppCompatTextView) findViewById(R.id.tv_country_name);
         tvPhoneNumber = (AppCompatTextView) findViewById(R.id.tv_phone_number);
+        llEmailPhoneCity = findViewById(R.id.llEmailPhoneCity);
+        llCATitle = findViewById(R.id.llCATitle);
+        rvChannelArchive = findViewById(R.id.rvChannelArchive);
+        addArchivesFromDialog = findViewById(R.id.addArchivesFromDialog);
+        addArchivesFromDialog.setOnClickListener(this);
+
+        rvChannelArchive.setLayoutManager(new GridLayoutManager(this, 3));
+        channelArchiveAdapter = new ChannelArchiveAdapter(new BaseRecyclerListener<ChannelArchiveResponse>() {
+            @Override
+            public void showEmptyDataView(int resId) {
+
+            }
+
+            @Override
+            public void onRecyclerItemClick(View view, int position, ChannelArchiveResponse item) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                String url = item.getLink();
+                if (!url.startsWith("http://") && !url.startsWith("https://"))
+                    url = "http://" + url;
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+        rvChannelArchive.setAdapter(channelArchiveAdapter);
+        listChannelArchive();
+
     }
 
     @Override
@@ -168,9 +214,40 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 bundle.putString(Const.PROFILE, Const.MY_PROFILE);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                break;
+
+            case R.id.addArchivesFromDialog:
+
+                // Create and show the dialog.
+                DialogFragment newFragment = AddChannelArchive.newInstance();
+                newFragment.show(getSupportFragmentManager(), "dialog");
 
 
                 break;
+
         }
+    }
+
+    private void listChannelArchive() {
+
+        WebAPIManager.getInstance().listChannelArchive(new RemoteCallback<ArrayList<ChannelArchiveResponse>>() {
+            @Override
+            public void onSuccess(ArrayList<ChannelArchiveResponse> response) {
+                channelArchiveList = response;
+                channelArchiveAdapter.removeAllItems();
+                channelArchiveAdapter.addItems(channelArchiveList);
+            }
+
+            @Override
+            public void onEmptyResponse(String message) {
+
+            }
+
+            @Override
+            public void onUnauthorized(Throwable throwable) {
+                super.onUnauthorized(throwable);
+            }
+        });
+
     }
 }

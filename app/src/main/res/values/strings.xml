@@ -132,5 +132,13 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="screen_capture_permission_message">Please allow capturing permission for sharing .</string>
     <string name="please_enter_old_password">Please enter old password</string>
     <string name="please_enter_new_password">Please enter new password</string>
+    <string name="channel_archives">Channel Archives</string>
+    <string name="link">Link</string>
+    <string name="picture">Picture</string>
+    <string name="share_with_connection">Share with connections</string>
+    <string name="please_add_title">Please add title</string>
+    <string name="please_add_link">Please add link</string>
+    <string name="please_add_image">Please add an image</string>
+    <string name="failed_to_create">Failed to create</string>
 
 </resources>
