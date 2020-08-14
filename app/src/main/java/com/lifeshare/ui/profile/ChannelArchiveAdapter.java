@@ -44,6 +44,12 @@ public class ChannelArchiveAdapter extends FilterableAdapter<ChannelArchiveRespo
                 listener.onRecyclerItemClick(v, holder.getAdapterPosition(), val);
             }
         });
+        viewHolder.ivDeleteArchive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onRecyclerItemClick(v, holder.getAdapterPosition(), val);
+            }
+        });
     }
 
     @Override
@@ -59,15 +65,16 @@ public class ChannelArchiveAdapter extends FilterableAdapter<ChannelArchiveRespo
     }
 
     public class MyConnectionViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivBackGround;
+        private ImageView ivBackGround,ivDeleteArchive;
         private AppCompatTextView tvChannelName;
         private RelativeLayout rlMain;
 
         public MyConnectionViewHolder(View itemView) {
             super(itemView);
             ivBackGround = itemView.findViewById(R.id.ivBackGround);
+            ivDeleteArchive = itemView.findViewById(R.id.ivDeleteArchive);
             tvChannelName = itemView.findViewById(R.id.tvChannelName);
-            rlMain = itemView.findViewById(R.id.rl_main);
+            rlMain = itemView.findViewById(R.id.rlFullRaw);
         }
     }
 }

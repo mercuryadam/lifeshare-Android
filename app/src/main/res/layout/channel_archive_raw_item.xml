@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/rl_main"
+        android:id="@+id/rlFullRaw"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -35,5 +35,14 @@
             android:paddingRight="@dimen/size_2dp"
             android:textSize="@dimen/size_10sp"
             tools:text="Chirag Patel" />
+
+        <ImageView
+            android:id="@+id/ivDeleteArchive"
+            android:layout_width="@dimen/size_20dp"
+            android:layout_height="@dimen/size_20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/size_2dp"
+            android:layout_marginEnd="@dimen/size_2dp"
+            android:src="@drawable/icon_delete" />
     </RelativeLayout>
 </LinearLayout>

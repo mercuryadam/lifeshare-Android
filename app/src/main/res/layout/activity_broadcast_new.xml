@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_toolbar"
         android:background="@color/light_primary_color_new"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/rl_viewers_inner"
@@ -110,8 +110,33 @@
             android:layout_marginLeft="@dimen/size_16dp"
             android:layout_marginRight="@dimen/size_16dp">
 
+            <LinearLayout
+                android:id="@+id/llCountViewer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_marginTop="@dimen/size_8dp"
+                    android:layout_marginHorizontal="@dimen/size_20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_eye" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvCountViewer"
+                    style="@style/TextMedium.Black.size14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="0" />
+            </LinearLayout>
+
             <com.lifeshare.customview.recyclerview.FilterRecyclerView
                 android:id="@+id/rv_viewer"
+                android:layout_toEndOf="@+id/llCountViewer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />

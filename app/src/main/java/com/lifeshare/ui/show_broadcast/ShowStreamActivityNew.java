@@ -57,7 +57,7 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
     private static final String TAG = "ShowStreamActivity";
     CountDownTimer countDownTimerViewerLastTime;
     MessageFragment messageFragment;
-    DatabaseReference viewerDatabaseReference;
+    DatabaseReference viewerDatabaseReference,countViewerDatabaseReference;
     private Subscriber mSubscriber;
     private Session mSession;
     private RelativeLayout rlReceiver;
@@ -95,6 +95,16 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
             } else {
                 rvViewer.setVisibility(View.INVISIBLE);
             }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
+    ValueEventListener countViewerValueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         }
 
         @Override
@@ -170,6 +180,7 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
     public void onStreamReceived(Session session, Stream stream) {
         Log.v(TAG, "onStreamReceived: " + stream.getName());
         addViewerToStream();
+        updateCountForViewer();
 
         llStreamProgress.setVisibility(View.GONE);
         tvToolbarTitle.setText(stream.getName());
@@ -218,6 +229,27 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
                 Log.v(TAG, "onSuccess:addViewerToStream ");
                 registerViewerValueEventListener();
                 startViewerLastTimeUpdateHandler();
+            }
+        });
+
+    }
+
+    private void updateCountForViewer() {
+        Log.v(TAG, "updateCountForViewer: ");
+        LoginResponse user = PreferenceHelper.getInstance().getUser();
+        DatabaseReference databaseReference = LifeShare.getFirebaseReference()
+                .child(Const.TABLE_PUBLISHER)
+                .child(currentVisibleStram.getUserId())
+                .child(Const.TABLE_COUNT_VIEWER).push();
+        databaseReference.setValue("").addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.v(TAG, "onSuccess:updateCountForViewer ");
+                countViewerDatabaseReference = LifeShare.getFirebaseReference()
+                        .child(Const.TABLE_PUBLISHER)
+                        .child(currentVisibleStram.getUserId())
+                        .child(Const.TABLE_COUNT_VIEWER);
+                countViewerDatabaseReference.addValueEventListener(countViewerValueEventListener);
             }
         });
 
@@ -335,6 +367,10 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
         if (viewerDatabaseReference != null) {
             Log.v(TAG, "disconnectSession: ");
             viewerDatabaseReference.removeEventListener(viewerValuEventListener);
+        }
+        if (countViewerDatabaseReference != null) {
+            Log.v(TAG, "disconnectSession: ");
+            countViewerDatabaseReference.removeEventListener(countViewerValueEventListener);
         }
     }
 

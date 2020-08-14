@@ -74,6 +74,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     notificationUtil.show();
                     LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Const.INVITATION_ACCEPT_ACTION));
                     break;
+                case Const.STREAM_STARTED:
+                    intent = new Intent();
+                    NotificationUtil notifyUtil = new NotificationUtil(getApplicationContext(), getString(R.string.app_name), message, intent, 10);
+                    notifyUtil.show();
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Const.INVITATION_ACCEPT_ACTION));
+                    break;
                 case Const.NEW_INVITATION:
                     Intent mainIntent = new Intent(this, BroadcastActivityNew.class);
                     mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

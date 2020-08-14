@@ -24,6 +24,7 @@ public class PreferenceHelper {
     private final String SESSION_DATA = "SESSION_DATA";
     private final String IS_FCM_TOKEN_UPDATED = "IS_FCM_TOKEN_UPDATED";
     private final String KEY_FCM_TOKEN = "KEY_FCM_TOKEN";
+    private final String KEY_COUNT_VIEWER = "KEY_COUNT_VIEWER";
     private SharedPreferences mPrefs;
     private SharedPreferences.Editor mEdit;
 
@@ -115,6 +116,15 @@ public class PreferenceHelper {
 
     public void setFcmToken(String token) {
         mEdit.putString(KEY_FCM_TOKEN, token);
+        save();
+    }
+
+    public Long getCountOfViewer() {
+        return mPrefs.getLong(KEY_COUNT_VIEWER, 0);
+    }
+
+    public void setCountOfViewer(Long token) {
+        mEdit.putLong(KEY_COUNT_VIEWER, token);
         save();
     }
 

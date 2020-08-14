@@ -195,8 +195,8 @@ public class WebAPIManager {
         mService.deleteUser(request).enqueue(callback);
     }
 
-    public void notifyOther(RemoteCallback<CommonResponse> callback) {
-        mService.notifyOther().enqueue(callback);
+    public void notifyOther(String id,RemoteCallback<CommonResponse> callback) {
+        mService.notifyOther(id).enqueue(callback);
     }
 
     public void listChannelArchive(RemoteCallback<ArrayList<ChannelArchiveResponse>> callback) {
@@ -212,7 +212,7 @@ public class WebAPIManager {
         mService.createChannelArchive(bodyMap, bodyImage).enqueue(callback);
     }
 
-    public void deleteChannelArchive(String id, RemoteCallback<CommonResponse> callback) {
+    public void deleteChannelArchive(Integer id, RemoteCallback<CommonResponse> callback) {
         mService.deleteChannelArchive(id).enqueue(callback);
     }
 

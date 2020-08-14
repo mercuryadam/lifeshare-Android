@@ -114,7 +114,7 @@ public class BroadcastActivityNew extends BaseActivity
     BubbleLayout bubbleLayout;
     ProgressBar bubbleProgressBar;
     CreateSessionResponse sessionData;
-    DatabaseReference viewerDatabaseReference;
+    DatabaseReference viewerDatabaseReference,countViewerDatabaseReference;
     MessageFragment messageFragment;
     CountDownTimer countDownTimerGetStream;
     private MediaProjectionManager projectionManager;
@@ -137,9 +137,10 @@ public class BroadcastActivityNew extends BaseActivity
     private BubblesManager bubblesManager;
     private boolean isBubbleViewVisible;
     private FilterRecyclerView rvViewer;
+    private LinearLayout llCountViewer;
     private ViewerListAdapter viewerListAdapter;
     private RelativeLayout rlViewers;
-    private AppCompatTextView tvNoData;
+    private AppCompatTextView tvNoData,tvCountViewer;
     ValueEventListener viewerValuEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -160,11 +161,26 @@ public class BroadcastActivityNew extends BaseActivity
             viewerListAdapter.addItems(viewerUsersList);
             if (viewerUsersList.size() > 0) {
                 rvViewer.setVisibility(View.VISIBLE);
+                llCountViewer.setVisibility(View.VISIBLE);
                 tvNoData.setVisibility(View.GONE);
             } else {
                 rvViewer.setVisibility(View.GONE);
+                llCountViewer.setVisibility(View.GONE);
                 tvNoData.setVisibility(View.VISIBLE);
             }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
+
+    ValueEventListener countViewerValueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            PreferenceHelper.getInstance().setCountOfViewer(dataSnapshot.getChildrenCount());
+            tvCountViewer.setText(String.valueOf(PreferenceHelper.getInstance().getCountOfViewer()));
         }
 
         @Override
@@ -415,6 +431,7 @@ public class BroadcastActivityNew extends BaseActivity
             @Override
             public void onSuccess(Void aVoid) {
                 getViewerList();
+                getCountForViewers();
                 fabMessage.show();
                 rlChatView.setVisibility(View.VISIBLE);
                 messageFragment.setCurrentStream(PreferenceHelper.getInstance().getUser().getUserId());
@@ -497,6 +514,15 @@ public class BroadcastActivityNew extends BaseActivity
 
     }
 
+    private void getCountForViewers() {
+        Log.v(TAG, "registerCountValueEventListener: ");
+        countViewerDatabaseReference = LifeShare.getFirebaseReference()
+                .child(Const.TABLE_PUBLISHER)
+                .child(PreferenceHelper.getInstance().getUser().getUserId())
+                .child(Const.TABLE_COUNT_VIEWER);
+        countViewerDatabaseReference.addValueEventListener(countViewerValueEventListener);
+    }
+
     @Override
     public void onStreamCreated(PublisherKit publisherKit, Stream stream) {
     }
@@ -535,7 +561,7 @@ public class BroadcastActivityNew extends BaseActivity
 
         isBroadcasting = true;
 
-        notifyOther();
+        notifyOther(sessionData.getOpentokId());
         changeBroadcastButtonView();
 //        switchCompat.setText(getResources().getString(R.string.stop));
         fabMessage.show();
@@ -803,6 +829,8 @@ public class BroadcastActivityNew extends BaseActivity
         mPublisherViewContainer = (RelativeLayout) findViewById(R.id.publisherview);
         rlChatView = (RelativeLayout) findViewById(R.id.rl_chat_message);
         rvViewer = findViewById(R.id.rv_viewer);
+        llCountViewer = findViewById(R.id.llCountViewer);
+        tvCountViewer = findViewById(R.id.tvCountViewer);
 
         rvViewer.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         viewerListAdapter = new ViewerListAdapter(new BaseRecyclerListener<ViewerUser>() {
@@ -891,6 +919,10 @@ public class BroadcastActivityNew extends BaseActivity
         if (viewerDatabaseReference != null) {
             Log.v(TAG, "disconnectSession: ");
             viewerDatabaseReference.removeEventListener(viewerValuEventListener);
+        }
+        if (countViewerDatabaseReference != null) {
+            Log.v(TAG, "disconnectSession: ");
+            countViewerDatabaseReference.removeEventListener(countViewerValueEventListener);
         }
     }
 
@@ -1126,11 +1158,11 @@ public class BroadcastActivityNew extends BaseActivity
         }
     }
 
-    private void notifyOther() {
+    private void notifyOther(String opentokId) {
         if (!checkInternetConnection()) {
             return;
         }
-        WebAPIManager.getInstance().notifyOther(new RemoteCallback<CommonResponse>() {
+        WebAPIManager.getInstance().notifyOther(opentokId,new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
             }

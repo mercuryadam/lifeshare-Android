@@ -7,6 +7,7 @@ public class Const {
     public static final String NEW_INVITATION_ACTION = "NEW_INVITATION_ACTION";
     public static final String INVITATION_ACCEPT = "INVITATION_ACCEPT";
     public static final String INVITATION_ACCEPT_ACTION = "INVITATION_ACCEPT_ACTION";
+    public static final String STREAM_STARTED = "STREAM_STARTED";
     public static final String MY_PROFILE = "MY_PROFILE";
     public static final String PROFILE = "PROFILE";
     public static final String STREAM_DATA = "STREAM_DATA";
@@ -17,6 +18,7 @@ public class Const {
     public static final String TABLE_PUBLISHER = "PUBLISHER_" + BuildConfig.FLAVOR;
     public static final String TABLE_VIEWER = "VIEWERS_" + BuildConfig.FLAVOR;
     public static final String TABLE_CHAT_MESSAGE = "CHAT_MESSAGE_" + BuildConfig.FLAVOR;
+    public static final String TABLE_COUNT_VIEWER = "COUNT_VIEWER_" + BuildConfig.FLAVOR;
 
     //
     public static final int GET_STREAM_USER_INTERVAL_TIME = 10000; // in millisecond

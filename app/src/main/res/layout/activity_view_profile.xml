@@ -194,19 +194,20 @@
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/addArchivesFromDialog"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/size_8dp"
-                        android:src="@drawable/ic_plus" />
-
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/TextMedium.Black.size16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/channel_archives" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/addArchivesFromDialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/size_8dp"
+                        android:src="@drawable/ic_plus" />
 
                 </LinearLayout>
 

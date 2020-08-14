@@ -143,8 +143,9 @@ public interface WebAPIService {
     @POST("user/delete")
     Call<CommonResponse> deleteUser(@Body DeleteUserRequest request);
 
+    @FormUrlEncoded
     @POST("opentok/send/notification")
-    Call<CommonResponse> notifyOther();
+    Call<CommonResponse> notifyOther(@Field("id") String id);
 
     @POST("channel/list")
     Call<ArrayList<ChannelArchiveResponse>> listChannelArchive();
@@ -153,8 +154,8 @@ public interface WebAPIService {
     @POST("channel/create")
     Call<CommonResponse> createChannelArchive(@PartMap Map<String, RequestBody> bodyMap, @Part MultipartBody.Part image);
 
-    @FormUrlEncoded
+
     @POST("channel/delete")
-    Call<CommonResponse> deleteChannelArchive(@Field("id") String id);
+    Call<CommonResponse> deleteChannelArchive(@Field("id") Integer id);
 
 }

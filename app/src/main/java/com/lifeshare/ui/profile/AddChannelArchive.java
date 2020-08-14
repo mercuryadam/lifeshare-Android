@@ -1,5 +1,7 @@
 package com.lifeshare.ui.profile;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -121,18 +123,20 @@ public class AddChannelArchive extends DialogFragment implements View.OnClickLis
     }
 
     private void createChannelArchive(String title, String link, String path) {
-
+        btnAddChannelArchive.setEnabled(false);
         ChannelArchive channelArchive = new ChannelArchive(title, link, path);
 
         WebAPIManager.getInstance().createChannelArchive(channelArchive, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
                 Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+                btnAddChannelArchive.setEnabled(true);
                 dismissAllowingStateLoss();
             }
 
             @Override
             public void onEmptyResponse(String message) {
+                btnAddChannelArchive.setEnabled(true);
                 Toast.makeText(getActivity(), getString(R.string.failed_to_create), Toast.LENGTH_SHORT).show();
                 dismissAllowingStateLoss();
             }
@@ -140,8 +144,18 @@ public class AddChannelArchive extends DialogFragment implements View.OnClickLis
             @Override
             public void onUnauthorized(Throwable throwable) {
                 super.onUnauthorized(throwable);
+                btnAddChannelArchive.setEnabled(true);
+                dismissAllowingStateLoss();
             }
         });
 
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        Activity activity = getActivity();
+        if(activity instanceof MyDialogCloseListener)
+            ((MyDialogCloseListener)activity).handleDialogClose(dialog);
     }
 }

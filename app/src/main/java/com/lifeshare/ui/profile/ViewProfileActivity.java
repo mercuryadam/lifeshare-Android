@@ -1,5 +1,6 @@
 package com.lifeshare.ui.profile;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
+import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.LoginResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
 import com.lifeshare.ui.ProfileActivity;
@@ -33,7 +35,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ViewProfileActivity extends BaseActivity implements View.OnClickListener {
+public class ViewProfileActivity extends BaseActivity implements View.OnClickListener,MyDialogCloseListener {
 
     private LinearLayout llMain;
     private CircleImageView ivProfile;
@@ -74,6 +76,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 llCATitle.setVisibility(View.VISIBLE);
                 rvChannelArchive.setVisibility(View.VISIBLE);
                 setData();
+                listChannelArchive();
             } else {
 
                 btnEdit.setVisibility(View.GONE);
@@ -191,17 +194,27 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onRecyclerItemClick(View view, int position, ChannelArchiveResponse item) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                String url = item.getLink();
-                if (!url.startsWith("http://") && !url.startsWith("https://"))
-                    url = "http://" + url;
-                i.setData(Uri.parse(url));
-                startActivity(i);
+                if(view.getId()==R.id.ivDeleteArchive){
+                    otherDialog(ViewProfileActivity.this, getResources().getString(R.string.delete_channel_archive_message), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DismissListenerWithStatus() {
+                        @Override
+                        public void onDismissed(String message) {
+                            if (message.equalsIgnoreCase(getResources().getString(R.string.yes))) {
+                                deleteChannelArchive(item.getCAId());
+                            }
+                        }
+                    });
+                } else {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    String url = item.getLink();
+                    if (!url.startsWith("http://") && !url.startsWith("https://"))
+                        url = "http://" + url;
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+
             }
         });
         rvChannelArchive.setAdapter(channelArchiveAdapter);
-        listChannelArchive();
-
     }
 
     @Override
@@ -230,12 +243,30 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void listChannelArchive() {
 
+        showLoading();
         WebAPIManager.getInstance().listChannelArchive(new RemoteCallback<ArrayList<ChannelArchiveResponse>>() {
             @Override
             public void onSuccess(ArrayList<ChannelArchiveResponse> response) {
                 channelArchiveList = response;
                 channelArchiveAdapter.removeAllItems();
                 channelArchiveAdapter.addItems(channelArchiveList);
+                hideLoading();
+            }
+
+            @Override
+            public void onEmptyResponse(String message) {
+                hideLoading();
+            }
+        });
+
+    }
+
+    private void deleteChannelArchive(Integer id) {
+
+        WebAPIManager.getInstance().deleteChannelArchive(id,new RemoteCallback<CommonResponse>() {
+            @Override
+            public void onSuccess(CommonResponse response) {
+                listChannelArchive();
             }
 
             @Override
@@ -249,5 +280,10 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
+    }
+
+    @Override
+    public void handleDialogClose(DialogInterface dialog) {
+        listChannelArchive();
     }
 }
