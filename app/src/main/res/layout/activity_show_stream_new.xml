@@ -62,13 +62,13 @@
         android:layout_above="@+id/recyclerView"
         android:layout_below="@+id/rv_viewer">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rl_receiver"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_stream_progress"

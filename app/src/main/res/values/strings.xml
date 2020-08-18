@@ -141,5 +141,6 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="please_add_image">Please add an image</string>
     <string name="failed_to_create">Failed to create</string>
     <string name="delete_channel_archive_message">Are you sure you want to delete this archive?</string>
+    <string name="total_viewer">Total Viewer</string>
 
 </resources>

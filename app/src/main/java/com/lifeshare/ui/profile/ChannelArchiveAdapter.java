@@ -3,6 +3,7 @@ package com.lifeshare.ui.profile;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -16,25 +17,42 @@ import com.lifeshare.R;
 import com.lifeshare.customview.recyclerview.BaseRecyclerListener;
 import com.lifeshare.customview.recyclerview.FilterableAdapter;
 import com.lifeshare.network.response.ChannelArchiveResponse;
+import com.lifeshare.utils.PreferenceHelper;
 
 import java.util.ArrayList;
 
 public class ChannelArchiveAdapter extends FilterableAdapter<ChannelArchiveResponse, BaseRecyclerListener<ChannelArchiveResponse>> {
 
     BaseRecyclerListener<ChannelArchiveResponse> listener;
+    private String userId = "";
 
-
-    public ChannelArchiveAdapter(BaseRecyclerListener<ChannelArchiveResponse> listener) {
+    public ChannelArchiveAdapter(String userId, BaseRecyclerListener<ChannelArchiveResponse> listener) {
         super(listener);
         this.listener = listener;
+        this.userId = userId;
     }
 
     @Override
     public void onBindData(RecyclerView.ViewHolder holder, ChannelArchiveResponse val) {
         MyConnectionViewHolder viewHolder = (MyConnectionViewHolder) holder;
+
+
+        ViewTreeObserver viewTreeObserver = viewHolder.ivBackGround.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                viewHolder.ivBackGround.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                int width = viewHolder.ivBackGround.getMeasuredWidth();
+                int height = viewHolder.ivBackGround.getMeasuredHeight();
+                ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) viewHolder.ivBackGround.getLayoutParams();
+                params.height = width;
+                viewHolder.ivBackGround.setLayoutParams(params);
+            }
+        });
+
         Glide.with(LifeShare.getInstance())
                 .load(val.getImage())
-                .apply(new RequestOptions().error(R.drawable.user_placeholder).placeholder(R.drawable.user_placeholder))
+                .apply(new RequestOptions().error(R.drawable.ic_document).placeholder(R.drawable.ic_document))
                 .into(viewHolder.ivBackGround);
 
         viewHolder.tvChannelName.setText(val.getTitle());
@@ -44,6 +62,12 @@ public class ChannelArchiveAdapter extends FilterableAdapter<ChannelArchiveRespo
                 listener.onRecyclerItemClick(v, holder.getAdapterPosition(), val);
             }
         });
+        if (PreferenceHelper.getInstance().getUser().getUserId().equals(userId)) {
+            viewHolder.ivDeleteArchive.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.ivDeleteArchive.setVisibility(View.GONE);
+        }
+
         viewHolder.ivDeleteArchive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

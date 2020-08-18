@@ -5,18 +5,22 @@ import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.CityRequest;
+import com.lifeshare.network.request.DeleteArchivesRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
 import com.lifeshare.network.request.DeleteStreamingRequest;
 import com.lifeshare.network.request.DeleteUserRequest;
 import com.lifeshare.network.request.ForgotPasswordRequest;
+import com.lifeshare.network.request.GetArchiveListRequest;
 import com.lifeshare.network.request.InvitationRequest;
 import com.lifeshare.network.request.LoginRequest;
 import com.lifeshare.network.request.RejectInvitationRequest;
 import com.lifeshare.network.request.ReportUserRequest;
 import com.lifeshare.network.request.SearchUserRequest;
+import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.StateRequest;
 import com.lifeshare.network.request.UpdateDeviceTokenRequest;
 import com.lifeshare.network.request.UpdatePushNotificationRequest;
+import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CityResponse;
@@ -39,8 +43,6 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -143,12 +145,14 @@ public interface WebAPIService {
     @POST("user/delete")
     Call<CommonResponse> deleteUser(@Body DeleteUserRequest request);
 
-    @FormUrlEncoded
     @POST("opentok/send/notification")
-    Call<CommonResponse> notifyOther(@Field("id") String id);
+    Call<CommonResponse> notifyOther(@Body SendNotificationRequest request);
+
+    @POST("user/update-viewer-count")
+    Call<CommonResponse> updateViewerCount(@Body UpdateViewerCountRequest request);
 
     @POST("channel/list")
-    Call<ArrayList<ChannelArchiveResponse>> listChannelArchive();
+    Call<ArrayList<ChannelArchiveResponse>> listChannelArchive(@Body GetArchiveListRequest request);
 
     @Multipart
     @POST("channel/create")
@@ -156,6 +160,6 @@ public interface WebAPIService {
 
 
     @POST("channel/delete")
-    Call<CommonResponse> deleteChannelArchive(@Field("id") Integer id);
+    Call<CommonResponse> deleteChannelArchive(@Body DeleteArchivesRequest request);
 
 }

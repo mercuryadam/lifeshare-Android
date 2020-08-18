@@ -46,9 +46,13 @@ public class LifeShare extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        FirebaseApp.initializeApp(getApplicationContext());
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
-        FirebaseCrashlytics.getInstance().sendUnsentReports();
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
+
+        if (BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")) {
+            FirebaseApp.initializeApp(getApplicationContext());
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+            FirebaseCrashlytics.getInstance().sendUnsentReports();
+        }
 
     }
 
@@ -94,5 +98,10 @@ public class LifeShare extends Application {
     public void clearAllNotification() {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
+    }
+
+    public void clearNotificationById(int notificationId) {
+        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(notificationId);
     }
 }

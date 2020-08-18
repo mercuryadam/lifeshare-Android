@@ -8,19 +8,23 @@ import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.CityRequest;
+import com.lifeshare.network.request.DeleteArchivesRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
 import com.lifeshare.network.request.DeleteStreamingRequest;
 import com.lifeshare.network.request.DeleteUserRequest;
 import com.lifeshare.network.request.ForgotPasswordRequest;
+import com.lifeshare.network.request.GetArchiveListRequest;
 import com.lifeshare.network.request.InvitationRequest;
 import com.lifeshare.network.request.LoginRequest;
 import com.lifeshare.network.request.RejectInvitationRequest;
 import com.lifeshare.network.request.ReportUserRequest;
 import com.lifeshare.network.request.SearchUserRequest;
+import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.SignUpRequest;
 import com.lifeshare.network.request.StateRequest;
 import com.lifeshare.network.request.UpdateDeviceTokenRequest;
 import com.lifeshare.network.request.UpdatePushNotificationRequest;
+import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CityResponse;
@@ -195,12 +199,16 @@ public class WebAPIManager {
         mService.deleteUser(request).enqueue(callback);
     }
 
-    public void notifyOther(String id,RemoteCallback<CommonResponse> callback) {
-        mService.notifyOther(id).enqueue(callback);
+    public void notifyOther(SendNotificationRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.notifyOther(request).enqueue(callback);
     }
 
-    public void listChannelArchive(RemoteCallback<ArrayList<ChannelArchiveResponse>> callback) {
-        mService.listChannelArchive().enqueue(callback);
+    public void updateViewerCount(UpdateViewerCountRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.updateViewerCount(request).enqueue(callback);
+    }
+
+    public void listChannelArchive(GetArchiveListRequest request, RemoteCallback<ArrayList<ChannelArchiveResponse>> callback) {
+        mService.listChannelArchive(request).enqueue(callback);
     }
 
     public void createChannelArchive(ChannelArchive request, RemoteCallback<CommonResponse> callback) {
@@ -212,8 +220,8 @@ public class WebAPIManager {
         mService.createChannelArchive(bodyMap, bodyImage).enqueue(callback);
     }
 
-    public void deleteChannelArchive(Integer id, RemoteCallback<CommonResponse> callback) {
-        mService.deleteChannelArchive(id).enqueue(callback);
+    public void deleteChannelArchive(DeleteArchivesRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.deleteChannelArchive(request).enqueue(callback);
     }
 
 

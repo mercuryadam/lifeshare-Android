@@ -12,6 +12,8 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.lifeshare.R;
+
 public class ForegroundService extends Service {
     public static final String CHANNEL_ID = "LifeShare";
 
@@ -30,6 +32,7 @@ public class ForegroundService extends Service {
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Foreground Service")
                 .setContentText(input)
+                .setSmallIcon(getNotificationIcon())
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
@@ -38,6 +41,10 @@ public class ForegroundService extends Service {
         return START_NOT_STICKY;
     }
 
+    private int getNotificationIcon() {
+        boolean whiteIcon = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
+        return whiteIcon ? R.drawable.ic_stat_ls_notification : R.mipmap.ic_launcher;
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

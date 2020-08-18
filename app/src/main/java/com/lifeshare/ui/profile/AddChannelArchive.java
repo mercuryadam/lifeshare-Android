@@ -125,11 +125,13 @@ public class AddChannelArchive extends DialogFragment implements View.OnClickLis
     private void createChannelArchive(String title, String link, String path) {
         btnAddChannelArchive.setEnabled(false);
         ChannelArchive channelArchive = new ChannelArchive(title, link, path);
+        ((ViewProfileActivity) getActivity()).showLoading();
 
         WebAPIManager.getInstance().createChannelArchive(channelArchive, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
                 Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+                ((ViewProfileActivity) getActivity()).hideLoading();
                 btnAddChannelArchive.setEnabled(true);
                 dismissAllowingStateLoss();
             }
@@ -137,6 +139,7 @@ public class AddChannelArchive extends DialogFragment implements View.OnClickLis
             @Override
             public void onEmptyResponse(String message) {
                 btnAddChannelArchive.setEnabled(true);
+                ((ViewProfileActivity) getActivity()).hideLoading();
                 Toast.makeText(getActivity(), getString(R.string.failed_to_create), Toast.LENGTH_SHORT).show();
                 dismissAllowingStateLoss();
             }

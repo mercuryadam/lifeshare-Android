@@ -8,7 +8,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -60,7 +59,7 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
     DatabaseReference viewerDatabaseReference,countViewerDatabaseReference;
     private Subscriber mSubscriber;
     private Session mSession;
-    private RelativeLayout rlReceiver;
+    private LinearLayout rlReceiver;
     private StreamUserResponse currentVisibleStram;
     //    private AppBarLayout receiverAppbar;
     private ProgressBar streamProgressBar;
@@ -203,6 +202,7 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
         streamProgressBar.setVisibility(View.VISIBLE);
         tvStreamMessage.setText(getString(R.string.waiting_for_connection_msg));
         mSession = new Session.Builder(ShowStreamActivityNew.this, currentVisibleStram.getOpentokApiKeyDetail().getOpentokApiKey(), sessionId).build();
+
         mSession.setSessionListener(this);
         mSession.connect(token);
 
@@ -289,8 +289,12 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        removeUserFromViewer();
+        if (container.getVisibility() == View.VISIBLE) {
+            container.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+            removeUserFromViewer();
+        }
     }
 
     @Override
@@ -302,9 +306,7 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
     @Override
     public void onError(Session session, OpentokError opentokError) {
         Log.v(TAG, "onError: " + opentokError.getErrorCode() + " - " + opentokError.getMessage());
-        if (opentokError.getErrorCode() == OpentokError.ErrorCode.ConnectionDropped
-                || opentokError.getErrorCode() == OpentokError.ErrorCode.InvalidSessionId
-                || opentokError.getErrorCode() == OpentokError.ErrorCode.AuthorizationFailure) {
+        if (opentokError.getErrorCode() == OpentokError.ErrorCode.ConnectionDropped) {
             deleteStreamUser(currentVisibleStram.getUserId());
         }
 
@@ -379,7 +381,6 @@ public class ShowStreamActivityNew extends BaseActivity implements Session.Sessi
     public void onStreamDropped(Session session, Stream stream) {
 //        Toast.makeText(this, "onStreamDropped", Toast.LENGTH_SHORT).show();
         Log.v(TAG, "onStreamDropped: SessionId - " + session.getSessionId());
-        deleteStreamUser(currentVisibleStram.getUserId());
         currentVisibleStram = null;
         llStreamProgress.setVisibility(View.VISIBLE);
         rlReceiver.setVisibility(View.GONE);

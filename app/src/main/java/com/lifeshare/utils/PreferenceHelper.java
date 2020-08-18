@@ -119,12 +119,12 @@ public class PreferenceHelper {
         save();
     }
 
-    public Long getCountOfViewer() {
-        return mPrefs.getLong(KEY_COUNT_VIEWER, 0);
+    public Integer getCountOfViewer() {
+        return mPrefs.getInt(KEY_COUNT_VIEWER, 0);
     }
 
-    public void setCountOfViewer(Long token) {
-        mEdit.putLong(KEY_COUNT_VIEWER, token);
+    public void setCountOfViewer(Integer token) {
+        mEdit.putInt(KEY_COUNT_VIEWER, token);
         save();
     }
 

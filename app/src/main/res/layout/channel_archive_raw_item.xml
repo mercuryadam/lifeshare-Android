@@ -4,13 +4,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/size_8dp"
-    android:background="@drawable/viewer_square_background"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rlFullRaw"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/viewer_square_background"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/size_0_8dp">
@@ -18,23 +18,9 @@
         <ImageView
             android:id="@+id/ivBackGround"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@color/gray" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvChannelName"
-            style="@style/TextRegular.Black.size12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/size_2dp"
-            android:gravity="center"
-            android:paddingLeft="@dimen/size_2dp"
-            android:paddingRight="@dimen/size_2dp"
-            android:textSize="@dimen/size_10sp"
-            tools:text="Chirag Patel" />
+            android:src="@drawable/ic_document" />
 
         <ImageView
             android:id="@+id/ivDeleteArchive"
@@ -43,6 +29,21 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/size_2dp"
             android:layout_marginEnd="@dimen/size_2dp"
-            android:src="@drawable/icon_delete" />
+            android:src="@drawable/ic_delete_red" />
     </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvChannelName"
+        style="@style/TextRegular.Black.size12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_2dp"
+        android:gravity="center"
+        android:maxLines="2"
+        android:minLines="2"
+        android:paddingLeft="@dimen/size_2dp"
+        android:paddingRight="@dimen/size_2dp"
+        android:textSize="@dimen/size_10sp"
+        tools:text="Chirag Patel" />
+
 </LinearLayout>

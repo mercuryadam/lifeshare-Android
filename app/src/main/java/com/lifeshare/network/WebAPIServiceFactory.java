@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.lifeshare.BuildConfig;
 import com.lifeshare.LifeShare;
 import com.lifeshare.utils.PreferenceHelper;
+import com.readystatesoftware.chuck.ChuckInterceptor;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -50,9 +51,9 @@ public class WebAPIServiceFactory {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient().newBuilder();
         httpClientBuilder.connectTimeout(HTTP_CONNECT_TIMEOUT, TimeUnit.SECONDS);
         httpClientBuilder.readTimeout(HTTP_READ_TIMEOUT, TimeUnit.SECONDS);
-        /*if (!BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")) {
+        if (!BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")) {
             httpClientBuilder.addInterceptor(new ChuckInterceptor(LifeShare.getInstance()));
-        }*/
+        }
         httpClientBuilder.interceptors().add(new Interceptor() {
                                                  @Override
                                                  public Response intercept(@NonNull Chain chain) throws IOException {

@@ -65,6 +65,8 @@ import com.lifeshare.model.ViewerUser;
 import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
 import com.lifeshare.network.request.DeleteStreamingRequest;
+import com.lifeshare.network.request.SendNotificationRequest;
+import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CreateSessionResponse;
 import com.lifeshare.network.response.StreamUserResponse;
@@ -114,9 +116,21 @@ public class BroadcastActivityNew extends BaseActivity
     BubbleLayout bubbleLayout;
     ProgressBar bubbleProgressBar;
     CreateSessionResponse sessionData;
-    DatabaseReference viewerDatabaseReference,countViewerDatabaseReference;
+    DatabaseReference viewerDatabaseReference, countViewerDatabaseReference;
     MessageFragment messageFragment;
     CountDownTimer countDownTimerGetStream;
+    ValueEventListener countViewerValueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            PreferenceHelper.getInstance().setCountOfViewer((int) dataSnapshot.getChildrenCount());
+            tvCountViewer.setText(String.valueOf(PreferenceHelper.getInstance().getCountOfViewer()));
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
     private MediaProjectionManager projectionManager;
     private ImageReader imageReader;
     private MediaProjection mediaProjection;
@@ -140,7 +154,7 @@ public class BroadcastActivityNew extends BaseActivity
     private LinearLayout llCountViewer;
     private ViewerListAdapter viewerListAdapter;
     private RelativeLayout rlViewers;
-    private AppCompatTextView tvNoData,tvCountViewer;
+    private AppCompatTextView tvNoData, tvCountViewer;
     ValueEventListener viewerValuEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -161,26 +175,11 @@ public class BroadcastActivityNew extends BaseActivity
             viewerListAdapter.addItems(viewerUsersList);
             if (viewerUsersList.size() > 0) {
                 rvViewer.setVisibility(View.VISIBLE);
-                llCountViewer.setVisibility(View.VISIBLE);
                 tvNoData.setVisibility(View.GONE);
             } else {
                 rvViewer.setVisibility(View.GONE);
-                llCountViewer.setVisibility(View.GONE);
                 tvNoData.setVisibility(View.VISIBLE);
             }
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };
-
-    ValueEventListener countViewerValueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            PreferenceHelper.getInstance().setCountOfViewer(dataSnapshot.getChildrenCount());
-            tvCountViewer.setText(String.valueOf(PreferenceHelper.getInstance().getCountOfViewer()));
         }
 
         @Override
@@ -213,51 +212,18 @@ public class BroadcastActivityNew extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.publisher_menu, menu);
-   /*     switchCompat = menu.findItem(R.id.switch_menu).getActionView().findViewById(R.id.switchOnline);
-        switchCompat.setText(getResources().getString(R.string.start));
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    Log.v(TAG, "onCheckedChanged:true ");
-                    if (!projectionStarted) {
-                        projectionManager = (MediaProjectionManager)
-                                getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-                        startProjection();
-                    } else {
-
-                        if (checkInternetConnection()) {
-                            connectWithSession();
-
-                        } else {
-                            switchCompat.setChecked(false);
-                        }
-                    }
-
-                } else {
-                    Log.v(TAG, "onCheckedChanged: false ");
-                    fabMessage.hide();
-                    container.setVisibility(View.GONE);
-                    deleteStreaming();
-                }
-            }
-        });
-   */
         return true;
     }
 
     public void disconnectSessionAndManageState() {
         disconnectSession();
-     /*   switchCompat.setText(getResources().getString(R.string.off));
-        switchCompat.setEnabled(false);
-*/
+        llCountViewer.setVisibility(View.GONE);
         isBroadcasting = false;
         changeBroadcastButtonView();
 
         bubbleText.setText(getResources().getString(R.string.off));
         bubbleLayout.setBackground(getResources().getDrawable(R.drawable.gray_circle_bg));
         bubbleLayout.setEnabled(false);
-
         startTimer();
         removePublisherFromFirebase();
     }
@@ -576,6 +542,7 @@ public class BroadcastActivityNew extends BaseActivity
             bubbleLayout.setEnabled(true);
             bubbleProgressBar.setVisibility(View.GONE);
         }
+        llCountViewer.setVisibility(View.VISIBLE);
         Toast.makeText(this, getString(R.string.broadcasting), Toast.LENGTH_SHORT).show();
 
     }
@@ -651,20 +618,25 @@ public class BroadcastActivityNew extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (sessionData != null) {
-            deleteStreaming();
-        }
+        if (container.getVisibility() == View.VISIBLE) {
+            container.setVisibility(View.GONE);
+        } else {
 
-        Log.v(TAG, "onBackPressed: " + isFinishing());
-        if (!isFinishing()) {
-            if (isBubbleViewVisible) {
-
-                getWindowManager().removeView(bubbleLayout);
-                isBubbleViewVisible = false;
+            if (sessionData != null) {
+                deleteStreaming();
             }
+
+            Log.v(TAG, "onBackPressed: " + isFinishing());
+            if (!isFinishing()) {
+                if (isBubbleViewVisible) {
+
+                    getWindowManager().removeView(bubbleLayout);
+                    isBubbleViewVisible = false;
+                }
+            }
+            disconnectSession();
+            super.onBackPressed();
         }
-        disconnectSession();
-        super.onBackPressed();
     }
 
     @Override
@@ -798,7 +770,11 @@ public class BroadcastActivityNew extends BaseActivity
             public void onSuccess(CommonResponse response) {
                 PreferenceHelper.getInstance().setSessionData(null);
                 hideLoading();
+                if (PreferenceHelper.getInstance().getCountOfViewer() > 0) {
+                    updateCountForViewerToServer();
+                }
                 disconnectSessionAndManageState();
+
             }
 
             @Override
@@ -820,6 +796,37 @@ public class BroadcastActivityNew extends BaseActivity
                 disconnectSessionAndManageState();
             }
         });
+    }
+
+    private void updateCountForViewerToServer() {
+        UpdateViewerCountRequest request = new UpdateViewerCountRequest();
+        request.setCount(PreferenceHelper.getInstance().getCountOfViewer());
+        WebAPIManager.getInstance().updateViewerCount(request, new RemoteCallback<CommonResponse>() {
+            @Override
+            public void onSuccess(CommonResponse response) {
+                PreferenceHelper.getInstance().setCountOfViewer(0);
+            }
+
+            @Override
+            public void onUnauthorized(Throwable throwable) {
+            }
+
+            @Override
+            public void onFailed(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onInternetFailed() {
+
+            }
+
+            @Override
+            public void onEmptyResponse(String message) {
+
+            }
+        });
+
     }
 
     private void initView() {
@@ -876,6 +883,9 @@ public class BroadcastActivityNew extends BaseActivity
 
             @Override
             public void onRecyclerItemClick(View view, int position, StreamUserResponse item) {
+                if (!item.getOpentokId().isEmpty()) {
+                    LifeShare.getInstance().clearNotificationById(Integer.parseInt(item.getOpentokId()));
+                }
                 playAudio(BroadcastActivityNew.this, R.raw.click);
                 Intent intent = new Intent(BroadcastActivityNew.this, ShowStreamActivityNew.class);
                 Bundle bundle = new Bundle();
@@ -1162,7 +1172,9 @@ public class BroadcastActivityNew extends BaseActivity
         if (!checkInternetConnection()) {
             return;
         }
-        WebAPIManager.getInstance().notifyOther(opentokId,new RemoteCallback<CommonResponse>() {
+        SendNotificationRequest request = new SendNotificationRequest();
+        request.setId(opentokId);
+        WebAPIManager.getInstance().notifyOther(request, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
             }

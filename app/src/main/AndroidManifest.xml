@@ -55,7 +55,11 @@
             android:foregroundServiceType="mediaProjection"
             tools:targetApi="q"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
+        <service
+            android:name=".receiver.StreamingIntentService"
+            android:enabled="true"
+            android:exported="false" />
 
         <activity
             android:name=".ui.LoginActivity"
@@ -117,7 +121,7 @@
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
-            android:value="false" />
+            android:value="true" />
 
         <receiver android:name=".receiver.AlarmReceiver">
             <intent-filter>

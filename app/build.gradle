@@ -47,6 +47,8 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug{
+        }
     }
 
     productFlavors {
@@ -106,8 +108,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.1'
 
     //chuck
-    //debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
-    //releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+    debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
+    releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
 
     implementation "com.google.firebase:firebase-core:17.4.4"
     implementation "com.google.firebase:firebase-messaging:20.2.3"
@@ -126,5 +128,4 @@ dependencies {
 
 }
 apply plugin: 'com.google.gms.google-services'
-
 apply plugin: 'com.google.firebase.crashlytics'

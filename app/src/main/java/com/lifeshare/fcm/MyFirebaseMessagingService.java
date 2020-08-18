@@ -3,16 +3,20 @@ package com.lifeshare.fcm;
 
 import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 import com.lifeshare.LifeShare;
 import com.lifeshare.R;
+import com.lifeshare.network.response.StreamUserResponse;
 import com.lifeshare.ui.BroadcastActivityNew;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
+import com.lifeshare.ui.show_broadcast.ShowStreamActivityNew;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 
@@ -70,15 +74,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             switch (type) {
                 case Const.INVITATION_ACCEPT:
                     intent = new Intent();
-                    NotificationUtil notificationUtil = new NotificationUtil(getApplicationContext(), getString(R.string.app_name), message, intent, 0);
+                    NotificationUtil notificationUtil = new NotificationUtil(getApplicationContext(), Const.INVITATION_ACCEPT, getString(R.string.app_name), message, intent, 0);
                     notificationUtil.show();
                     LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Const.INVITATION_ACCEPT_ACTION));
                     break;
                 case Const.STREAM_STARTED:
-                    intent = new Intent();
-                    NotificationUtil notifyUtil = new NotificationUtil(getApplicationContext(), getString(R.string.app_name), message, intent, 10);
-                    notifyUtil.show();
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Const.INVITATION_ACCEPT_ACTION));
+
+                    showStreamNotification(jsonObject, message);
+
                     break;
                 case Const.NEW_INVITATION:
                     Intent mainIntent = new Intent(this, BroadcastActivityNew.class);
@@ -91,7 +94,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     stackBuilder.addNextIntent(intent);
 
 
-                    NotificationUtil util = new NotificationUtil(getApplicationContext(), getString(R.string.app_name), message, stackBuilder, new Random().nextInt());
+                    NotificationUtil util = new NotificationUtil(getApplicationContext(), Const.NEW_INVITATION, getString(R.string.app_name), message, stackBuilder, new Random().nextInt());
 
                     util.show();
 
@@ -101,6 +104,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void showStreamNotification(JSONObject jsonObject, String message) {
+        try {
+            String opentokDetail = jsonObject.getString("opentokDetail");
+
+            StreamUserResponse streamObject = new Gson().fromJson(opentokDetail, StreamUserResponse.class);
+
+            Intent mainIntent = new Intent(this, BroadcastActivityNew.class);
+            mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addParentStack(BroadcastActivityNew
+                    .class);
+            stackBuilder.addNextIntent(mainIntent);
+            Intent intent = new Intent(getApplicationContext(), ShowStreamActivityNew.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Const.STREAM_DATA, streamObject);
+            intent.putExtras(bundle);
+            stackBuilder.addNextIntent(intent);
+
+
+            NotificationUtil notifyUtil = new NotificationUtil(getApplicationContext(), Const.STREAM_STARTED, getString(R.string.app_name), message, stackBuilder, Integer.parseInt(streamObject.getOpentokId()));
+            notifyUtil.show();
+        } catch (Exception e) {
+            Log.v(TAG, "showStreamNotification: " + e.getMessage());
         }
     }
 

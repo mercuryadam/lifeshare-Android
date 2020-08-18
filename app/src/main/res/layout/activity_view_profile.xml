@@ -13,7 +13,7 @@
         android:alpha="0.3"
         android:src="@drawable/app_logo" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -186,11 +186,26 @@
                     android:layout_marginTop="@dimen/size_8dp"
                     tools:text="chirag.patel@9spl.com" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:text="@string/total_viewer" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_total_viewer"
+                    style="@style/TextMedium.Black.size22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    tools:text="chirag.patel@9spl.com" />
+
                 <LinearLayout
                     android:id="@+id/llCATitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_16dp"
+                    android:layout_marginTop="@dimen/size_30dp"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal">
 
@@ -199,12 +214,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:textSize="@dimen/size_22sp"
                         android:text="@string/channel_archives" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/addArchivesFromDialog"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="@dimen/size_30dp"
+                        android:layout_height="@dimen/size_30dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="@dimen/size_8dp"
                         android:src="@drawable/ic_plus" />
@@ -234,5 +250,5 @@
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

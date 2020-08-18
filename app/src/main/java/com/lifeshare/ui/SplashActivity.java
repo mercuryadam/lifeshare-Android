@@ -6,17 +6,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.instacart.library.truetime.TrueTime;
+import com.lifeshare.BaseActivity;
 import com.lifeshare.LifeShare;
 import com.lifeshare.R;
+import com.lifeshare.receiver.StreamingIntentService;
 import com.lifeshare.utils.PreferenceHelper;
 
 import java.io.IOException;
 import java.util.Date;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     Runnable runnable = new Runnable() {
         @Override
@@ -35,12 +35,20 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
         } else {
             if (PreferenceHelper.getInstance().getIsAcceptTermOfService()) {
+                deleteStreamingIfAvailable();
                 startActivity(new Intent(SplashActivity.this, BroadcastActivityNew.class));
             } else {
                 startActivity(new Intent(SplashActivity.this, TermOfServicesActivity.class));
             }
         }
         finish();
+    }
+
+    private void deleteStreamingIfAvailable() {
+        if (checkInternetConnection()) {
+            Intent intent = new Intent(this, StreamingIntentService.class);
+            startService(intent);
+        }
     }
 
     @Override

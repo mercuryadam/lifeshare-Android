@@ -20,6 +20,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.lifeshare.R;
+import com.lifeshare.utils.Const;
 
 import java.util.Random;
 
@@ -30,26 +31,29 @@ public class NotificationUtil {
     private static final String TAG = "NotificationUtil";
     private Context mContext;
     private String mTitle, mDesc;
+    private String notificationType;
     private int mNotifId;
     private Intent mNotificationIntent;
     private boolean isAutoCancel = true;
     private PendingIntent pendingIntent;
     private TaskStackBuilder taskStackBuilder;
 
-    public NotificationUtil(Context context, String title, String desc, Intent notificationIntent, int notifId) {
+    public NotificationUtil(Context context, String notificationType, String title, String desc, Intent notificationIntent, int notifId) {
         this.mContext = context.getApplicationContext();
         this.mTitle = title;
         this.mDesc = desc;
         this.mNotificationIntent = notificationIntent;
         this.mNotifId = notifId;
+        this.notificationType = notificationType;
     }
 
-    public NotificationUtil(Context context, String title, String desc, TaskStackBuilder stackBuilder, int notifId) {
+    public NotificationUtil(Context context, String notificationType, String title, String desc, TaskStackBuilder stackBuilder, int notifId) {
         this.mContext = context.getApplicationContext();
         this.mTitle = title;
         this.mDesc = desc;
         this.taskStackBuilder = stackBuilder;
         this.mNotifId = notifId;
+        this.notificationType = notificationType;
     }
 
     public NotificationUtil(Context context, String title, String desc, Intent notificationIntent, int notifId, boolean isAutoCancel) {
@@ -109,11 +113,6 @@ public class NotificationUtil {
 
         noti_builder.setContentIntent(pendingIntent);
 
-        if (whiteIcon) {
-            noti_builder.setColor(whiteIcon
-                    ? mContext.getResources().getColor(R.color.colorPrimary)
-                    : mContext.getResources().getColor(android.R.color.transparent));
-        }
 
         Notification noti = noti_builder.build();
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(NOTIFICATION_SERVICE);
@@ -133,8 +132,13 @@ public class NotificationUtil {
 
         switch (am.getRingerMode()) {
             case AudioManager.RINGER_MODE_NORMAL:
-                final MediaPlayer mp = MediaPlayer.create(mContext, R.raw.jingle_two);
-                mp.start();
+                if (notificationType == Const.NEW_INVITATION || notificationType == Const.INVITATION_ACCEPT) {
+                    final MediaPlayer mp = MediaPlayer.create(mContext, R.raw.jingle_two);
+                    mp.start();
+                } else if (notificationType == Const.STREAM_STARTED) {
+                    final MediaPlayer mp = MediaPlayer.create(mContext, R.raw.dual_beep);
+                    mp.start();
+                }
                 break;
         }
     }
@@ -159,44 +163,6 @@ public class NotificationUtil {
 
     private int getNotificationIcon() {
         boolean whiteIcon = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
-        return whiteIcon ? R.mipmap.ic_launcher : R.mipmap.ic_launcher;
-//        return whiteIcon ? R.drawable.notification_small : R.mipmap.ic_launcher;
-    }
-
-    public static class Builder {
-        private Context mContext;
-        private String mTitle;
-        private int mId;
-        private String mDesc;
-        private Intent mNotificationIntent = null;
-
-        public Builder(Context context) {
-            this.mContext = context;
-        }
-
-        public Builder setTitle(String title) {
-            this.mTitle = title;
-            return this;
-        }
-
-        public Builder setDesc(String desc) {
-            this.mDesc = desc;
-            return this;
-        }
-
-        public Builder setId(int id) {
-            this.mId = id;
-            return this;
-        }
-
-        public Builder setNotificationIntent(Intent notificationIntent) {
-            this.mNotificationIntent = notificationIntent;
-            return this;
-        }
-
-        public NotificationUtil build() {
-            return new NotificationUtil(mContext, mTitle, mDesc, mNotificationIntent, mId);
-        }
-
+        return whiteIcon ? R.drawable.ic_stat_ls_notification : R.mipmap.ic_launcher;
     }
 }

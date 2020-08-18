@@ -22,6 +22,8 @@ import com.lifeshare.customview.recyclerview.BaseRecyclerListener;
 import com.lifeshare.customview.recyclerview.FilterRecyclerView;
 import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
+import com.lifeshare.network.request.DeleteArchivesRequest;
+import com.lifeshare.network.request.GetArchiveListRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CommonResponse;
@@ -35,7 +37,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ViewProfileActivity extends BaseActivity implements View.OnClickListener,MyDialogCloseListener {
+public class ViewProfileActivity extends BaseActivity implements View.OnClickListener, MyDialogCloseListener {
 
     private LinearLayout llMain;
     private CircleImageView ivProfile;
@@ -55,19 +57,15 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private ChannelArchiveAdapter channelArchiveAdapter;
     private ArrayList<ChannelArchiveResponse> channelArchiveList = new ArrayList<>();
     private ImageView addArchivesFromDialog;
+    private String userId = "";
+    private AppCompatTextView tvTotalViewer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_view_profile);
+
         initView();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         if (getIntent() != null && getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
             if (bundle.getString(Const.PROFILE).equalsIgnoreCase(Const.MY_PROFILE)) {
@@ -75,20 +73,28 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 llEmailPhoneCity.setVisibility(View.VISIBLE);
                 llCATitle.setVisibility(View.VISIBLE);
                 rvChannelArchive.setVisibility(View.VISIBLE);
-                setData();
-                listChannelArchive();
+                userId = PreferenceHelper.getInstance().getUser().getUserId();
+//                setData();
+                getOtherProfileData(userId);
             } else {
 
                 btnEdit.setVisibility(View.GONE);
                 llEmailPhoneCity.setVisibility(View.GONE);
-                rvChannelArchive.setVisibility(View.GONE);
-                llCATitle.setVisibility(View.GONE);
+                addArchivesFromDialog.setVisibility(View.GONE);
                 MyConnectionListResponse data = (MyConnectionListResponse) bundle.getSerializable(Const.USER_DATA);
-
+                userId = data.getUserId();
                 getOtherProfileData(data.getUserId());
 
             }
+            setRecyclerView();
         }
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void getOtherProfileData(String userId) {
@@ -100,16 +106,19 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             public void onSuccess(LoginResponse response) {
                 hideLoading();
                 setOtherUserData(response);
+                getListChannelArchive(response.getUserId());
             }
         });
 
     }
 
     private void setOtherUserData(LoginResponse user) {
+        userId = user.getUserId();
         tvName.setText(user.getFirstName() + " " + user.getLastName());
         tvNameOne.setText(user.getFirstName() + " " + user.getLastName());
         tvChannelName.setText(user.getUsername());
         tvChannelNameOne.setText(user.getUsername());
+        tvTotalViewer.setText(user.getViewerCount());
         tvEmail.setText(user.getEmail());
         tvShortDescription.setText(user.getDescription());
         if (user.getCountry() != null && user.getCountry().getName() != null) {
@@ -135,6 +144,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void setData() {
         LoginResponse user = PreferenceHelper.getInstance().getUser();
+        userId = PreferenceHelper.getInstance().getUser().getUserId();
         tvName.setText(user.getFirstName() + " " + user.getLastName());
         tvNameOne.setText(user.getFirstName() + " " + user.getLastName());
         tvChannelName.setText(user.getUsername());
@@ -181,12 +191,18 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         tvPhoneNumber = (AppCompatTextView) findViewById(R.id.tv_phone_number);
         llEmailPhoneCity = findViewById(R.id.llEmailPhoneCity);
         llCATitle = findViewById(R.id.llCATitle);
+        llCATitle.setOnClickListener(this);
         rvChannelArchive = findViewById(R.id.rvChannelArchive);
         addArchivesFromDialog = findViewById(R.id.addArchivesFromDialog);
         addArchivesFromDialog.setOnClickListener(this);
 
+        tvTotalViewer = (AppCompatTextView) findViewById(R.id.tv_total_viewer);
+    }
+
+    private void setRecyclerView() {
         rvChannelArchive.setLayoutManager(new GridLayoutManager(this, 3));
-        channelArchiveAdapter = new ChannelArchiveAdapter(new BaseRecyclerListener<ChannelArchiveResponse>() {
+        rvChannelArchive.setNestedScrollingEnabled(false);
+        channelArchiveAdapter = new ChannelArchiveAdapter(userId, new BaseRecyclerListener<ChannelArchiveResponse>() {
             @Override
             public void showEmptyDataView(int resId) {
 
@@ -194,7 +210,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onRecyclerItemClick(View view, int position, ChannelArchiveResponse item) {
-                if(view.getId()==R.id.ivDeleteArchive){
+                if (view.getId() == R.id.ivDeleteArchive) {
                     otherDialog(ViewProfileActivity.this, getResources().getString(R.string.delete_channel_archive_message), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DismissListenerWithStatus() {
                         @Override
                         public void onDismissed(String message) {
@@ -215,6 +231,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             }
         });
         rvChannelArchive.setAdapter(channelArchiveAdapter);
+
     }
 
     @Override
@@ -229,22 +246,25 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 startActivity(intent);
                 break;
 
+            case R.id.llCATitle:
             case R.id.addArchivesFromDialog:
-
-                // Create and show the dialog.
-                DialogFragment newFragment = AddChannelArchive.newInstance();
-                newFragment.show(getSupportFragmentManager(), "dialog");
-
+                if (PreferenceHelper.getInstance().getUser().getUserId().equals(userId)) {
+                    // Create and show the dialog.
+                    DialogFragment newFragment = AddChannelArchive.newInstance();
+                    newFragment.show(getSupportFragmentManager(), "dialog");
+                }
 
                 break;
 
         }
     }
 
-    private void listChannelArchive() {
+    private void getListChannelArchive(String userId) {
 
+        GetArchiveListRequest request = new GetArchiveListRequest();
+        request.setUserId(userId);
         showLoading();
-        WebAPIManager.getInstance().listChannelArchive(new RemoteCallback<ArrayList<ChannelArchiveResponse>>() {
+        WebAPIManager.getInstance().listChannelArchive(request, new RemoteCallback<ArrayList<ChannelArchiveResponse>>() {
             @Override
             public void onSuccess(ArrayList<ChannelArchiveResponse> response) {
                 channelArchiveList = response;
@@ -263,15 +283,20 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void deleteChannelArchive(Integer id) {
 
-        WebAPIManager.getInstance().deleteChannelArchive(id,new RemoteCallback<CommonResponse>() {
+        showLoading();
+        DeleteArchivesRequest request = new DeleteArchivesRequest();
+        request.setId(String.valueOf(id));
+
+        WebAPIManager.getInstance().deleteChannelArchive(request, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
-                listChannelArchive();
+                hideLoading();
+                getListChannelArchive(userId);
             }
 
             @Override
             public void onEmptyResponse(String message) {
-
+                hideLoading();
             }
 
             @Override
@@ -284,6 +309,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void handleDialogClose(DialogInterface dialog) {
-        listChannelArchive();
+        getListChannelArchive(userId);
     }
 }

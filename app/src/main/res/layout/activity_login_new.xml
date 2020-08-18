@@ -71,19 +71,6 @@
         </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_login"
-            style="@style/button_style_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/size_8dp"
-            android:layout_marginTop="@dimen/size_40dp"
-            android:layout_marginRight="@dimen/size_8dp"
-            android:layout_marginBottom="@dimen/size_20dp"
-            android:singleLine="true"
-            android:text="@string/sign_in"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_sign_up"
             style="@style/button_style_dark"
             android:layout_width="match_parent"
@@ -95,6 +82,19 @@
             android:singleLine="true"
             android:text="@string/need_an_account"
             android:textAllCaps="false" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_login"
+            style="@style/button_style_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_8dp"
+            android:layout_marginTop="@dimen/size_8dp"
+            android:layout_marginRight="@dimen/size_8dp"
+            android:layout_marginBottom="@dimen/size_20dp"
+            android:singleLine="true"
+            android:text="@string/sign_in"
+            android:textStyle="bold" />
+
 
 
     </LinearLayout>
