@@ -81,7 +81,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 btnEdit.setVisibility(View.GONE);
                 llEmailPhoneCity.setVisibility(View.GONE);
                 addArchivesFromDialog.setVisibility(View.GONE);
-                MyConnectionListResponse data = (MyConnectionListResponse) bundle.getSerializable(Const.USER_DATA);
+                MyConnectionListResponse data = (MyConnectionListResponse) bundle.getParcelable(Const.USER_DATA);
                 userId = data.getUserId();
                 getOtherProfileData(data.getUserId());
 

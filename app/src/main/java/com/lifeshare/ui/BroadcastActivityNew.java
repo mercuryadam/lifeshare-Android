@@ -69,6 +69,7 @@ import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CreateSessionResponse;
+import com.lifeshare.network.response.MyConnectionListResponse;
 import com.lifeshare.network.response.StreamUserResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
 import com.lifeshare.receiver.ForegroundService;
@@ -76,6 +77,7 @@ import com.lifeshare.ui.admin_user.ReportsUserListActivity;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
 import com.lifeshare.ui.profile.ViewProfileActivity;
+import com.lifeshare.ui.select_connection.SelectConnectionsActivity;
 import com.lifeshare.ui.show_broadcast.MessageFragment;
 import com.lifeshare.ui.show_broadcast.ShowStreamActivityNew;
 import com.lifeshare.ui.show_broadcast.StreamUserListAdapter;
@@ -451,6 +453,15 @@ public class BroadcastActivityNew extends BaseActivity
                     }
 
                     break;
+                case 1024:
+                    ArrayList<MyConnectionListResponse> checkedItems = new ArrayList();
+                    Bundle extras = data.getExtras();
+                    checkedItems = extras.getParcelableArrayList(Const.SELECTED_USERS);
+                    for (MyConnectionListResponse checkedItem : checkedItems) {
+                        Log.e("Bhavy", checkedItem.getFirstName());
+                    }
+                    Toast.makeText(this, "Got Here", Toast.LENGTH_SHORT).show();
+                    break;
             }
 
         } else {
@@ -706,7 +717,6 @@ public class BroadcastActivityNew extends BaseActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-
     }
 
     @Override
@@ -725,11 +735,12 @@ public class BroadcastActivityNew extends BaseActivity
                 }
                 break;
             case R.id.rl_broadcast:
-                if (!isBroadcasting) {
+                startActivityForResult(new Intent(this, SelectConnectionsActivity.class), 1024);
+                /*if (!isBroadcasting) {
                     startBroadCast();
                 } else {
                     stopBroadcast();
-                }
+                }*/
 
                 break;
             case R.id.iv_more:
@@ -737,6 +748,7 @@ public class BroadcastActivityNew extends BaseActivity
                 break;
         }
     }
+
 
     private void stopBroadcast() {
         stopForgroundService();

@@ -12,17 +12,25 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:name=".LifeShare"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.profile.ViewProfileActivity"></activity>
+        <activity
+            android:name=".ui.select_connection.SelectConnectionsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/splashTheme" />
+        <activity
+            android:name=".ui.profile.ViewProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/splashTheme" />
         <activity
             android:name=".ui.ProfileActivity"
             android:screenOrientation="portrait"
@@ -52,10 +60,10 @@
             android:exported="false" />
         <service
             android:name=".receiver.ForegroundService"
-            android:foregroundServiceType="mediaProjection"
-            tools:targetApi="q"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"
+            tools:targetApi="q" />
         <service
             android:name=".receiver.StreamingIntentService"
             android:enabled="true"
