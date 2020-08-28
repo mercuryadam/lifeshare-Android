@@ -8,6 +8,7 @@ import com.lifeshare.network.request.CityRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
 import com.lifeshare.network.request.DeleteStreamingRequest;
+import com.lifeshare.network.request.DeleteStreamingTwilioRequest;
 import com.lifeshare.network.request.DeleteUserRequest;
 import com.lifeshare.network.request.ForgotPasswordRequest;
 import com.lifeshare.network.request.GetArchiveListRequest;
@@ -143,6 +144,10 @@ public interface WebAPIService {
     @POST("user/show")
     Call<LoginResponse> getUserProfile(@Body UserProfileRequest request);
 
+    @POST("twilio/delete")
+    Call<CommonResponse> deleteStreamingTwilio(@Body DeleteStreamingTwilioRequest request);
+
+
     @POST("opentok/delete")
     Call<CommonResponse> deleteStreaming(@Body DeleteStreamingRequest request);
 
@@ -158,7 +163,7 @@ public interface WebAPIService {
     @POST("user/delete")
     Call<CommonResponse> deleteUser(@Body DeleteUserRequest request);
 
-    @POST("opentok/send/notification")
+    @POST("twilio/send/notification")
     Call<CommonResponse> notifyOther(@Body SendNotificationRequest request);
 
     @POST("user/update-viewer-count")

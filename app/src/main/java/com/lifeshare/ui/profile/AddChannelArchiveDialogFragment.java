@@ -26,7 +26,7 @@ import com.lifeshare.network.WebAPIManager;
 import com.lifeshare.network.response.CommonResponse;
 
 
-public class AddChannelArchive extends DialogFragment implements View.OnClickListener, ImagePickerFragment.ImagePickerListener {
+public class AddChannelArchiveDialogFragment extends DialogFragment implements View.OnClickListener, ImagePickerFragment.ImagePickerListener {
 
     private static final int CAMERA_REQUEST_ID = 101;
     private ImageView ivAddImage;
@@ -34,8 +34,8 @@ public class AddChannelArchive extends DialogFragment implements View.OnClickLis
     private Button btnAddChannelArchive;
     private String imagePath;
 
-    static AddChannelArchive newInstance() {
-        AddChannelArchive f = new AddChannelArchive();
+    static AddChannelArchiveDialogFragment newInstance() {
+        AddChannelArchiveDialogFragment f = new AddChannelArchiveDialogFragment();
 
         // Supply num input as an argument.
        /* Bundle args = new Bundle();

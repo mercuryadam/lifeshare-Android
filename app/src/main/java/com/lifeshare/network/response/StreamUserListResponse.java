@@ -4,6 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class StreamUserListResponse implements Parcelable {
+    private String id;
+    private String token;
+    private String sId;
+    private String userId;
+    private String userName;
+    private String avatar;
+    private String firstName;
+    private String lastName;
     public static final Creator<StreamUserListResponse> CREATOR = new Creator<StreamUserListResponse>() {
         @Override
         public StreamUserListResponse createFromParcel(Parcel in) {
@@ -15,15 +23,8 @@ public class StreamUserListResponse implements Parcelable {
             return new StreamUserListResponse[size];
         }
     };
-    private String id;
-    private String token;
-    private String sId;
-    private String userId;
-    private String userName;
-    private String avatar;
-    private String firstName;
-    private String lastName;
     private String channelName;
+    private String roomName;
 
     protected StreamUserListResponse(Parcel in) {
         id = in.readString();
@@ -34,7 +35,13 @@ public class StreamUserListResponse implements Parcelable {
         avatar = in.readString();
         firstName = in.readString();
         lastName = in.readString();
+        roomName = in.readString();
         channelName = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     @Override
@@ -47,12 +54,24 @@ public class StreamUserListResponse implements Parcelable {
         dest.writeString(avatar);
         dest.writeString(firstName);
         dest.writeString(lastName);
+        dest.writeString(roomName);
         dest.writeString(channelName);
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public String getId() {
@@ -117,13 +136,5 @@ public class StreamUserListResponse implements Parcelable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getChannelName() {
-        return channelName;
-    }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
     }
 }

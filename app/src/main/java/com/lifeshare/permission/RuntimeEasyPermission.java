@@ -98,7 +98,7 @@ public class RuntimeEasyPermission extends DialogFragment {
 
     public void show(FragmentManager fragmentManager) {
         if (fragmentManager.findFragmentByTag(TAG) == null) {
-            fragmentManager.beginTransaction().add(this, TAG).commit();
+            fragmentManager.beginTransaction().add(this, TAG).commitAllowingStateLoss();
         }
     }
 

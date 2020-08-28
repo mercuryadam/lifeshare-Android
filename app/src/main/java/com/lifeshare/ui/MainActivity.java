@@ -23,7 +23,6 @@ import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
 import com.lifeshare.ui.profile.ViewProfileActivity;
-import com.lifeshare.ui.show_broadcast.ShowStreamActivityNew;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 
@@ -139,7 +138,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (checkInternetConnection()) {
-                    startActivity(new Intent(MainActivity.this, ShowStreamActivityNew.class));
+//                    startActivity(new Intent(MainActivity.this, ShowStreamActivityNew.class));
 //                    startActivity(new Intent(MainActivity.this, TestActivity.class));
                 }
             }
@@ -148,7 +147,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(MainActivity.this, BroadcastActivity.class));
-                startActivity(new Intent(MainActivity.this, BroadcastActivityNew.class));
+//                startActivity(new Intent(MainActivity.this, BroadcastActivityNew.class));
             }
         });
         if (PreferenceHelper.getInstance().getFcmTokenUpdated()) {

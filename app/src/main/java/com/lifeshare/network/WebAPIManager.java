@@ -11,6 +11,7 @@ import com.lifeshare.network.request.CityRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
 import com.lifeshare.network.request.DeleteStreamingRequest;
+import com.lifeshare.network.request.DeleteStreamingTwilioRequest;
 import com.lifeshare.network.request.DeleteUserRequest;
 import com.lifeshare.network.request.ForgotPasswordRequest;
 import com.lifeshare.network.request.GetArchiveListRequest;
@@ -205,6 +206,10 @@ public class WebAPIManager {
 
     public void deleteStreaming(DeleteStreamingRequest request, RemoteCallback<CommonResponse> callback) {
         mService.deleteStreaming(request).enqueue(callback);
+    }
+
+    public void deleteStreamingTwilio(DeleteStreamingTwilioRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.deleteStreamingTwilio(request).enqueue(callback);
     }
 
     public void submitReportUser(ReportUserRequest request, RemoteCallback<CommonResponse> callback) {

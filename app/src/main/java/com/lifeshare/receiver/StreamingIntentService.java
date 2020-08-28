@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.lifeshare.LifeShare;
 import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
-import com.lifeshare.network.request.DeleteStreamingRequest;
+import com.lifeshare.network.request.DeleteStreamingTwilioRequest;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.utils.Const;
@@ -35,34 +35,29 @@ public class StreamingIntentService extends IntentService {
 
     public void deleteStreaming() {
         Log.v(TAG, "deleteStreaming: ");
-        if (PreferenceHelper.getInstance().getSessionData() == null) {
+        if (PreferenceHelper.getInstance().getRoomData()
+                == null) {
             return;
         }
-        DeleteStreamingRequest request = new DeleteStreamingRequest();
-        request.setOpentokId(PreferenceHelper.getInstance().getSessionData().getOpentokId());
-        WebAPIManager.getInstance().deleteStreaming(request, new RemoteCallback<CommonResponse>() {
+        DeleteStreamingTwilioRequest request = new DeleteStreamingTwilioRequest();
+        request.setId(PreferenceHelper.getInstance().getRoomData().getId());
+        WebAPIManager.getInstance().deleteStreamingTwilio(request, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
-                PreferenceHelper.getInstance().setSessionData(null);
+                PreferenceHelper.getInstance().setRoomData(null);
                 removePublisherFromFirebase();
             }
 
             @Override
             public void onFailed(Throwable throwable) {
-                PreferenceHelper.getInstance().setSessionData(null);
-                removePublisherFromFirebase();
             }
 
             @Override
             public void onUnauthorized(Throwable throwable) {
-                PreferenceHelper.getInstance().setSessionData(null);
-                removePublisherFromFirebase();
             }
 
             @Override
             public void onEmptyResponse(String message) {
-                PreferenceHelper.getInstance().setSessionData(null);
-                removePublisherFromFirebase();
             }
         });
     }

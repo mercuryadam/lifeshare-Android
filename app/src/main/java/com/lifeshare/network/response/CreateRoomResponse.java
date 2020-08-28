@@ -4,6 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class CreateRoomResponse implements Parcelable {
+    private String id;
+    private String sID;
+    private String roomName;
+    private String type;
     public static final Creator<CreateRoomResponse> CREATOR = new Creator<CreateRoomResponse>() {
         @Override
         public CreateRoomResponse createFromParcel(Parcel in) {
@@ -15,16 +19,19 @@ public class CreateRoomResponse implements Parcelable {
             return new CreateRoomResponse[size];
         }
     };
-    private String id;
-    private String sID;
-    private String roomName;
-    private String type;
+    private String token;
 
     protected CreateRoomResponse(Parcel in) {
         id = in.readString();
         sID = in.readString();
         roomName = in.readString();
         type = in.readString();
+        token = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     @Override
@@ -33,11 +40,15 @@ public class CreateRoomResponse implements Parcelable {
         dest.writeString(sID);
         dest.writeString(roomName);
         dest.writeString(type);
+        dest.writeString(token);
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getId() {

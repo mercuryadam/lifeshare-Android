@@ -41,28 +41,9 @@ public class TermOfServicesActivity extends BaseActivity implements View.OnClick
             case R.id.btn_accept:
 
                 PreferenceHelper.getInstance().setTermOfServices(true);
-                startActivity(new Intent(TermOfServicesActivity.this, BroadcastActivityNew.class));
+                startActivity(new Intent(TermOfServicesActivity.this, TwilioBroadcastActivityNew.class));
                 finish();
 
-
-/*
-                User user = PreferenceHelper.getInstance().getUser();
-                user.setTermOfService("1");
-                PreferenceHelper.getInstance().setUser(user);
-*/
-
-             /*   new UserViewModel.InsertUpdateUserData(user, new DatabaseCallbackListener<User>() {
-                    @Override
-                    public void onSuccess(User user) {
-                        startActivity(new Intent(TermOfServicesActivity.this, MainActivity.class));
-                        finish();
-                    }
-
-                    @Override
-                    public void onFailed(Exception e) {
-
-                    }
-                }).execute();*/
                 break;
             case R.id.btn_reject:
                 Toast.makeText(this, getResources().getString(R.string.please_accept_term_of_services), Toast.LENGTH_SHORT).show();

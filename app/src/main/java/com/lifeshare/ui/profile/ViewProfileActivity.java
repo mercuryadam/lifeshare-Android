@@ -172,7 +172,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView() {
-        getSupportActionBar().hide();
         llMain = (LinearLayout) findViewById(R.id.ll_main);
         ivProfile = (CircleImageView) findViewById(R.id.iv_profile);
         tvName = (AppCompatTextView) findViewById(R.id.tv_name);
@@ -250,7 +249,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             case R.id.addArchivesFromDialog:
                 if (PreferenceHelper.getInstance().getUser().getUserId().equals(userId)) {
                     // Create and show the dialog.
-                    DialogFragment newFragment = AddChannelArchive.newInstance();
+                    DialogFragment newFragment = AddChannelArchiveDialogFragment.newInstance();
                     newFragment.show(getSupportFragmentManager(), "dialog");
                 }
 

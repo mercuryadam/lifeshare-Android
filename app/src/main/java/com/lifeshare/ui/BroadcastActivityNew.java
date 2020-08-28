@@ -1,3 +1,4 @@
+/*
 package com.lifeshare.ui;
 
 import android.Manifest;
@@ -333,9 +334,11 @@ public class BroadcastActivityNew extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+*/
 /*
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);*//*
+
         setContentView(R.layout.activity_broadcast_new);
 
         initView();
@@ -468,10 +471,12 @@ public class BroadcastActivityNew extends BaseActivity
                 case MEDIA_PROJECTION_REQUEST_CODE:
                     Toast.makeText(this, getString(R.string.screen_capture_permission_message), Toast.LENGTH_SHORT).show();
                     changeBroadcastButtonView();
-     /*               if (switchCompat != null) {
+     */
+/*               if (switchCompat != null) {
                         switchCompat.setChecked(false);
                     }
-     */
+     *//*
+
                     break;
             }
         }
@@ -1265,3 +1270,4 @@ public class BroadcastActivityNew extends BaseActivity
         }
     }
 }
+*/

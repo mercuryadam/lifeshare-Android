@@ -4,18 +4,12 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
-import android.media.Image;
-import android.media.ImageReader;
-import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -41,6 +35,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,17 +53,13 @@ import com.lifeshare.customview.recyclerview.FilterRecyclerView;
 import com.lifeshare.model.ViewerUser;
 import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
-import com.lifeshare.network.request.DeleteStreamingRequest;
-import com.lifeshare.network.request.NewTwilioTokenRequest;
+import com.lifeshare.network.request.DeleteStreamingTwilioRequest;
 import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CreateRoomResponse;
-import com.lifeshare.network.response.CreateSessionResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
-import com.lifeshare.network.response.NewTwilioTokenResponse;
 import com.lifeshare.network.response.StreamUserListResponse;
-import com.lifeshare.network.response.StreamUserResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
 import com.lifeshare.receiver.ForegroundService;
 import com.lifeshare.ui.admin_user.ReportsUserListActivity;
@@ -76,18 +67,17 @@ import com.lifeshare.ui.invitation.MyInvitationListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
 import com.lifeshare.ui.profile.ViewProfileActivity;
 import com.lifeshare.ui.show_broadcast.MessageFragment;
-import com.lifeshare.ui.show_broadcast.ShowStreamActivityNew;
-import com.lifeshare.ui.show_broadcast.StreamUserListAdapter;
+import com.lifeshare.ui.show_broadcast.TwilioShowStreamActivityNew;
+import com.lifeshare.ui.show_broadcast.TwilioStreamUserListAdapter;
 import com.lifeshare.ui.show_broadcast.ViewerListAdapter;
 import com.lifeshare.utils.AlarmUtils;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 import com.lifeshare.utils.ScreenCapturerManager;
 import com.lifeshare.utils.TwilioHelper;
-import com.opentok.android.Publisher;
-import com.opentok.android.Session;
 import com.twilio.audioswitch.AudioDevice;
 import com.twilio.audioswitch.AudioSwitch;
+import com.twilio.video.AspectRatio;
 import com.twilio.video.AudioCodec;
 import com.twilio.video.ConnectOptions;
 import com.twilio.video.EncodingParameters;
@@ -100,14 +90,13 @@ import com.twilio.video.ScreenCapturer;
 import com.twilio.video.TwilioException;
 import com.twilio.video.Video;
 import com.twilio.video.VideoCodec;
+import com.twilio.video.VideoConstraints;
+import com.twilio.video.VideoDimensions;
 import com.twilio.video.VideoView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -130,7 +119,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     TextView bubbleText;
     BubbleLayout bubbleLayout;
     ProgressBar bubbleProgressBar;
-    CreateSessionResponse sessionData;
+    CreateRoomResponse sessionData;
     DatabaseReference viewerDatabaseReference, countViewerDatabaseReference;
     MessageFragment messageFragment;
     CountDownTimer countDownTimerGetStream;
@@ -146,18 +135,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
         }
     };
-    String accessToken = TwilioHelper.TWILIO_ACCESS_TOKEN_PUBLISHER;
-    //    private MediaProjectionManager projectionManager;
-    private ImageReader imageReader;
-    private MediaProjection mediaProjection;
-    private Handler handler;
-    private int displayWidth;
-    private int displayHeight;
-    private int imagesProduced;
-    private boolean projectionStarted;
-    private ImageView ivImage;
-    private Session mSession;
-    private Publisher mPublisher;
     private RelativeLayout mPublisherViewContainer;
     private RelativeLayout rlChatView;
     private TextView tvText;
@@ -206,7 +183,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     private ScreenCapturerManager screenCapturerManager;
     private String[] permissions_audio = new String[]{Manifest.permission.RECORD_AUDIO};
     private Boolean isBroadcasting = false;
-    private StreamUserListAdapter adapter;
+    private TwilioStreamUserListAdapter adapter;
     private ImageView ivLogo;
     private FrameLayout container;
     private FloatingActionButton fabMessage;
@@ -346,9 +323,10 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
     }
 
-    private void connectToRoom(String roomName) {
+    private void connectToRoom(String roomName, String token) {
+        Log.v(TAG, "connectToRoom: roomName : " + roomName + " - Token:" + token);
         audioSwitch.activate();
-        ConnectOptions.Builder connectOptionsBuilder = new ConnectOptions.Builder(accessToken)
+        ConnectOptions.Builder connectOptionsBuilder = new ConnectOptions.Builder(token)
                 .roomName(roomName);
         if (localAudioTrack != null) {
             connectOptionsBuilder
@@ -367,12 +345,13 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         room = Video.connect(this, connectOptionsBuilder.build(), new Room.Listener() {
             @Override
             public void onConnected(@NonNull Room room) {
-                showToast("onConnected");
+                hideLoading();
+//                showToast("onConnected");
                 localParticipant = room.getLocalParticipant();
 
                 isBroadcasting = true;
 
-                notifyOther(sessionData.getOpentokId());
+                notifyOther(sessionData.getId());
                 changeBroadcastButtonView();
 
                 fabMessage.show();
@@ -394,7 +373,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
             @Override
             public void onConnectFailure(@NonNull Room room, @NonNull TwilioException twilioException) {
-                showToast("onConnectFailure");
+//                showToast("onConnectFailure");
                 audioSwitch.deactivate();
                 container.setVisibility(View.GONE);
                 fabMessage.hide();
@@ -404,19 +383,19 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
             @Override
             public void onReconnecting(@NonNull Room room, @NonNull TwilioException twilioException) {
-                showToast("onReconnecting");
+//                showToast("onReconnecting");
                 showLoading();
             }
 
             @Override
             public void onReconnected(@NonNull Room room) {
-                showToast("onReconnected");
+//                showToast("onReconnected");
                 hideLoading();
             }
 
             @Override
             public void onDisconnected(@NonNull Room room, @Nullable TwilioException twilioException) {
-                showToast("onDisconnected");
+//                showToast("onDisconnected");
                 localParticipant = null;
                 hideLoading();
                 TwilioBroadcastActivityNew.this.room = null;
@@ -429,24 +408,24 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
             @Override
             public void onParticipantConnected(@NonNull Room room, @NonNull RemoteParticipant remoteParticipant) {
-                showToast("onParticipantConnected");
+//                showToast("onParticipantConnected");
             }
 
             @Override
             public void onParticipantDisconnected(@NonNull Room room, @NonNull RemoteParticipant remoteParticipant) {
                 Log.v(TAG, "onParticipantDisconnected: " + remoteParticipant.getIdentity());
-                showToast("onParticipantDisconnected: " + remoteParticipant.getIdentity());
+//                showToast("onParticipantDisconnected: " + remoteParticipant.getIdentity());
             }
 
             @Override
             public void onRecordingStarted(@NonNull Room room) {
-                showToast("onRecordingStarted");
+//                showToast("onRecordingStarted");
                 Log.v(TAG, "onRecordingStarted: ");
             }
 
             @Override
             public void onRecordingStopped(@NonNull Room room) {
-                showToast("onRecordingStopped");
+//                showToast("onRecordingStopped");
                 Log.v(TAG, "onRecordingStopped: ");
             }
         });
@@ -464,32 +443,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 .into(ivProfileDashBoard);
     }
 
-    private void getSessionIdFromAPI() {
-        if (!checkInternetConnection()) {
-            return;
-        }
-        showLoading(getString(R.string.waiting_for_connection_msg));
-        WebAPIManager.getInstance().createSession(new RemoteCallback<CreateSessionResponse>() {
-            @Override
-            public void onSuccess(CreateSessionResponse response) {
-                sessionData = response;
-                PreferenceHelper.getInstance().setSessionData(sessionData);
-                if (response != null
-                        && !TextUtils.isEmpty(response.getSessionId())
-                        && !TextUtils.isEmpty(response.getToken())) {
-
-                    startScreenCapture();
-                    createFirebaseData(response);
-                } else {
-                    showToast(getString(R.string.message_invalid_session));
-                    hideLoading();
-                }
-
-            }
-        });
-
-    }
-
     private void createRoomAndGetId() {
         if (!checkInternetConnection()) {
             return;
@@ -498,10 +451,10 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         WebAPIManager.getInstance().createRoom(new RemoteCallback<CreateRoomResponse>() {
             @Override
             public void onSuccess(CreateRoomResponse response) {
-        /*        sessionData = response;
-                PreferenceHelper.getInstance().setSessionData(sessionData);
+                sessionData = response;
+                PreferenceHelper.getInstance().setRoomData(sessionData);
                 if (response != null
-                        && !TextUtils.isEmpty(response.getSessionId())
+                        && !TextUtils.isEmpty(response.getRoomName())
                         && !TextUtils.isEmpty(response.getToken())) {
 
                     startScreenCapture();
@@ -511,21 +464,27 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                     hideLoading();
                 }
 
-        */
             }
         });
 
     }
 
     private void startScreenCapture() {
+        VideoConstraints videoConstraints = new VideoConstraints.Builder()
+                .aspectRatio(AspectRatio.ASPECT_RATIO_4_3)
+                .minVideoDimensions(VideoDimensions.CIF_VIDEO_DIMENSIONS)
+                .maxVideoDimensions(VideoDimensions.CIF_VIDEO_DIMENSIONS)
+                .minFps(5).maxFps(15)
+                .build();
 
-        screenVideoTrack = LocalVideoTrack.create(this, true, screenCapturer);
+
+        screenVideoTrack = LocalVideoTrack.create(this, true, screenCapturer, videoConstraints);
         localAudioTrack = LocalAudioTrack.create(this, true, LOCAL_AUDIO_TRACK_NAME);
         localAudioTrack.enable(true);
-
         localVideoView.setVisibility(View.VISIBLE);
         screenVideoTrack.addRenderer(localVideoView);
-        connectToRoom("TestAndroid");
+
+        connectToRoom(sessionData.getRoomName(), sessionData.getToken());
     }
 
     private void stopScreenCapture() {
@@ -576,7 +535,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         progressBarConnectionStreaming.setVisibility(View.VISIBLE);
         tvNoFriendStreaminig.setVisibility(View.GONE);
         rvFriendBroadcast.setVisibility(View.GONE);
-        getCurrentStreamingConnection();
+//        getCurrentStreamingConnection();
         getCurrentStreamingConnectionTwilio();
         startGetStreamTimer();
 
@@ -588,7 +547,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
             @Override
             public void onTick(long l) {
                 if (!isStreamUpdating) {
-                    getCurrentStreamingConnection();
+//                    getCurrentStreamingConnection();
                     getCurrentStreamingConnectionTwilio();
                 }
             }
@@ -601,13 +560,13 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         countDownTimerGetStream.start();
     }
 
-    private void createFirebaseData(CreateSessionResponse response) {
-    /*    DatabaseReference databaseReference = LifeShare.getFirebaseReference().child(Const.TABLE_PUBLISHER).child(PreferenceHelper.getInstance().getUser().getUserId());
+    private void createFirebaseData(CreateRoomResponse response) {
+        DatabaseReference databaseReference = LifeShare.getFirebaseReference().child(Const.TABLE_PUBLISHER).child(PreferenceHelper.getInstance().getUser().getUserId());
         databaseReference.removeValue();
         HashMap<String, String> startRequestMap = new HashMap<>();
-        startRequestMap.put("sessionId", response.getSessionId());
+        startRequestMap.put("sessionId", response.getRoomName());
         startRequestMap.put("sessionToken", response.getToken());
-        startRequestMap.put("opentokId", response.getOpentokId());
+        startRequestMap.put("opentokId", response.getId());
         databaseReference.setValue(startRequestMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -618,54 +577,12 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 messageFragment.setCurrentStream(PreferenceHelper.getInstance().getUser().getUserId());
             }
         });
-*/
     }
-//
-//    public void startProjection() {
-//        startActivityForResult(projectionManager.createScreenCaptureIntent(), MEDIA_PROJECTION_REQUEST_CODE);
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case MEDIA_PROJECTION_REQUEST_CODE:
-/*
-
-                    mediaProjection = projectionManager.getMediaProjection(resultCode, data);
-                    if (mediaProjection != null) {
-
-                        projectionStarted = true;
-
-                        // Initialize the media projection
-                        DisplayMetrics metrics = getResources().getDisplayMetrics();
-                        int density = metrics.densityDpi;
-                        int flags = DisplayManager.VIRTUAL_DISPLAY_FLAG_OWN_CONTENT_ONLY
-                                | DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC;
-
-                        Display display = getWindowManager().getDefaultDisplay();
-                        Point size = new Point();
-                        display.getSize(size);
-
-                        displayWidth = size.x;
-                        displayHeight = size.y;
-
-                        imageReader = ImageReader.newInstance(displayWidth, displayHeight
-                                , PixelFormat.RGBA_8888, 2);
-                        mediaProjection.createVirtualDisplay("screencap",
-                                displayWidth, displayHeight, density,
-                                flags, imageReader.getSurface(), null, handler);
-                        imageReader.setOnImageAvailableListener(new ImageAvailableListener(), handler);
-
-                    }
-                    if (checkInternetConnection()) {
-                        connectWithSession();
-                    } else {
-//                        switchCompat.setChecked(false);
-                        changeBroadcastButtonView();
-                    }*/
-
-                    break;
                 case REQUEST_MEDIA_PROJECTION: {
 
                     if (resultCode != RESULT_OK) {
@@ -675,7 +592,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                     }
                     screenCapturer = new ScreenCapturer(this, resultCode, data, screenCapturerListener);
                     if (checkInternetConnection()) {
-                        getSessionIdFromAPI();
                         createRoomAndGetId();
                     } else {
                         changeBroadcastButtonView();
@@ -703,7 +619,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         }
     }
 
-    private void removePublisherFromFirebase() {/*
+    private void removePublisherFromFirebase() {
         removeValueEventListener();
         rlViewers.setVisibility(View.GONE);
         DatabaseReference databaseReference = LifeShare.getFirebaseReference().child(Const.TABLE_PUBLISHER).child(PreferenceHelper.getInstance().getUser().getUserId());
@@ -714,7 +630,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
             }
         });
 
-    */
     }
 
     private void getCountForViewers() {
@@ -783,8 +698,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
             public void onFinish() {
                 Log.v(TAG, "onFinish: ");
-//                switchCompat.setEnabled(true);
-//                switchCompat.setText(getResources().getString(R.string.start));
                 bubbleText.setText(getResources().getString(R.string.start));
                 bubbleLayout.setBackground(getResources().getDrawable(R.drawable.green_circle_bg));
                 bubbleLayout.setEnabled(true);
@@ -829,26 +742,13 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         if (isBubbleViewVisible) {
             getWindowManager().removeView(bubbleLayout);
         }
-        if (mediaProjection != null) {
-            mediaProjection.stop();
-        }
         disconnectSession();
         countDownTimerGetStream.cancel();
         super.onDestroy();
     }
 
     private void disconnectSession() {
-        if (mSession == null) {
-            return;
-        }
-
-        if (mPublisher != null) {
-            mPublisherViewContainer.removeView(mPublisher.getView());
-            mSession.unpublish(mPublisher);
-            mPublisher.destroy();
-            mPublisher = null;
-        }
-        mSession.disconnect();
+        stopScreenCapture();
     }
 
     @Override
@@ -923,12 +823,12 @@ public class TwilioBroadcastActivityNew extends BaseActivity
             return;
         }
         showLoading();
-        DeleteStreamingRequest request = new DeleteStreamingRequest();
-        request.setOpentokId(sessionData.getOpentokId());
-        WebAPIManager.getInstance().deleteStreaming(request, new RemoteCallback<CommonResponse>(this) {
+        DeleteStreamingTwilioRequest request = new DeleteStreamingTwilioRequest();
+        request.setId(sessionData.getId());
+        WebAPIManager.getInstance().deleteStreamingTwilio(request, new RemoteCallback<CommonResponse>(this) {
             @Override
             public void onSuccess(CommonResponse response) {
-                PreferenceHelper.getInstance().setSessionData(null);
+                PreferenceHelper.getInstance().setRoomData(null);
                 hideLoading();
                 if (PreferenceHelper.getInstance().getCountOfViewer() > 0) {
                     updateCountForViewerToServer();
@@ -990,7 +890,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     }
 
     private void initView() {
-        ivImage = (ImageView) findViewById(R.id.iv_image);
         tvText = (TextView) findViewById(R.id.tv_text);
         rlReceiver = (RelativeLayout) findViewById(R.id.rl_receiver);
         mPublisherViewContainer = (RelativeLayout) findViewById(R.id.publisherview);
@@ -1035,7 +934,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvFriendBroadcast.setLayoutManager(linearLayoutManager);
-        adapter = new StreamUserListAdapter(new BaseRecyclerListener<StreamUserResponse>() {
+        adapter = new TwilioStreamUserListAdapter(new BaseRecyclerListener<StreamUserListResponse>() {
             @Override
             public void showEmptyDataView(int resId) {
 
@@ -1043,12 +942,12 @@ public class TwilioBroadcastActivityNew extends BaseActivity
             }
 
             @Override
-            public void onRecyclerItemClick(View view, int position, StreamUserResponse item) {
-                if (!item.getOpentokId().isEmpty()) {
-                    LifeShare.getInstance().clearNotificationById(Integer.parseInt(item.getOpentokId()));
+            public void onRecyclerItemClick(View view, int position, StreamUserListResponse item) {
+                if (!item.getId().isEmpty()) {
+                    LifeShare.getInstance().clearNotificationById(Integer.parseInt(item.getId()));
                 }
                 playAudio(TwilioBroadcastActivityNew.this, R.raw.click);
-                Intent intent = new Intent(TwilioBroadcastActivityNew.this, ShowStreamActivityNew.class);
+                Intent intent = new Intent(TwilioBroadcastActivityNew.this, TwilioShowStreamActivityNew.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Const.STREAM_DATA, item);
                 intent.putExtras(bundle);
@@ -1086,7 +985,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         audioSwitch = new AudioSwitch(getApplicationContext());
         savedVolumeControlStream = getVolumeControlStream();
         setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
-
         audioSwitch.start((audioDevices, audioDevice) -> {
 //            updateAudioDeviceIcon(audioDevice);
             return Unit.INSTANCE;
@@ -1231,14 +1129,15 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         dialog.show();
     }
 
-    private void getCurrentStreamingConnection() {
+    private void getCurrentStreamingConnectionTwilio() {
         isStreamUpdating = true;
-        WebAPIManager.getInstance().getCurrentConnectionStreaming(new RemoteCallback<ArrayList<StreamUserResponse>>(this) {
+        WebAPIManager.getInstance().getCurrentConnectionStreamingListTwilio(new RemoteCallback<ArrayList<StreamUserListResponse>>(this) {
             @Override
-            public void onSuccess(ArrayList<StreamUserResponse> response) {
+            public void onSuccess(ArrayList<StreamUserListResponse> response) {
+
                 isStreamUpdating = false;
                 progressBarConnectionStreaming.setVisibility(View.GONE);
-                ArrayList<StreamUserResponse> responseArrayList = new ArrayList<>();
+                ArrayList<StreamUserListResponse> responseArrayList = new ArrayList<>();
                 responseArrayList.clear();
                 responseArrayList.addAll(response);
                 if (responseArrayList.size() > 0) {
@@ -1290,63 +1189,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
     }
 
-
-    private void getCurrentStreamingConnectionTwilio() {
-        isStreamUpdating = true;
-        WebAPIManager.getInstance().getCurrentConnectionStreamingListTwilio(new RemoteCallback<ArrayList<StreamUserListResponse>>(this) {
-            @Override
-            public void onSuccess(ArrayList<StreamUserListResponse> response) {
-                if (response.size() > 0) {
-                    getNewToken(response.get(0).getId());
-                }
-            }
-
-            @Override
-            public void onEmptyResponse(String message) {
-                super.onEmptyResponse(message);
-                progressBarConnectionStreaming.setVisibility(View.GONE);
-                isStreamUpdating = false;
-                adapter.removeAllItems();
-                tvNoFriendStreaminig.setVisibility(View.VISIBLE);
-                tvNoFriendStreaminig.setText(R.string.no_live_streaming_message);
-
-            }
-
-            @Override
-            public void onFailed(Throwable throwable) {
-                isStreamUpdating = false;
-                progressBarConnectionStreaming.setVisibility(View.GONE);
-
-            }
-
-            @Override
-            public void onInternetFailed() {
-                isStreamUpdating = false;
-                progressBarConnectionStreaming.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onUnauthorized(Throwable throwable) {
-                isStreamUpdating = false;
-                progressBarConnectionStreaming.setVisibility(View.GONE);
-
-            }
-        });
-
-    }
-
-    private void getNewToken(String id) {
-
-        NewTwilioTokenRequest request = new NewTwilioTokenRequest();
-        request.setId(id);
-        WebAPIManager.getInstance().getNewTwilioToken(request, new RemoteCallback<NewTwilioTokenResponse>() {
-            @Override
-            public void onSuccess(NewTwilioTokenResponse response) {
-
-            }
-        });
-    }
-
     private void logoutCall() {
         showLoading();
         WebAPIManager.getInstance().logout(new RemoteCallback<CommonResponse>(this) {
@@ -1391,29 +1233,12 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 requestScreenCapturePermission();
             } else {
                 if (checkInternetConnection()) {
-                    getSessionIdFromAPI();
                     createRoomAndGetId();
                 } else {
                     stopBroadcast();
                 }
             }
 
-/*
-            if (!projectionStarted) {
-            *//*    projectionManager = (MediaProjectionManager)
-                        getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-                startProjection();
-            *//*} else {
-
-                if (checkInternetConnection()) {
-                    getSessionIdFromAPI();
-
-                } else {
-                    stopBroadcast();
-//                switchCompat.setChecked(false);
-                }
-            }
-     */
         }
     }
 
@@ -1451,71 +1276,4 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         });
     }
 
-    private class ImageAvailableListener implements ImageReader.OnImageAvailableListener {
-        @Override
-        public void onImageAvailable(ImageReader reader) {
-            Image image = null;
-            FileOutputStream fos = null;
-            Bitmap bitmap = null;
-
-            ByteArrayOutputStream stream = null;
-
-            try {
-                image = imageReader.acquireLatestImage();
-                if (image != null) {
-                    Image.Plane[] planes = image.getPlanes();
-                    ByteBuffer buffer = planes[0].getBuffer();
-                    int pixelStride = planes[0].getPixelStride();
-                    int rowStride = planes[0].getRowStride();
-                    int rowPadding = rowStride - pixelStride * displayWidth;
-
-                    // create bitmap
-                    bitmap = Bitmap.createBitmap(displayWidth + rowPadding / pixelStride,
-                            displayHeight, Bitmap.Config.ARGB_8888);
-                    bitmap.copyPixelsFromBuffer(buffer);
-                    stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 5, stream);
-
-//                    Log.v(TAG, "onImageAvailable: " + stream.toByteArray());
-                    byte[] data = stream.toByteArray();
-                    if (data != null && data.length != 0) {
-                        Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
-//                        Log.d(TAG, "Set Image : " + bm.toString());
-                        ivImage.setImageBitmap(bm);
-                    }
-
-
-                    imagesProduced++;
-//                    Log.e(TAG, "captured image: " + imagesProduced);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (fos != null) {
-                    try {
-                        fos.close();
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                }
-
-                if (stream != null) {
-                    try {
-                        stream.close();
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                }
-
-                if (bitmap != null) {
-                    bitmap.recycle();
-                }
-
-                if (image != null) {
-                    image.close();
-                }
-            }
-        }
-    }
 }

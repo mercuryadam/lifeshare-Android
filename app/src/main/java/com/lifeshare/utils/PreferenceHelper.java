@@ -7,7 +7,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.lifeshare.LifeShare;
-import com.lifeshare.network.response.CreateSessionResponse;
+import com.lifeshare.network.response.CreateRoomResponse;
 import com.lifeshare.network.response.LoginResponse;
 
 /**
@@ -80,7 +80,7 @@ public class PreferenceHelper {
         String userData = new Gson().toJson(user);
         mEdit.putString(USER_DATA, userData);
         save();
-    }
+    }/*
     public CreateSessionResponse getSessionData() {
         String sessionData = mPrefs.getString(SESSION_DATA, null);
         if (!TextUtils.isEmpty(sessionData)) {
@@ -91,6 +91,27 @@ public class PreferenceHelper {
     }
 
     public void setSessionData(CreateSessionResponse sessionData) {
+        if (sessionData == null) {
+            mEdit.putString(SESSION_DATA, null);
+            save();
+            return;
+        }
+        String data = new Gson().toJson(sessionData);
+        mEdit.putString(SESSION_DATA, data);
+        save();
+    }
+*/
+
+    public CreateRoomResponse getRoomData() {
+        String sessionData = mPrefs.getString(SESSION_DATA, null);
+        if (!TextUtils.isEmpty(sessionData)) {
+            CreateRoomResponse sessionResponse = new Gson().fromJson(sessionData, CreateRoomResponse.class);
+            return sessionResponse;
+        }
+        return null;
+    }
+
+    public void setRoomData(CreateRoomResponse sessionData) {
         if (sessionData == null) {
             mEdit.putString(SESSION_DATA, null);
             save();

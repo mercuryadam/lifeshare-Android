@@ -35,11 +35,13 @@
             android:name=".ui.ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/splashTheme" />
-        <activity
-            android:name=".ui.show_broadcast.ShowStreamActivityNew"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeReceiver"
-            android:windowSoftInputMode="stateAlwaysVisible|stateHidden" />
+        <!--
+                <activity
+                    android:name=".ui.show_broadcast.ShowStreamActivityNew"
+                    android:screenOrientation="portrait"
+                    android:theme="@style/AppThemeReceiver"
+                    android:windowSoftInputMode="stateAlwaysVisible|stateHidden" />
+        -->
         <activity
             android:name=".ui.show_broadcast.TwilioShowStreamActivityNew"
             android:screenOrientation="portrait"
@@ -54,10 +56,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.BroadcastActivityNew"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysVisible|stateHidden" />
+        <!--
+                <activity
+                    android:name=".ui.BroadcastActivityNew"
+                    android:screenOrientation="portrait"
+                    android:windowSoftInputMode="stateAlwaysVisible|stateHidden" />
+        -->
 
         <activity
             android:name=".ui.TwilioBroadcastActivityNew"

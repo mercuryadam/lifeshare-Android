@@ -55,6 +55,9 @@ public abstract class RemoteCallback<T> implements Callback<T> {
             case HttpURLConnection.HTTP_UNAUTHORIZED:
                 onUnauthorized(new Throwable(getErrorMessage(response)));
                 break;
+            case HttpURLConnection.HTTP_SERVER_ERROR:
+                onFailed(new Throwable(response.message()));
+                break;
             default:
                 onFailed(new Throwable(getErrorMessage(response)));
                 break;
