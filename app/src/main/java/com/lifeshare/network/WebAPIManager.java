@@ -16,6 +16,7 @@ import com.lifeshare.network.request.ForgotPasswordRequest;
 import com.lifeshare.network.request.GetArchiveListRequest;
 import com.lifeshare.network.request.InvitationRequest;
 import com.lifeshare.network.request.LoginRequest;
+import com.lifeshare.network.request.NewTwilioTokenRequest;
 import com.lifeshare.network.request.RejectInvitationRequest;
 import com.lifeshare.network.request.ReportUserRequest;
 import com.lifeshare.network.request.SearchUserRequest;
@@ -30,14 +31,17 @@ import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CityResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
+import com.lifeshare.network.response.CreateRoomResponse;
 import com.lifeshare.network.response.CreateSessionResponse;
 import com.lifeshare.network.response.InvitationListResponse;
 import com.lifeshare.network.response.LoginResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
+import com.lifeshare.network.response.NewTwilioTokenResponse;
 import com.lifeshare.network.response.ReportDetailListResponse;
 import com.lifeshare.network.response.ReportListResponse;
 import com.lifeshare.network.response.SearchUserResponse;
 import com.lifeshare.network.response.StateResponse;
+import com.lifeshare.network.response.StreamUserListResponse;
 import com.lifeshare.network.response.StreamUserResponse;
 
 import java.io.File;
@@ -183,8 +187,20 @@ public class WebAPIManager {
         mService.createSession().enqueue(callback);
     }
 
+    public void createRoom(RemoteCallback<CreateRoomResponse> callback) {
+        mService.createRoom().enqueue(callback);
+    }
+
     public void getCurrentConnectionStreaming(RemoteCallback<ArrayList<StreamUserResponse>> callback) {
         mService.getCurrentConnectionStreaming().enqueue(callback);
+    }
+
+    public void getNewTwilioToken(NewTwilioTokenRequest request, RemoteCallback<NewTwilioTokenResponse> callback) {
+        mService.getNewTwilioToken(request).enqueue(callback);
+    }
+
+    public void getCurrentConnectionStreamingListTwilio(RemoteCallback<ArrayList<StreamUserListResponse>> callback) {
+        mService.getCurrentConnectionStreamingListTwilio().enqueue(callback);
     }
 
     public void deleteStreaming(DeleteStreamingRequest request, RemoteCallback<CommonResponse> callback) {

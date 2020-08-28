@@ -13,6 +13,7 @@ import com.lifeshare.network.request.ForgotPasswordRequest;
 import com.lifeshare.network.request.GetArchiveListRequest;
 import com.lifeshare.network.request.InvitationRequest;
 import com.lifeshare.network.request.LoginRequest;
+import com.lifeshare.network.request.NewTwilioTokenRequest;
 import com.lifeshare.network.request.RejectInvitationRequest;
 import com.lifeshare.network.request.ReportUserRequest;
 import com.lifeshare.network.request.SearchUserRequest;
@@ -26,14 +27,17 @@ import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CityResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
+import com.lifeshare.network.response.CreateRoomResponse;
 import com.lifeshare.network.response.CreateSessionResponse;
 import com.lifeshare.network.response.InvitationListResponse;
 import com.lifeshare.network.response.LoginResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
+import com.lifeshare.network.response.NewTwilioTokenResponse;
 import com.lifeshare.network.response.ReportDetailListResponse;
 import com.lifeshare.network.response.ReportListResponse;
 import com.lifeshare.network.response.SearchUserResponse;
 import com.lifeshare.network.response.StateResponse;
+import com.lifeshare.network.response.StreamUserListResponse;
 import com.lifeshare.network.response.StreamUserResponse;
 
 import java.util.ArrayList;
@@ -124,8 +128,17 @@ public interface WebAPIService {
     @POST("opentok/create")
     Call<CreateSessionResponse> createSession();
 
+    @POST("twilio/create")
+    Call<CreateRoomResponse> createRoom();
+
+    @POST("twilio/get-new-token")
+    Call<NewTwilioTokenResponse> getNewTwilioToken(@Body NewTwilioTokenRequest request);
+
     @POST("opentok/list")
     Call<ArrayList<StreamUserResponse>> getCurrentConnectionStreaming();
+
+    @POST("twilio/list")
+    Call<ArrayList<StreamUserListResponse>> getCurrentConnectionStreamingListTwilio();
 
     @POST("user/show")
     Call<LoginResponse> getUserProfile(@Body UserProfileRequest request);

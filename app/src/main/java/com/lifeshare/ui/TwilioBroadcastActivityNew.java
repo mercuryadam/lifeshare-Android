@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.PixelFormat;
-import android.graphics.Point;
-import android.hardware.display.DisplayManager;
+import android.media.AudioManager;
 import android.media.Image;
 import android.media.ImageReader;
 import android.media.projection.MediaProjection;
@@ -20,9 +18,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
@@ -44,7 +41,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,10 +48,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.instacart.library.truetime.TrueTime;
 import com.lifeshare.BaseActivity;
-import com.lifeshare.BuildConfig;
 import com.lifeshare.LifeShare;
 import com.lifeshare.R;
-import com.lifeshare.ScreensharingCapturer;
 import com.lifeshare.asyncTask.InitTrueTimeAsyncTask;
 import com.lifeshare.customview.bubbleview.BubbleLayout;
 import com.lifeshare.customview.bubbleview.BubblesManager;
@@ -65,11 +59,15 @@ import com.lifeshare.model.ViewerUser;
 import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
 import com.lifeshare.network.request.DeleteStreamingRequest;
+import com.lifeshare.network.request.NewTwilioTokenRequest;
 import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.response.CommonResponse;
+import com.lifeshare.network.response.CreateRoomResponse;
 import com.lifeshare.network.response.CreateSessionResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
+import com.lifeshare.network.response.NewTwilioTokenResponse;
+import com.lifeshare.network.response.StreamUserListResponse;
 import com.lifeshare.network.response.StreamUserResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
 import com.lifeshare.receiver.ForegroundService;
@@ -84,34 +82,50 @@ import com.lifeshare.ui.show_broadcast.ViewerListAdapter;
 import com.lifeshare.utils.AlarmUtils;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
-import com.opentok.android.OpentokError;
+import com.lifeshare.utils.ScreenCapturerManager;
+import com.lifeshare.utils.TwilioHelper;
 import com.opentok.android.Publisher;
-import com.opentok.android.PublisherKit;
 import com.opentok.android.Session;
-import com.opentok.android.Stream;
+import com.twilio.audioswitch.AudioDevice;
+import com.twilio.audioswitch.AudioSwitch;
+import com.twilio.video.AudioCodec;
+import com.twilio.video.ConnectOptions;
+import com.twilio.video.EncodingParameters;
+import com.twilio.video.LocalAudioTrack;
+import com.twilio.video.LocalParticipant;
+import com.twilio.video.LocalVideoTrack;
+import com.twilio.video.RemoteParticipant;
+import com.twilio.video.Room;
+import com.twilio.video.ScreenCapturer;
+import com.twilio.video.TwilioException;
+import com.twilio.video.Video;
+import com.twilio.video.VideoCodec;
+import com.twilio.video.VideoView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import kotlin.Unit;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.lifeshare.utils.Const.GET_STREAM_USER_INTERVAL_TIME;
 import static com.lifeshare.utils.Const.LAST_VIEW_UPDATE_INTERVAL_TIME;
 
-public class BroadcastActivityNew extends BaseActivity
-        implements Publisher.PublisherListener,
-        Session.SessionListener, EasyPermissions.PermissionCallbacks, View.OnClickListener, RuntimeEasyPermission.PermissionCallbacks {
+public class TwilioBroadcastActivityNew extends BaseActivity
+        implements EasyPermissions.PermissionCallbacks, View.OnClickListener, RuntimeEasyPermission.PermissionCallbacks {
 
     private static final int MEDIA_PROJECTION_REQUEST_CODE = 1;
     private static final String TAG = "BroadcastActivity";
     private static final int RC_VIDEO_APP_PERM = 124;
     private static final int REQUEST_AUDIO_PERM = 1123;
+    private static final int REQUEST_MEDIA_PROJECTION = 100;
+    private static final String LOCAL_AUDIO_TRACK_NAME = "mic";
     BubbleLayout bubbleView;
     TextView bubbleText;
     BubbleLayout bubbleLayout;
@@ -132,7 +146,8 @@ public class BroadcastActivityNew extends BaseActivity
 
         }
     };
-    private MediaProjectionManager projectionManager;
+    String accessToken = TwilioHelper.TWILIO_ACCESS_TOKEN_PUBLISHER;
+    //    private MediaProjectionManager projectionManager;
     private ImageReader imageReader;
     private MediaProjection mediaProjection;
     private Handler handler;
@@ -188,6 +203,7 @@ public class BroadcastActivityNew extends BaseActivity
 
         }
     };
+    private ScreenCapturerManager screenCapturerManager;
     private String[] permissions_audio = new String[]{Manifest.permission.RECORD_AUDIO};
     private Boolean isBroadcasting = false;
     private StreamUserListAdapter adapter;
@@ -208,6 +224,32 @@ public class BroadcastActivityNew extends BaseActivity
     private RelativeLayout rlToolbar;
     private AppCompatTextView tvToolbarTitle;
     private ImageView ivMore;
+    private VideoView localVideoView;
+    private AudioSwitch audioSwitch;
+    private int savedVolumeControlStream;
+    private ScreenCapturer screenCapturer;
+    private AudioCodec audioCodec;
+    private VideoCodec videoCodec;
+    private boolean enableAutomaticSubscription;
+    private EncodingParameters encodingParameters;
+    private LocalVideoTrack screenVideoTrack;
+    private LocalAudioTrack localAudioTrack;
+    private Room room;
+    private final ScreenCapturer.Listener screenCapturerListener = new ScreenCapturer.Listener() {
+        @Override
+        public void onScreenCaptureError(String errorDescription) {
+            Log.e(TAG, "Screen capturer error: " + errorDescription);
+            stopScreenCapture();
+            Toast.makeText(TwilioBroadcastActivityNew.this, "Error in screen capture",
+                    Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onFirstFrameAvailable() {
+            Log.d(TAG, "First frame from screen capturer available");
+        }
+    };
+    private LocalParticipant localParticipant;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -262,6 +304,7 @@ public class BroadcastActivityNew extends BaseActivity
     protected void onResume() {
         super.onResume();
         setProfile();
+        setTwilioCodec();
         if (Build.VERSION.SDK_INT >= 23) {
             if (!Settings.canDrawOverlays(this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -270,7 +313,7 @@ public class BroadcastActivityNew extends BaseActivity
             } else {
                 if (!isBubbleViewVisible) {
                     Log.v(TAG, "onResume:1 ");
-                    bubblesManager = new BubblesManager.Builder(BroadcastActivityNew.this).setTrashLayout(R.layout.bubble_trash)
+                    bubblesManager = new BubblesManager.Builder(TwilioBroadcastActivityNew.this).setTrashLayout(R.layout.bubble_trash)
                             .build();
 
                     bubblesManager.initialize();
@@ -280,7 +323,7 @@ public class BroadcastActivityNew extends BaseActivity
             if (!isDestroyed()) {
                 Log.v(TAG, "onResume:2 ");
                 if (!isBubbleViewVisible) {
-                    bubblesManager = new BubblesManager.Builder(BroadcastActivityNew.this).setTrashLayout(R.layout.bubble_trash)
+                    bubblesManager = new BubblesManager.Builder(TwilioBroadcastActivityNew.this).setTrashLayout(R.layout.bubble_trash)
                             .build();
 
                     bubblesManager.initialize();
@@ -288,6 +331,125 @@ public class BroadcastActivityNew extends BaseActivity
             }
 
         }
+
+    }
+
+    private void setTwilioCodec() {
+        audioCodec = TwilioHelper.getInstance().getAudioCodecPreference(TwilioHelper.PREF_AUDIO_CODEC,
+                TwilioHelper.PREF_AUDIO_CODEC_DEFAULT);
+        videoCodec = TwilioHelper.getInstance().getVideoCodecPreference(TwilioHelper.PREF_VIDEO_CODEC,
+                TwilioHelper.PREF_VIDEO_CODEC_DEFAULT);
+        enableAutomaticSubscription = TwilioHelper.getInstance().getAutomaticSubscriptionPreference(TwilioHelper.PREF_ENABLE_AUTOMATIC_SUBSCRIPTION,
+                TwilioHelper.PREF_ENABLE_AUTOMATIC_SUBSCRIPTION_DEFAULT);
+        final EncodingParameters newEncodingParameters = TwilioHelper.getInstance().getEncodingParameters();
+        this.encodingParameters = newEncodingParameters;
+
+    }
+
+    private void connectToRoom(String roomName) {
+        audioSwitch.activate();
+        ConnectOptions.Builder connectOptionsBuilder = new ConnectOptions.Builder(accessToken)
+                .roomName(roomName);
+        if (localAudioTrack != null) {
+            connectOptionsBuilder
+                    .audioTracks(Collections.singletonList(localAudioTrack));
+        }
+        if (screenVideoTrack != null) {
+            connectOptionsBuilder.videoTracks(Collections.singletonList(screenVideoTrack));
+        }
+
+        connectOptionsBuilder.preferAudioCodecs(Collections.singletonList(audioCodec));
+        connectOptionsBuilder.preferVideoCodecs(Collections.singletonList(videoCodec));
+        connectOptionsBuilder.encodingParameters(encodingParameters);
+
+        connectOptionsBuilder.enableAutomaticSubscription(enableAutomaticSubscription);
+
+        room = Video.connect(this, connectOptionsBuilder.build(), new Room.Listener() {
+            @Override
+            public void onConnected(@NonNull Room room) {
+                showToast("onConnected");
+                localParticipant = room.getLocalParticipant();
+
+                isBroadcasting = true;
+
+                notifyOther(sessionData.getOpentokId());
+                changeBroadcastButtonView();
+
+                fabMessage.show();
+                rlChatView.setVisibility(View.VISIBLE);
+
+
+                if (!isBubbleViewVisible) {
+                    createBubblelayout();
+                } else {
+                    bubbleText.setText(getResources().getString(R.string.stop));
+                    bubbleLayout.setBackground(getResources().getDrawable(R.drawable.red_circle_bg));
+                    bubbleLayout.setEnabled(true);
+                    bubbleProgressBar.setVisibility(View.GONE);
+                }
+                llCountViewer.setVisibility(View.VISIBLE);
+                showToast(getString(R.string.broadcasting));
+
+            }
+
+            @Override
+            public void onConnectFailure(@NonNull Room room, @NonNull TwilioException twilioException) {
+                showToast("onConnectFailure");
+                audioSwitch.deactivate();
+                container.setVisibility(View.GONE);
+                fabMessage.hide();
+                removePublisherFromFirebase();
+
+            }
+
+            @Override
+            public void onReconnecting(@NonNull Room room, @NonNull TwilioException twilioException) {
+                showToast("onReconnecting");
+                showLoading();
+            }
+
+            @Override
+            public void onReconnected(@NonNull Room room) {
+                showToast("onReconnected");
+                hideLoading();
+            }
+
+            @Override
+            public void onDisconnected(@NonNull Room room, @Nullable TwilioException twilioException) {
+                showToast("onDisconnected");
+                localParticipant = null;
+                hideLoading();
+                TwilioBroadcastActivityNew.this.room = null;
+                audioSwitch.deactivate();
+
+                container.setVisibility(View.GONE);
+                fabMessage.hide();
+                removePublisherFromFirebase();
+            }
+
+            @Override
+            public void onParticipantConnected(@NonNull Room room, @NonNull RemoteParticipant remoteParticipant) {
+                showToast("onParticipantConnected");
+            }
+
+            @Override
+            public void onParticipantDisconnected(@NonNull Room room, @NonNull RemoteParticipant remoteParticipant) {
+                Log.v(TAG, "onParticipantDisconnected: " + remoteParticipant.getIdentity());
+                showToast("onParticipantDisconnected: " + remoteParticipant.getIdentity());
+            }
+
+            @Override
+            public void onRecordingStarted(@NonNull Room room) {
+                showToast("onRecordingStarted");
+                Log.v(TAG, "onRecordingStarted: ");
+            }
+
+            @Override
+            public void onRecordingStopped(@NonNull Room room) {
+                showToast("onRecordingStopped");
+                Log.v(TAG, "onRecordingStopped: ");
+            }
+        });
 
     }
 
@@ -302,7 +464,7 @@ public class BroadcastActivityNew extends BaseActivity
                 .into(ivProfileDashBoard);
     }
 
-    private void connectWithSession() {
+    private void getSessionIdFromAPI() {
         if (!checkInternetConnection()) {
             return;
         }
@@ -315,11 +477,9 @@ public class BroadcastActivityNew extends BaseActivity
                 if (response != null
                         && !TextUtils.isEmpty(response.getSessionId())
                         && !TextUtils.isEmpty(response.getToken())) {
-                    mSession = new Session.Builder(BroadcastActivityNew.this, response.getOpentokApiKeyDetail().getOpentokApiKey(), response.getSessionId()).build();
-                    mSession.setSessionListener(BroadcastActivityNew.this);
-                    mSession.connect(response.getToken());
+
+                    startScreenCapture();
                     createFirebaseData(response);
-//                    switchCompat.setText(getResources().getString(R.string.stop));
                 } else {
                     showToast(getString(R.string.message_invalid_session));
                     hideLoading();
@@ -330,13 +490,65 @@ public class BroadcastActivityNew extends BaseActivity
 
     }
 
+    private void createRoomAndGetId() {
+        if (!checkInternetConnection()) {
+            return;
+        }
+        showLoading(getString(R.string.waiting_for_connection_msg));
+        WebAPIManager.getInstance().createRoom(new RemoteCallback<CreateRoomResponse>() {
+            @Override
+            public void onSuccess(CreateRoomResponse response) {
+        /*        sessionData = response;
+                PreferenceHelper.getInstance().setSessionData(sessionData);
+                if (response != null
+                        && !TextUtils.isEmpty(response.getSessionId())
+                        && !TextUtils.isEmpty(response.getToken())) {
+
+                    startScreenCapture();
+                    createFirebaseData(response);
+                } else {
+                    showToast(getString(R.string.message_invalid_session));
+                    hideLoading();
+                }
+
+        */
+            }
+        });
+
+    }
+
+    private void startScreenCapture() {
+
+        screenVideoTrack = LocalVideoTrack.create(this, true, screenCapturer);
+        localAudioTrack = LocalAudioTrack.create(this, true, LOCAL_AUDIO_TRACK_NAME);
+        localAudioTrack.enable(true);
+
+        localVideoView.setVisibility(View.VISIBLE);
+        screenVideoTrack.addRenderer(localVideoView);
+        connectToRoom("TestAndroid");
+    }
+
+    private void stopScreenCapture() {
+        if (screenVideoTrack != null) {
+            screenVideoTrack.removeRenderer(localVideoView);
+            screenVideoTrack.release();
+            screenVideoTrack = null;
+            localVideoView.setVisibility(View.INVISIBLE);
+        }
+
+        if (room != null) {
+            room.disconnect();
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 /*
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
-        setContentView(R.layout.activity_broadcast_new);
+        setContentView(R.layout.twilio_activity_broadcast);
 
         initView();
         new InitTrueTimeAsyncTask().execute();
@@ -365,6 +577,7 @@ public class BroadcastActivityNew extends BaseActivity
         tvNoFriendStreaminig.setVisibility(View.GONE);
         rvFriendBroadcast.setVisibility(View.GONE);
         getCurrentStreamingConnection();
+        getCurrentStreamingConnectionTwilio();
         startGetStreamTimer();
 
     }
@@ -376,6 +589,7 @@ public class BroadcastActivityNew extends BaseActivity
             public void onTick(long l) {
                 if (!isStreamUpdating) {
                     getCurrentStreamingConnection();
+                    getCurrentStreamingConnectionTwilio();
                 }
             }
 
@@ -388,7 +602,7 @@ public class BroadcastActivityNew extends BaseActivity
     }
 
     private void createFirebaseData(CreateSessionResponse response) {
-        DatabaseReference databaseReference = LifeShare.getFirebaseReference().child(Const.TABLE_PUBLISHER).child(PreferenceHelper.getInstance().getUser().getUserId());
+    /*    DatabaseReference databaseReference = LifeShare.getFirebaseReference().child(Const.TABLE_PUBLISHER).child(PreferenceHelper.getInstance().getUser().getUserId());
         databaseReference.removeValue();
         HashMap<String, String> startRequestMap = new HashMap<>();
         startRequestMap.put("sessionId", response.getSessionId());
@@ -404,19 +618,19 @@ public class BroadcastActivityNew extends BaseActivity
                 messageFragment.setCurrentStream(PreferenceHelper.getInstance().getUser().getUserId());
             }
         });
-
+*/
     }
-
-    public void startProjection() {
-        startActivityForResult(projectionManager.createScreenCaptureIntent(), MEDIA_PROJECTION_REQUEST_CODE);
-    }
+//
+//    public void startProjection() {
+//        startActivityForResult(projectionManager.createScreenCaptureIntent(), MEDIA_PROJECTION_REQUEST_CODE);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case MEDIA_PROJECTION_REQUEST_CODE:
-
+/*
 
                     mediaProjection = projectionManager.getMediaProjection(resultCode, data);
                     if (mediaProjection != null) {
@@ -449,9 +663,25 @@ public class BroadcastActivityNew extends BaseActivity
                     } else {
 //                        switchCompat.setChecked(false);
                         changeBroadcastButtonView();
-                    }
+                    }*/
 
                     break;
+                case REQUEST_MEDIA_PROJECTION: {
+
+                    if (resultCode != RESULT_OK) {
+                        Toast.makeText(this, R.string.screen_capture_permission_message,
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    screenCapturer = new ScreenCapturer(this, resultCode, data, screenCapturerListener);
+                    if (checkInternetConnection()) {
+                        getSessionIdFromAPI();
+                        createRoomAndGetId();
+                    } else {
+                        changeBroadcastButtonView();
+                    }
+                }
+                break;
                 case 1024:
                     ArrayList<MyConnectionListResponse> checkedItems = new ArrayList();
                     Bundle extras = data.getExtras();
@@ -468,16 +698,12 @@ public class BroadcastActivityNew extends BaseActivity
                 case MEDIA_PROJECTION_REQUEST_CODE:
                     Toast.makeText(this, getString(R.string.screen_capture_permission_message), Toast.LENGTH_SHORT).show();
                     changeBroadcastButtonView();
-     /*               if (switchCompat != null) {
-                        switchCompat.setChecked(false);
-                    }
-     */
                     break;
             }
         }
     }
 
-    private void removePublisherFromFirebase() {
+    private void removePublisherFromFirebase() {/*
         removeValueEventListener();
         rlViewers.setVisibility(View.GONE);
         DatabaseReference databaseReference = LifeShare.getFirebaseReference().child(Const.TABLE_PUBLISHER).child(PreferenceHelper.getInstance().getUser().getUserId());
@@ -488,6 +714,7 @@ public class BroadcastActivityNew extends BaseActivity
             }
         });
 
+    */
     }
 
     private void getCountForViewers() {
@@ -499,68 +726,9 @@ public class BroadcastActivityNew extends BaseActivity
         countViewerDatabaseReference.addValueEventListener(countViewerValueEventListener);
     }
 
-    @Override
-    public void onStreamCreated(PublisherKit publisherKit, Stream stream) {
-    }
-
-    @Override
-    public void onStreamDestroyed(PublisherKit publisherKit, Stream stream) {
-
-    }
-
-    @Override
-    public void onError(PublisherKit publisherKit, OpentokError opentokError) {
-        Toast.makeText(this, opentokError.getMessage(), Toast.LENGTH_SHORT).show();
-        removePublisherFromFirebase();
-    }
-
-    @Override
-    public void onConnected(Session session) {
-        if (BuildConfig.FLAVOR.equals("Dev")) {
-            Toast.makeText(this, "onConnected", Toast.LENGTH_SHORT).show();
-        }
-        hideLoading();
-        ScreensharingCapturer screenCapturer =
-                new ScreensharingCapturer(BroadcastActivityNew.this, ivImage);
-
-        mPublisher = new Publisher.Builder(BroadcastActivityNew.this)
-                .name(PreferenceHelper.getInstance().getUser().getFirstName() + " " + PreferenceHelper.getInstance().getUser().getLastName())
-                .capturer(screenCapturer)
-                .resolution(Publisher.CameraCaptureResolution.LOW)
-                .frameRate(Publisher.CameraCaptureFrameRate.FPS_30)
-                .build();
-        mPublisher.setPublishAudio(true);
-        mPublisher.setPublishVideo(true);
-        mPublisher.setPublisherListener(this);
-
-        mPublisherViewContainer.addView(mPublisher.getView());
-        mSession.publish(mPublisher);
-
-        isBroadcasting = true;
-
-        notifyOther(sessionData.getOpentokId());
-        changeBroadcastButtonView();
-//        switchCompat.setText(getResources().getString(R.string.stop));
-        fabMessage.show();
-        rlChatView.setVisibility(View.VISIBLE);
-
-
-        if (!isBubbleViewVisible) {
-            createBubblelayout();
-        } else {
-            bubbleText.setText(getResources().getString(R.string.stop));
-            bubbleLayout.setBackground(getResources().getDrawable(R.drawable.red_circle_bg));
-            bubbleLayout.setEnabled(true);
-            bubbleProgressBar.setVisibility(View.GONE);
-        }
-        llCountViewer.setVisibility(View.VISIBLE);
-        Toast.makeText(this, getString(R.string.broadcasting), Toast.LENGTH_SHORT).show();
-
-    }
-
     private void createBubblelayout() {
         bubbleView = (BubbleLayout) LayoutInflater
-                .from(BroadcastActivityNew.this).inflate(R.layout.bubble_layout, null);
+                .from(TwilioBroadcastActivityNew.this).inflate(R.layout.bubble_layout, null);
         bubbleText = bubbleView.findViewById(R.id.avatar);
         bubbleLayout = bubbleView.findViewById(R.id.bubble_main);
         bubbleProgressBar = bubbleView.findViewById(R.id.progressBar);
@@ -669,31 +837,6 @@ public class BroadcastActivityNew extends BaseActivity
         super.onDestroy();
     }
 
-    @Override
-    public void onDisconnected(Session session) {
-    }
-
-    @Override
-    public void onStreamReceived(Session session, Stream stream) {
-
-    }
-
-    @Override
-    public void onStreamDropped(Session session, Stream stream) {
-        Toast.makeText(this, "onStreamDropped", Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
-    public void onError(Session session, OpentokError opentokError) {
-        Log.v(TAG, "onError: " + opentokError.getMessage());
-        Log.v(TAG, "onError: " + opentokError.getException());
-        container.setVisibility(View.GONE);
-        fabMessage.hide();
-//        switchCompat.setChecked(false);
-        removePublisherFromFirebase();
-    }
-
     private void disconnectSession() {
         if (mSession == null) {
             return;
@@ -749,9 +892,13 @@ public class BroadcastActivityNew extends BaseActivity
         }
     }
 
-
     private void stopBroadcast() {
-        stopForgroundService();
+
+        if (Build.VERSION.SDK_INT >= 29) {
+            screenCapturerManager.endForeground();
+        }
+        stopScreenCapture();
+
         playAudio(this, R.raw.dingdong);
 
         Log.v(TAG, "onCheckedChanged: false ");
@@ -762,7 +909,8 @@ public class BroadcastActivityNew extends BaseActivity
     }
 
     private void startBroadCast() {
-        startForGroundService();
+
+//        startForGroundService();
         playAudio(this, R.raw.jingle_two);
 
         RuntimeEasyPermission.newInstance(permissions_audio,
@@ -846,6 +994,7 @@ public class BroadcastActivityNew extends BaseActivity
         tvText = (TextView) findViewById(R.id.tv_text);
         rlReceiver = (RelativeLayout) findViewById(R.id.rl_receiver);
         mPublisherViewContainer = (RelativeLayout) findViewById(R.id.publisherview);
+        localVideoView = (VideoView) findViewById(R.id.local_video);
         rlChatView = (RelativeLayout) findViewById(R.id.rl_chat_message);
         rvViewer = findViewById(R.id.rv_viewer);
         llCountViewer = findViewById(R.id.llCountViewer);
@@ -898,8 +1047,8 @@ public class BroadcastActivityNew extends BaseActivity
                 if (!item.getOpentokId().isEmpty()) {
                     LifeShare.getInstance().clearNotificationById(Integer.parseInt(item.getOpentokId()));
                 }
-                playAudio(BroadcastActivityNew.this, R.raw.click);
-                Intent intent = new Intent(BroadcastActivityNew.this, ShowStreamActivityNew.class);
+                playAudio(TwilioBroadcastActivityNew.this, R.raw.click);
+                Intent intent = new Intent(TwilioBroadcastActivityNew.this, ShowStreamActivityNew.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Const.STREAM_DATA, item);
                 intent.putExtras(bundle);
@@ -924,6 +1073,27 @@ public class BroadcastActivityNew extends BaseActivity
         changeBroadcastButtonView();
         rlBroadcast.setOnClickListener(this);
         ivMore.setOnClickListener(this);
+
+        initializeTwilioComponent();
+
+    }
+
+    private void initializeTwilioComponent() {
+        if (Build.VERSION.SDK_INT >= 29) {
+            screenCapturerManager = new ScreenCapturerManager(this);
+        }
+
+        audioSwitch = new AudioSwitch(getApplicationContext());
+        savedVolumeControlStream = getVolumeControlStream();
+        setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
+
+        audioSwitch.start((audioDevices, audioDevice) -> {
+//            updateAudioDeviceIcon(audioDevice);
+            return Unit.INSTANCE;
+        });
+
+        List<AudioDevice> availableAudioDevices = audioSwitch.getAvailableAudioDevices();
+        audioSwitch.selectDevice(availableAudioDevices.get(availableAudioDevices.size() - 1));
 
     }
 
@@ -950,7 +1120,7 @@ public class BroadcastActivityNew extends BaseActivity
 
     void showDialog() {
 
-        Dialog dialog = new Dialog(BroadcastActivityNew.this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        Dialog dialog = new Dialog(TwilioBroadcastActivityNew.this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         dialog.setContentView(R.layout.nav_drawer_new);
@@ -997,7 +1167,7 @@ public class BroadcastActivityNew extends BaseActivity
             @Override
             public void onClick(View view) {
                 if (PreferenceHelper.getInstance().getUser().getUserType().equals("1")) {
-                    startActivity(new Intent(BroadcastActivityNew.this, ReportsUserListActivity.class));
+                    startActivity(new Intent(TwilioBroadcastActivityNew.this, ReportsUserListActivity.class));
                     dialog.dismiss();
                 }
             }
@@ -1005,7 +1175,7 @@ public class BroadcastActivityNew extends BaseActivity
         tvInvitations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(BroadcastActivityNew.this, MyInvitationListActivity.class));
+                startActivity(new Intent(TwilioBroadcastActivityNew.this, MyInvitationListActivity.class));
                 dialog.dismiss();
             }
         });
@@ -1018,7 +1188,7 @@ public class BroadcastActivityNew extends BaseActivity
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                otherDialog(BroadcastActivityNew.this, getResources().getString(R.string.logout_message), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DismissListenerWithStatus() {
+                otherDialog(TwilioBroadcastActivityNew.this, getResources().getString(R.string.logout_message), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DismissListenerWithStatus() {
                     @Override
                     public void onDismissed(String message) {
                         if (message.equalsIgnoreCase(getResources().getString(R.string.yes))) {
@@ -1033,7 +1203,7 @@ public class BroadcastActivityNew extends BaseActivity
         tvMyConnections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(BroadcastActivityNew.this, MyConnectionListActivity.class));
+                startActivity(new Intent(TwilioBroadcastActivityNew.this, MyConnectionListActivity.class));
                 dialog.dismiss();
             }
         });
@@ -1042,7 +1212,7 @@ public class BroadcastActivityNew extends BaseActivity
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(BroadcastActivityNew.this, ViewProfileActivity.class);
+                Intent intent = new Intent(TwilioBroadcastActivityNew.this, ViewProfileActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString(Const.PROFILE, Const.MY_PROFILE);
                 intent.putExtras(bundle);
@@ -1120,6 +1290,63 @@ public class BroadcastActivityNew extends BaseActivity
 
     }
 
+
+    private void getCurrentStreamingConnectionTwilio() {
+        isStreamUpdating = true;
+        WebAPIManager.getInstance().getCurrentConnectionStreamingListTwilio(new RemoteCallback<ArrayList<StreamUserListResponse>>(this) {
+            @Override
+            public void onSuccess(ArrayList<StreamUserListResponse> response) {
+                if (response.size() > 0) {
+                    getNewToken(response.get(0).getId());
+                }
+            }
+
+            @Override
+            public void onEmptyResponse(String message) {
+                super.onEmptyResponse(message);
+                progressBarConnectionStreaming.setVisibility(View.GONE);
+                isStreamUpdating = false;
+                adapter.removeAllItems();
+                tvNoFriendStreaminig.setVisibility(View.VISIBLE);
+                tvNoFriendStreaminig.setText(R.string.no_live_streaming_message);
+
+            }
+
+            @Override
+            public void onFailed(Throwable throwable) {
+                isStreamUpdating = false;
+                progressBarConnectionStreaming.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onInternetFailed() {
+                isStreamUpdating = false;
+                progressBarConnectionStreaming.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onUnauthorized(Throwable throwable) {
+                isStreamUpdating = false;
+                progressBarConnectionStreaming.setVisibility(View.GONE);
+
+            }
+        });
+
+    }
+
+    private void getNewToken(String id) {
+
+        NewTwilioTokenRequest request = new NewTwilioTokenRequest();
+        request.setId(id);
+        WebAPIManager.getInstance().getNewTwilioToken(request, new RemoteCallback<NewTwilioTokenResponse>() {
+            @Override
+            public void onSuccess(NewTwilioTokenResponse response) {
+
+            }
+        });
+    }
+
     private void logoutCall() {
         showLoading();
         WebAPIManager.getInstance().logout(new RemoteCallback<CommonResponse>(this) {
@@ -1156,21 +1383,48 @@ public class BroadcastActivityNew extends BaseActivity
     @Override
     public void onPermissionAllow(int permissionCode) {
         if (permissionCode == REQUEST_AUDIO_PERM) {
+
+            if (Build.VERSION.SDK_INT >= 29) {
+                screenCapturerManager.startForeground();
+            }
+            if (screenCapturer == null) {
+                requestScreenCapturePermission();
+            } else {
+                if (checkInternetConnection()) {
+                    getSessionIdFromAPI();
+                    createRoomAndGetId();
+                } else {
+                    stopBroadcast();
+                }
+            }
+
+/*
             if (!projectionStarted) {
-                projectionManager = (MediaProjectionManager)
+            *//*    projectionManager = (MediaProjectionManager)
                         getSystemService(Context.MEDIA_PROJECTION_SERVICE);
                 startProjection();
-            } else {
+            *//*} else {
 
                 if (checkInternetConnection()) {
-                    connectWithSession();
+                    getSessionIdFromAPI();
 
                 } else {
                     stopBroadcast();
 //                switchCompat.setChecked(false);
                 }
             }
+     */
         }
+    }
+
+    private void requestScreenCapturePermission() {
+        Log.d(TAG, "Requesting permission to capture screen");
+        MediaProjectionManager mediaProjectionManager = (MediaProjectionManager)
+                getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+
+        // This initiates a prompt dialog for the user to confirm screen projection.
+        startActivityForResult(mediaProjectionManager.createScreenCaptureIntent(),
+                REQUEST_MEDIA_PROJECTION);
     }
 
     @Override

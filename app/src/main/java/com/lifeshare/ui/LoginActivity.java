@@ -62,7 +62,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         * */
 
         if (BuildConfig.FLAVOR.equalsIgnoreCase("Dev")) {
-            etEmail.setText("chirag.patel@9spl.com");
+            etEmail.setText("kundan101");
             etPassword.setText("Test105*");
 /*
             etEmail.setText("bhavy.koshti@9spl.com");
@@ -130,7 +130,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
                 if (PreferenceHelper.getInstance().getIsAcceptTermOfService()) {
-                    startActivity(new Intent(LoginActivity.this, BroadcastActivityNew.class));
+                    startActivity(new Intent(LoginActivity.this, TwilioBroadcastActivityNew.class));
                     finish();
                 } else {
                     startActivity(new Intent(LoginActivity.this, TermOfServicesActivity.class));

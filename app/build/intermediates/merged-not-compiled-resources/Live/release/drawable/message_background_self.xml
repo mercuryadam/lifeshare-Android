@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/color_chat_message_bg_self" />
-    <corners
-        android:bottomLeftRadius="@dimen/size_30dp"
-        android:bottomRightRadius="@dimen/size_10dp"
-        android:topLeftRadius="@dimen/size_30dp"
-        android:topRightRadius="@dimen/size_10dp" />
-</shape>

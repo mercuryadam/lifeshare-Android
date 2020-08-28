@@ -1,13 +1,13 @@
 package com.lifeshare;
 
-import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.JsonElement;
@@ -18,11 +18,12 @@ import com.lifeshare.ui.LoginActivity;
 import com.lifeshare.utils.PreferenceHelper;
 
 
+
 /**
  * Created by chirag.patel on 21/11/18.
  */
 
-public class LifeShare extends Application {
+public class LifeShare extends MultiDexApplication {
     public static LifeShare INSTANCE;
     public static DatabaseReference databaseReference;
     static Context mContext;
@@ -33,6 +34,12 @@ public class LifeShare extends Application {
 
         }
         return INSTANCE;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public static DatabaseReference getFirebaseReference() {
@@ -46,14 +53,13 @@ public class LifeShare extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
-
+   /*     FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
         if (BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")) {
             FirebaseApp.initializeApp(getApplicationContext());
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
             FirebaseCrashlytics.getInstance().sendUnsentReports();
         }
-
+   */
     }
 
     public void updateFcmTokenToServer() {

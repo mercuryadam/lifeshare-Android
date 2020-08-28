@@ -2,7 +2,6 @@ buildscript {
 
 }
 apply plugin: 'com.android.application'
-
 repositories {
     maven {
         url "https://jitpack.io"
@@ -28,6 +27,10 @@ android {
         versionCode 4
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
     signingConfigs {
         release {
@@ -41,13 +44,17 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            debuggable false
+            debuggable true
             shrinkResources true
             useProguard true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            manifestPlaceholders = [deactivatedCrashanalitycs:"false"]
         }
         debug{
+            ext.enableCrashlytics = false
+            manifestPlaceholders = [deactivatedCrashanalitycs:"true"]
         }
     }
 
@@ -58,13 +65,15 @@ android {
 //            buildConfigField("String", "BASE_URL", '"http://52.14.203.109/public/api/v1/"')
             buildConfigField("String", "BASE_URL", '"http://3.136.176.13/public/api/v1/"')
 
+
         }
 
         Dev {
             dimension("buildType")
 
 //            buildConfigField("String", "BASE_URL", '"http://3.136.176.13/public/api/v1/"')
-            buildConfigField("String", "BASE_URL", '"http://a111bb989b21.ngrok.io/lifeshare-api/public/api/v1/"')
+//            buildConfigField("String", "BASE_URL", '"http://3.136.176.13/public/api/v1/"')
+            buildConfigField("String", "BASE_URL", '"http://94ced2c1ae21.ngrok.io/lifeshare-api/public/api/v1/"')
 
         }
     }
@@ -124,8 +133,15 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:17.4.4'
 
     // Add the Firebase Crashlytics SDK.
+/*
     implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.1'
+*/
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation "com.twilio:audioswitch:1.0.0"
+    implementation "com.twilio:video-android:5.10.2"
 
 }
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+//apply plugin: 'com.google.firebase.crashlytics'
