@@ -8,6 +8,8 @@ import android.provider.Settings;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.JsonElement;
@@ -53,13 +55,12 @@ public class LifeShare extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-   /*     FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
         if (BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")) {
             FirebaseApp.initializeApp(getApplicationContext());
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
             FirebaseCrashlytics.getInstance().sendUnsentReports();
         }
-   */
     }
 
     public void updateFcmTokenToServer() {

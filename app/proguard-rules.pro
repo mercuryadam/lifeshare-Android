@@ -107,6 +107,15 @@
   **[] $VALUES;
   public *;
 }
+
+
+-keep class tvi.webrtc.** { *; }
+-keep class com.twilio.video.** { *; }
+-keep class com.twilio.common.** { *; }
+-keep class com.twilio.voice.** { *; }
+-keepattributes InnerClasses
+
+
 -keep class com.firebase.** { *; }
 -keep class org.apache.** { *; }
 -keepnames class com.shaded.fasterxml.** { *; }
