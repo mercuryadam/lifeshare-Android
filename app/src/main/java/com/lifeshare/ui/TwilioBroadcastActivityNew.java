@@ -35,6 +35,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -139,6 +146,8 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     private RelativeLayout rlChatView;
     private TextView tvText;
     private RelativeLayout rlReceiver;
+    AdView mAdView;
+    private InterstitialAd mInterstitialAd;
     private CountDownTimer timer;
     //    private SwitchCompat switchCompat;
     private BubblesManager bubblesManager;
@@ -517,6 +526,31 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         getSupportActionBar().hide();
         setStreamingConnection();
 
+        // Initialize the Mobile Ads SDK.
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        //Banner ad
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        //Interstitial Ad
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                // Load the next interstitial.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+
+        });
+
     }
 
     private void startForGroundService() {
@@ -806,6 +840,12 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         rlChatView.setVisibility(View.GONE);
         container.setVisibility(View.GONE);
         deleteStreaming();
+
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            Log.d("TAG", "The interstitial wasn't loaded yet.");
+        }
     }
 
     private void startBroadCast() {
