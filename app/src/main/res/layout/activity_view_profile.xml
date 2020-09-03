@@ -201,6 +201,17 @@
                     android:layout_marginTop="@dimen/size_8dp"
                     tools:text="chirag.patel@9spl.com" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSubscribe"
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/size_30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="@dimen/size_22sp"
+                    android:text="@string/subscribe" />
+
                 <LinearLayout
                     android:id="@+id/llCATitle"
                     android:layout_width="match_parent"

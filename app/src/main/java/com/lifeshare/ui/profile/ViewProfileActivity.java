@@ -7,12 +7,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lifeshare.BaseActivity;
@@ -34,6 +48,7 @@ import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -51,7 +66,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private AppCompatTextView tvCityName;
     private AppCompatTextView tvStateName;
     private AppCompatTextView tvCountryName;
-    private AppCompatTextView tvPhoneNumber;
+    private AppCompatTextView tvPhoneNumber, tvSubscribe;
     private LinearLayout llEmailPhoneCity, llCATitle;
     private FilterRecyclerView rvChannelArchive;
     private ChannelArchiveAdapter channelArchiveAdapter;
@@ -59,6 +74,8 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private ImageView addArchivesFromDialog;
     private String userId = "";
     private AppCompatTextView tvTotalViewer;
+    List<SkuDetails> skuDetails;
+    BillingClient billingClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +106,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             setRecyclerView();
         }
 
-
+        //setUpBillingClient();
     }
 
     @Override
@@ -188,6 +205,8 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         tvStateName = (AppCompatTextView) findViewById(R.id.tv_state_name);
         tvCountryName = (AppCompatTextView) findViewById(R.id.tv_country_name);
         tvPhoneNumber = (AppCompatTextView) findViewById(R.id.tv_phone_number);
+        tvSubscribe = (AppCompatTextView) findViewById(R.id.tvSubscribe);
+        //tvSubscribe.setOnClickListener(this);
         llEmailPhoneCity = findViewById(R.id.llEmailPhoneCity);
         llCATitle = findViewById(R.id.llCATitle);
         llCATitle.setOnClickListener(this);
@@ -255,6 +274,15 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
                 break;
 
+            case R.id.tvSubscribe:
+                if (skuDetails != null) {
+                    if (skuDetails.size() == 1) {
+                        BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+                                .setSkuDetails(skuDetails.get(0))
+                                .build();
+                        billingClient.launchBillingFlow(ViewProfileActivity.this, billingFlowParams);
+                    }
+                }
         }
     }
 
@@ -310,4 +338,81 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     public void handleDialogClose(DialogInterface dialog) {
         getListChannelArchive(userId);
     }
+
+
+    private void setUpBillingClient() {
+        billingClient = BillingClient.newBuilder(ViewProfileActivity.this)
+                .setListener(purchaseUpdateListener)
+                .enablePendingPurchases()
+                .build();
+
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+
+                    final List<String> skuList = new ArrayList<>();
+                    skuList.add("subscription_id"); // SKU Id
+                    SkuDetailsParams params = SkuDetailsParams.newBuilder()
+                            .setSkusList(skuList)
+                            .setType(BillingClient.SkuType.SUBS)
+                            .build();
+                    billingClient.querySkuDetailsAsync(params,
+                            new SkuDetailsResponseListener() {
+                                @Override
+                                public void onSkuDetailsResponse(BillingResult billingResult,
+                                                                 List<SkuDetails> skuDetailsList) {
+                                    if (skuDetails != null) {
+                                        if (skuDetails.size() == 1) {
+                                            Toast.makeText(ViewProfileActivity.this, skuDetailsList.get(0).getSku(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    skuDetails = skuDetailsList;
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+    }
+
+    private PurchasesUpdatedListener purchaseUpdateListener = new PurchasesUpdatedListener() {
+
+        @Override
+        public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
+            // To be implemented in a later section.
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
+                    && purchases != null) {
+                for (Purchase purchase : purchases) {
+
+                    AcknowledgePurchaseParams params = AcknowledgePurchaseParams.newBuilder()
+                            .setPurchaseToken(purchase.getPurchaseToken())
+                            .build();
+                    billingClient.acknowledgePurchase(params, new AcknowledgePurchaseResponseListener() {
+                        @Override
+                        public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
+                            String debugMessage = billingResult.getDebugMessage();
+                            int responseCode = billingResult.getResponseCode();
+                        }
+                    });
+
+                }
+            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+                // Handle an error caused by a user cancelling the purchase flow.
+            } else {
+                // Handle any other error codes.
+            }
+        }
+
+    };
+
+
 }

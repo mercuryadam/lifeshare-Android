@@ -145,5 +145,6 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="select_connections">Select Connections</string>
     <string name="select_all">Select All</string>
     <string name="un_select_all">Unselect All</string>
+    <string name="subscribe">Subscribe</string>
 
 </resources>
