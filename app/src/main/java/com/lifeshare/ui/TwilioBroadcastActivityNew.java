@@ -60,6 +60,7 @@ import com.lifeshare.customview.recyclerview.FilterRecyclerView;
 import com.lifeshare.model.ViewerUser;
 import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
+import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteStreamingTwilioRequest;
 import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
@@ -73,6 +74,7 @@ import com.lifeshare.ui.admin_user.ReportsUserListActivity;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
 import com.lifeshare.ui.profile.ViewProfileActivity;
+import com.lifeshare.ui.select_connection.SelectConnectionsActivity;
 import com.lifeshare.ui.show_broadcast.MessageFragment;
 import com.lifeshare.ui.show_broadcast.TwilioShowStreamActivityNew;
 import com.lifeshare.ui.show_broadcast.TwilioStreamUserListAdapter;
@@ -221,6 +223,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     private LocalVideoTrack screenVideoTrack;
     private LocalAudioTrack localAudioTrack;
     private Room room;
+    private String selectedUsers;
     private final ScreenCapturer.Listener screenCapturerListener = new ScreenCapturer.Listener() {
         @Override
         public void onScreenCaptureError(String errorDescription) {
@@ -457,24 +460,30 @@ public class TwilioBroadcastActivityNew extends BaseActivity
             return;
         }
         showLoading(getString(R.string.waiting_for_connection_msg));
-        WebAPIManager.getInstance().createRoom(new RemoteCallback<CreateRoomResponse>() {
-            @Override
-            public void onSuccess(CreateRoomResponse response) {
-                sessionData = response;
-                PreferenceHelper.getInstance().setRoomData(sessionData);
-                if (response != null
-                        && !TextUtils.isEmpty(response.getRoomName())
-                        && !TextUtils.isEmpty(response.getToken())) {
 
-                    startScreenCapture();
-                    createFirebaseData(response);
-                } else {
-                    showToast(getString(R.string.message_invalid_session));
-                    hideLoading();
+        if (selectedUsers != null) {
+            CreateRoomWithUserRequest createRoomWithUserRequest = new CreateRoomWithUserRequest();
+            createRoomWithUserRequest.setSaveBroadCast(false);
+            createRoomWithUserRequest.setUsers(selectedUsers);
+            WebAPIManager.getInstance().createRoom(createRoomWithUserRequest, new RemoteCallback<CreateRoomResponse>() {
+                @Override
+                public void onSuccess(CreateRoomResponse response) {
+                    sessionData = response;
+                    PreferenceHelper.getInstance().setRoomData(sessionData);
+                    if (response != null
+                            && !TextUtils.isEmpty(response.getRoomName())
+                            && !TextUtils.isEmpty(response.getToken())) {
+
+                        startScreenCapture();
+                        createFirebaseData(response);
+                    } else {
+                        showToast(getString(R.string.message_invalid_session));
+                        hideLoading();
+                    }
+
                 }
-
-            }
-        });
+            });
+        }
 
     }
 
@@ -633,13 +642,20 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 }
                 break;
                 case 1024:
-                    ArrayList<MyConnectionListResponse> checkedItems = new ArrayList();
+                    RuntimeEasyPermission.newInstance(permissions_audio,
+                            REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
+                    ArrayList<MyConnectionListResponse> checkedItems = new ArrayList<MyConnectionListResponse>();
+                    ArrayList<String> ids = new ArrayList<String>();
                     Bundle extras = data.getExtras();
                     checkedItems = extras.getParcelableArrayList(Const.SELECTED_USERS);
-                    for (MyConnectionListResponse checkedItem : checkedItems) {
-                        Log.e("Bhavy", checkedItem.getFirstName());
+                    if (checkedItems != null) {
+                        for (MyConnectionListResponse checkedItem : checkedItems) {
+
+                            ids.add(checkedItem.getUserId());
+                        }
+
+                        selectedUsers = TextUtils.join(",", ids);
                     }
-                    Toast.makeText(this, "Got Here", Toast.LENGTH_SHORT).show();
                     break;
             }
 
@@ -812,7 +828,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 }
                 break;
             case R.id.rl_broadcast:
-//                startActivityForResult(new Intent(this, SelectConnectionsActivity.class), 1024);
+
                 if (!isBroadcasting) {
                     startBroadCast();
                 } else {
@@ -852,9 +868,8 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
 //        startForGroundService();
         playAudio(this, R.raw.jingle_two);
+        startActivityForResult(new Intent(this, SelectConnectionsActivity.class), 1024);
 
-        RuntimeEasyPermission.newInstance(permissions_audio,
-                REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
 
     }
 

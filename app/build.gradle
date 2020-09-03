@@ -74,7 +74,8 @@ android {
 //            buildConfigField("String", "BASE_URL", '"http://3.136.176.13/public/api/v1/"')
 //            buildConfigField("String", "BASE_URL", '"http://3.136.176.13/public/api/v1/"')
             //buildConfigField("String", "BASE_URL", '"http://3.136.176.13/public/api/v1/"')
-            buildConfigField("String", "BASE_URL", '"https://921b4bb422ab.ngrok.io/api/v1/"')
+            //buildConfigField("String", "BASE_URL", '"https://921b4bb422ab.ngrok.io/api/v1/"')
+            buildConfigField("String", "BASE_URL", '"https://7fb87728581b.ngrok.io"')
 
         }
     }

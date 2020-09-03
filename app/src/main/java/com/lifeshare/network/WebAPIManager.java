@@ -8,6 +8,7 @@ import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.CityRequest;
+import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
 import com.lifeshare.network.request.DeleteStreamingRequest;
@@ -188,8 +189,8 @@ public class WebAPIManager {
         mService.createSession().enqueue(callback);
     }
 
-    public void createRoom(RemoteCallback<CreateRoomResponse> callback) {
-        mService.createRoom().enqueue(callback);
+    public void createRoom(CreateRoomWithUserRequest request, RemoteCallback<CreateRoomResponse> callback) {
+        mService.createRoom(request).enqueue(callback);
     }
 
     public void getCurrentConnectionStreaming(RemoteCallback<ArrayList<StreamUserResponse>> callback) {

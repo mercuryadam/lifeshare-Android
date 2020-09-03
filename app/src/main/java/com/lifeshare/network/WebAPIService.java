@@ -5,6 +5,7 @@ import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.CityRequest;
+import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
 import com.lifeshare.network.request.DeleteStreamingRequest;
@@ -130,7 +131,7 @@ public interface WebAPIService {
     Call<CreateSessionResponse> createSession();
 
     @POST("twilio/create")
-    Call<CreateRoomResponse> createRoom();
+    Call<CreateRoomResponse> createRoom(@Body CreateRoomWithUserRequest request);
 
     @POST("twilio/get-new-token")
     Call<NewTwilioTokenResponse> getNewTwilioToken(@Body NewTwilioTokenRequest request);
