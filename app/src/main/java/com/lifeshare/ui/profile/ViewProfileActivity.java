@@ -54,6 +54,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewProfileActivity extends BaseActivity implements View.OnClickListener, MyDialogCloseListener {
 
+    List<SkuDetails> skuDetails;
+    BillingClient billingClient;
     private LinearLayout llMain;
     private CircleImageView ivProfile;
     private AppCompatTextView tvName;
@@ -66,7 +68,8 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private AppCompatTextView tvCityName;
     private AppCompatTextView tvStateName;
     private AppCompatTextView tvCountryName;
-    private AppCompatTextView tvPhoneNumber, tvSubscribe;
+    private AppCompatTextView tvPhoneNumber;
+    private AppCompatButton btnSubscribe;
     private LinearLayout llEmailPhoneCity, llCATitle;
     private FilterRecyclerView rvChannelArchive;
     private ChannelArchiveAdapter channelArchiveAdapter;
@@ -74,8 +77,41 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private ImageView addArchivesFromDialog;
     private String userId = "";
     private AppCompatTextView tvTotalViewer;
-    List<SkuDetails> skuDetails;
-    BillingClient billingClient;
+    private PurchasesUpdatedListener purchaseUpdateListener = new PurchasesUpdatedListener() {
+
+        @Override
+        public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
+            // To be implemented in a later section.
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
+                    && purchases != null) {
+
+                String data = "ResponseCode - " + billingResult.getResponseCode() + ", DebugMessage : " + billingResult.getDebugMessage();
+
+                showToast("SUCCESS_1 : " + billingResult.getResponseCode() + " - " + billingResult.getDebugMessage());
+                for (Purchase purchase : purchases) {
+                    AcknowledgePurchaseParams params = AcknowledgePurchaseParams.newBuilder()
+                            .setPurchaseToken(purchase.getPurchaseToken())
+                            .build();
+                    billingClient.acknowledgePurchase(params, new AcknowledgePurchaseResponseListener() {
+                        @Override
+                        public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
+                            String debugMessage = billingResult.getDebugMessage();
+                            int responseCode = billingResult.getResponseCode();
+                            showToast("SUCCESS_2 : " + responseCode + " - " + debugMessage);
+                        }
+                    });
+
+                }
+            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
+                showToast("USER_CANCELLED Billing Process");
+                // Handle an error caused by a user cancelling the purchase flow.
+            } else {
+                showToast("Billing Error : " + billingResult.getResponseCode() + ":" + billingResult.getDebugMessage());
+                // Handle any other error codes.
+            }
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +142,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             setRecyclerView();
         }
 
-        //setUpBillingClient();
+        setUpBillingClient();
     }
 
     @Override
@@ -205,8 +241,8 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         tvStateName = (AppCompatTextView) findViewById(R.id.tv_state_name);
         tvCountryName = (AppCompatTextView) findViewById(R.id.tv_country_name);
         tvPhoneNumber = (AppCompatTextView) findViewById(R.id.tv_phone_number);
-        tvSubscribe = (AppCompatTextView) findViewById(R.id.tvSubscribe);
-        //tvSubscribe.setOnClickListener(this);
+        btnSubscribe = (AppCompatButton) findViewById(R.id.btnSubscribe);
+        btnSubscribe.setOnClickListener(this);
         llEmailPhoneCity = findViewById(R.id.llEmailPhoneCity);
         llCATitle = findViewById(R.id.llCATitle);
         llCATitle.setOnClickListener(this);
@@ -238,12 +274,14 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                         }
                     });
                 } else {
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    String url = item.getLink();
-                    if (!url.startsWith("http://") && !url.startsWith("https://"))
-                        url = "http://" + url;
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
+                    if (!item.getLink().trim().isEmpty()) {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        String url = item.getLink();
+                        if (!url.startsWith("http://") && !url.startsWith("https://"))
+                            url = "http://" + url;
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
+                    }
                 }
 
             }
@@ -274,7 +312,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
                 break;
 
-            case R.id.tvSubscribe:
+            case R.id.btnSubscribe:
                 if (skuDetails != null) {
                     if (skuDetails.size() == 1) {
                         BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
@@ -339,7 +377,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         getListChannelArchive(userId);
     }
 
-
     private void setUpBillingClient() {
         billingClient = BillingClient.newBuilder(ViewProfileActivity.this)
                 .setListener(purchaseUpdateListener)
@@ -383,36 +420,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             }
         });
     }
-
-    private PurchasesUpdatedListener purchaseUpdateListener = new PurchasesUpdatedListener() {
-
-        @Override
-        public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
-            // To be implemented in a later section.
-            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
-                    && purchases != null) {
-                for (Purchase purchase : purchases) {
-
-                    AcknowledgePurchaseParams params = AcknowledgePurchaseParams.newBuilder()
-                            .setPurchaseToken(purchase.getPurchaseToken())
-                            .build();
-                    billingClient.acknowledgePurchase(params, new AcknowledgePurchaseResponseListener() {
-                        @Override
-                        public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
-                            String debugMessage = billingResult.getDebugMessage();
-                            int responseCode = billingResult.getResponseCode();
-                        }
-                    });
-
-                }
-            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-                // Handle an error caused by a user cancelling the purchase flow.
-            } else {
-                // Handle any other error codes.
-            }
-        }
-
-    };
 
 
 }

@@ -179,6 +179,10 @@
         android:layout_below="@+id/line2"
         android:background="@color/light_primary_color_new">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
         <com.google.android.gms.ads.AdView
             xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
@@ -193,12 +197,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/adView"
-            android:layout_centerInParent="true"
+            android:id="@+id/ll_card_main"
             android:layout_marginLeft="@dimen/size_24dp"
             android:layout_marginTop="@dimen/size_12dp"
             android:layout_marginRight="@dimen/size_24dp"
             android:layout_marginBottom="@dimen/size_12dp"
+            android:layout_below="@+id/adView"
             android:background="@drawable/dashboard_background_dark"
             android:padding="@dimen/size_16dp">
 
@@ -273,6 +277,7 @@
                     </RelativeLayout>
                 </LinearLayout>
             </ScrollView>
+        </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 

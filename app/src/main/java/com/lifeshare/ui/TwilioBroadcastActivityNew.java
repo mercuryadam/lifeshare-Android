@@ -69,7 +69,6 @@ import com.lifeshare.network.response.CreateRoomResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
 import com.lifeshare.network.response.StreamUserListResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
-import com.lifeshare.receiver.ForegroundService;
 import com.lifeshare.ui.admin_user.ReportsUserListActivity;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
@@ -123,6 +122,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     private static final int RC_VIDEO_APP_PERM = 124;
     private static final int REQUEST_AUDIO_PERM = 1123;
     private static final int REQUEST_MEDIA_PROJECTION = 100;
+    private static final int REQUEST_SELECT_CONNECTION_USERS = 159;
     private static final String LOCAL_AUDIO_TRACK_NAME = "mic";
     BubbleLayout bubbleView;
     TextView bubbleText;
@@ -144,11 +144,11 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
         }
     };
+    AdView mAdView;
     private RelativeLayout mPublisherViewContainer;
     private RelativeLayout rlChatView;
     private TextView tvText;
     private RelativeLayout rlReceiver;
-    AdView mAdView;
     private InterstitialAd mInterstitialAd;
     private CountDownTimer timer;
     //    private SwitchCompat switchCompat;
@@ -223,7 +223,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     private LocalVideoTrack screenVideoTrack;
     private LocalAudioTrack localAudioTrack;
     private Room room;
-    private String selectedUsers;
     private final ScreenCapturer.Listener screenCapturerListener = new ScreenCapturer.Listener() {
         @Override
         public void onScreenCaptureError(String errorDescription) {
@@ -238,6 +237,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
             Log.d(TAG, "First frame from screen capturer available");
         }
     };
+    private String selectedUsers;
     private LocalParticipant localParticipant;
 
     @Override
@@ -562,17 +562,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
     }
 
-    private void startForGroundService() {
-        Intent serviceIntent = new Intent(this, ForegroundService.class);
-        serviceIntent.putExtra("inputExtra", "Start Foreground Service");
-        ContextCompat.startForegroundService(this, serviceIntent);
-    }
-
-    private void stopForgroundService() {
-        Intent serviceIntent = new Intent(this, ForegroundService.class);
-        stopService(serviceIntent);
-    }
-
     private void setStreamingConnection() {
 
         progressBarConnectionStreaming.setVisibility(View.VISIBLE);
@@ -628,22 +617,16 @@ public class TwilioBroadcastActivityNew extends BaseActivity
             switch (requestCode) {
                 case REQUEST_MEDIA_PROJECTION: {
 
-                    if (resultCode != RESULT_OK) {
-                        Toast.makeText(this, R.string.screen_capture_permission_message,
-                                Toast.LENGTH_LONG).show();
-                        return;
-                    }
+                    Toast.makeText(this, R.string.screen_capture_permission_message,
+                            Toast.LENGTH_LONG).show();
+
                     screenCapturer = new ScreenCapturer(this, resultCode, data, screenCapturerListener);
-                    if (checkInternetConnection()) {
-                        createRoomAndGetId();
-                    } else {
-                        changeBroadcastButtonView();
-                    }
+
+                    startBroadCast();
                 }
                 break;
-                case 1024:
-                    RuntimeEasyPermission.newInstance(permissions_audio,
-                            REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
+                case REQUEST_SELECT_CONNECTION_USERS:
+
                     ArrayList<MyConnectionListResponse> checkedItems = new ArrayList<MyConnectionListResponse>();
                     ArrayList<String> ids = new ArrayList<String>();
                     Bundle extras = data.getExtras();
@@ -656,6 +639,8 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
                         selectedUsers = TextUtils.join(",", ids);
                     }
+
+                    startBroadCast();
                     break;
             }
 
@@ -664,6 +649,15 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 case MEDIA_PROJECTION_REQUEST_CODE:
                     Toast.makeText(this, getString(R.string.screen_capture_permission_message), Toast.LENGTH_SHORT).show();
                     changeBroadcastButtonView();
+                    break;
+                case REQUEST_SELECT_CONNECTION_USERS:
+                    if (resultCode == RESULT_CANCELED) {
+                        bubbleProgressBar.setVisibility(View.GONE);
+                        bubbleText.setText(getResources().getString(R.string.start));
+                        bubbleLayout.setBackground(getResources().getDrawable(R.drawable.green_circle_bg));
+                        bubbleLayout.setEnabled(true);
+
+                    }
                     break;
             }
         }
@@ -712,7 +706,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                     bubbleLayout.setEnabled(false);
                     tvBroadcast.setText(getResources().getString(R.string.stop_broadcast));
 //                    switchCompat.setChecked(true);
-                    startBroadCast();
+                    checkAudioPermissionAndStartBroadCast();
 
                 } else {
                     Log.v(TAG, "onBubbleClick: else ");
@@ -830,7 +824,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
             case R.id.rl_broadcast:
 
                 if (!isBroadcasting) {
-                    startBroadCast();
+                    checkAudioPermissionAndStartBroadCast();
                 } else {
                     stopBroadcast();
                 }
@@ -864,11 +858,13 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         }
     }
 
-    private void startBroadCast() {
+    private void checkAudioPermissionAndStartBroadCast() {
 
 //        startForGroundService();
         playAudio(this, R.raw.jingle_two);
-        startActivityForResult(new Intent(this, SelectConnectionsActivity.class), 1024);
+
+        RuntimeEasyPermission.newInstance(permissions_audio,
+                REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
 
 
     }
@@ -1281,20 +1277,27 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     public void onPermissionAllow(int permissionCode) {
         if (permissionCode == REQUEST_AUDIO_PERM) {
 
+
+            startActivityForResult(new Intent(this, SelectConnectionsActivity.class), REQUEST_SELECT_CONNECTION_USERS);
+
+        }
+    }
+
+    private void startBroadCast() {
+        if (screenCapturer == null) {
+            requestScreenCapturePermission();
+        } else {
+
             if (Build.VERSION.SDK_INT >= 29) {
                 screenCapturerManager.startForeground();
             }
-            if (screenCapturer == null) {
-                requestScreenCapturePermission();
+            if (checkInternetConnection()) {
+                createRoomAndGetId();
             } else {
-                if (checkInternetConnection()) {
-                    createRoomAndGetId();
-                } else {
-                    stopBroadcast();
-                }
+                stopBroadcast();
             }
-
         }
+
     }
 
     private void requestScreenCapturePermission() {

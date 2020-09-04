@@ -20,10 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.opentok.android.** {*;}
--keep class com.opentok.android.v3.** {*;}
--keep class com.opentok.android.v3.$ {*;}
--keep public class * extends com.opentok.android.v3.OpentokException
 -keep class org.webrtc.** {*;}
 -keep class org.webrtc.. {*;}
 -keep @androidx.annotation.Keep class *

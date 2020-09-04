@@ -61,7 +61,14 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                 ChatMessage chatMessage = snapshot.getValue(ChatMessage.class);
                 messageArrayList.add(chatMessage);
-                playAudio(R.raw.jingle);
+
+            }
+            if (messageArrayList.size() > adapter.getAllItems().size()) {
+                if (messageArrayList.get(messageArrayList.size() - 1).getUserId().equals(PreferenceHelper.getInstance().getUser().getUserId())) {
+                    playAudio(R.raw.jingle);
+                } else {
+                    playAudio(R.raw.tap_1);
+                }
             }
             adapter.setItems(messageArrayList);
             rvMessage.scrollToPosition(messageArrayList.size() - 1);

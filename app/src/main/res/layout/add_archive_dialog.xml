@@ -16,11 +16,12 @@
         android:padding="@dimen/size_20dp">
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextRegular.Black.size14"
+            android:id="@+id/tvLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginTop="@dimen/size_8dp"
+            style="@style/TextRegular.Black.size18"
+            android:padding="@dimen/size_20dp"
             android:gravity="center"
             android:text="@string/link" />
 
@@ -34,6 +35,7 @@
             android:layout_marginRight="@dimen/size_8dp"
             android:hint="@string/title"
             android:padding="@dimen/size_14dp"
+            android:visibility="gone"
             android:singleLine="true"
             android:textColorHint="@color/gray" />
 
@@ -47,6 +49,7 @@
             android:layout_marginRight="@dimen/size_8dp"
             android:hint="@string/link"
             android:padding="@dimen/size_14dp"
+            android:visibility="gone"
             android:singleLine="true"
             android:textColorHint="@color/gray" />
 

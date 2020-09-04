@@ -3,7 +3,6 @@ package com.lifeshare.ui.profile;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
@@ -31,6 +31,7 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
     private static final int CAMERA_REQUEST_ID = 101;
     private ImageView ivAddImage;
     private EditText etAddTitle, etAddLink;
+    private AppCompatTextView tvLink;
     private Button btnAddChannelArchive;
     private String imagePath;
 
@@ -64,9 +65,11 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
 
         etAddTitle = (EditText) view.findViewById(R.id.etAddTitle);
         etAddLink = (EditText) view.findViewById(R.id.etAddLink);
+        tvLink = (AppCompatTextView) view.findViewById(R.id.tvLink);
         ivAddImage = view.findViewById(R.id.ivAddImage);
         btnAddChannelArchive = view.findViewById(R.id.btnAddChannelArchive);
 
+        tvLink.setOnClickListener(this);
         ivAddImage.setOnClickListener(this);
         btnAddChannelArchive.setOnClickListener(this);
     }
@@ -82,6 +85,10 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
                 if (isValid()) {
                     createChannelArchive(etAddTitle.getText().toString(), etAddLink.getText().toString(), imagePath);
                 }
+                break;
+            case R.id.tvLink:
+                etAddTitle.setVisibility(View.VISIBLE);
+                etAddLink.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
@@ -107,6 +114,7 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
     }
 
     private boolean isValid() {
+/*
         if (TextUtils.isEmpty(etAddTitle.getText().toString().trim())) {
             Toast.makeText(getActivity(), getString(R.string.please_add_title), Toast.LENGTH_SHORT).show();
             return false;
@@ -115,6 +123,7 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
             Toast.makeText(getActivity(), getString(R.string.please_add_link), Toast.LENGTH_SHORT).show();
             return false;
         }
+*/
         if (imagePath == null) {
             Toast.makeText(getActivity(), getString(R.string.please_add_image), Toast.LENGTH_SHORT).show();
             return false;

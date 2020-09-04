@@ -208,7 +208,7 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
     }
 
     private void getNewToken(String id) {
-
+        showLoading();
         NewTwilioTokenRequest request = new NewTwilioTokenRequest();
         request.setId(id);
         WebAPIManager.getInstance().getNewTwilioToken(request, new RemoteCallback<NewTwilioTokenResponse>() {
@@ -464,7 +464,6 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
 
     private void connectToRoom(String roomName, String token) {
         Log.v(TAG, "connectToRoom: roomName : " + roomName + " - Token:" + token);
-        showLoading();
         llStreamProgress.setVisibility(View.VISIBLE);
         streamProgressBar.setVisibility(View.VISIBLE);
         tvStreamMessage.setText(getString(R.string.waiting_for_connection_msg));
@@ -565,21 +564,6 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
 //                showToast("onParticipantDisconnected - "+ room.getSid());
 
 
-                if (room.getSid().equals(currentVisibleStram.getsId())) {
-                    currentVisibleStram = null;
-                    llStreamProgress.setVisibility(View.VISIBLE);
-                    primaryVideoView.setVisibility(View.GONE);
-                    streamProgressBar.setVisibility(View.GONE);
-                    tvStreamMessage.setText(R.string.stream_drop_message);
-                    container.setVisibility(View.GONE);
-                    fabMessage.hide();
-                    tvStreamMessage.setVisibility(View.VISIBLE);
-                    if (countDownTimerViewerLastTime != null) {
-                        countDownTimerViewerLastTime.cancel();
-                    }
-                    rvViewer.setVisibility(View.INVISIBLE);
-                    removeValueEventListener();
-                }
 
             }
 
@@ -834,6 +818,21 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
                         remoteVideoTrack.isEnabled(),
                         remoteVideoTrack.getName()));
                 removeParticipantVideo(remoteVideoTrack);
+
+                currentVisibleStram = null;
+                llStreamProgress.setVisibility(View.VISIBLE);
+                primaryVideoView.setVisibility(View.GONE);
+                streamProgressBar.setVisibility(View.GONE);
+                tvStreamMessage.setText(R.string.stream_drop_message);
+                container.setVisibility(View.GONE);
+                fabMessage.hide();
+                tvStreamMessage.setVisibility(View.VISIBLE);
+                if (countDownTimerViewerLastTime != null) {
+                    countDownTimerViewerLastTime.cancel();
+                }
+                rvViewer.setVisibility(View.INVISIBLE);
+                removeValueEventListener();
+
             }
 
             @Override
