@@ -50,6 +50,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.instacart.library.truetime.TrueTime;
 import com.lifeshare.BaseActivity;
+import com.lifeshare.BuildConfig;
 import com.lifeshare.LifeShare;
 import com.lifeshare.R;
 import com.lifeshare.asyncTask.InitTrueTimeAsyncTask;
@@ -73,6 +74,7 @@ import com.lifeshare.ui.admin_user.ReportsUserListActivity;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
 import com.lifeshare.ui.profile.ViewProfileActivity;
+import com.lifeshare.ui.save_broadcast.ShowPreviousBroadcastAndChatActivity;
 import com.lifeshare.ui.select_connection.SelectConnectionsActivity;
 import com.lifeshare.ui.show_broadcast.MessageFragment;
 import com.lifeshare.ui.show_broadcast.TwilioShowStreamActivityNew;
@@ -606,7 +608,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 getCountForViewers();
                 fabMessage.show();
                 rlChatView.setVisibility(View.VISIBLE);
-                messageFragment.setCurrentStream(PreferenceHelper.getInstance().getUser().getUserId());
+                messageFragment.setCurrentStream(PreferenceHelper.getInstance().getUser().getUserId(), response.getId(), response.getsID());
             }
         });
     }
@@ -616,9 +618,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_MEDIA_PROJECTION: {
-
-                    Toast.makeText(this, R.string.screen_capture_permission_message,
-                            Toast.LENGTH_LONG).show();
 
                     screenCapturer = new ScreenCapturer(this, resultCode, data, screenCapturerListener);
 
@@ -652,10 +651,12 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                     break;
                 case REQUEST_SELECT_CONNECTION_USERS:
                     if (resultCode == RESULT_CANCELED) {
-                        bubbleProgressBar.setVisibility(View.GONE);
-                        bubbleText.setText(getResources().getString(R.string.start));
-                        bubbleLayout.setBackground(getResources().getDrawable(R.drawable.green_circle_bg));
-                        bubbleLayout.setEnabled(true);
+                        if (bubbleProgressBar != null) {
+                            bubbleProgressBar.setVisibility(View.GONE);
+                            bubbleText.setText(getResources().getString(R.string.start));
+                            bubbleLayout.setBackground(getResources().getDrawable(R.drawable.green_circle_bg));
+                            bubbleLayout.setEnabled(true);
+                        }
 
                     }
                     break;
@@ -1083,9 +1084,11 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         AppCompatTextView tvInvitations = (AppCompatTextView) dialog.findViewById(R.id.tv_invitations);
         AppCompatTextView tvDialogName = (AppCompatTextView) dialog.findViewById(R.id.tv_name);
         AppCompatTextView tvAboutLifeshare = (AppCompatTextView) dialog.findViewById(R.id.tv_about_lifeshare);
+        AppCompatTextView tvVersion = (AppCompatTextView) dialog.findViewById(R.id.tv_version);
         AppCompatTextView tvReports = (AppCompatTextView) dialog.findViewById(R.id.tv_report);
         View view = (View) dialog.findViewById(R.id.view);
 
+        tvVersion.setText("V" + BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")");
         tvDialogName.setText(PreferenceHelper.getInstance().getUser().getFirstName() + " " + PreferenceHelper.getInstance().getUser().getLastName());
         if (PreferenceHelper.getInstance().getUser().getUserType().equals("1")) {
             tvReports.setVisibility(View.VISIBLE);
@@ -1131,6 +1134,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         tvHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(TwilioBroadcastActivityNew.this, ShowPreviousBroadcastAndChatActivity.class));
                 dialog.dismiss();
             }
         });

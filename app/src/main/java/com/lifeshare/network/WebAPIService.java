@@ -1,9 +1,11 @@
 package com.lifeshare.network;
 
 import com.google.gson.JsonElement;
+import com.lifeshare.model.ChatMessage;
 import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
+import com.lifeshare.network.request.ChatHistoryRequest;
 import com.lifeshare.network.request.CityRequest;
 import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
@@ -18,11 +20,13 @@ import com.lifeshare.network.request.LoginRequest;
 import com.lifeshare.network.request.NewTwilioTokenRequest;
 import com.lifeshare.network.request.RejectInvitationRequest;
 import com.lifeshare.network.request.ReportUserRequest;
+import com.lifeshare.network.request.SaveChatRequest;
 import com.lifeshare.network.request.SearchUserRequest;
 import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.StateRequest;
 import com.lifeshare.network.request.UpdateDeviceTokenRequest;
 import com.lifeshare.network.request.UpdatePushNotificationRequest;
+import com.lifeshare.network.request.UpdateSaveChatFlag;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
@@ -177,8 +181,16 @@ public interface WebAPIService {
     @POST("channel/create")
     Call<CommonResponse> createChannelArchive(@PartMap Map<String, RequestBody> bodyMap, @Part MultipartBody.Part image);
 
-
     @POST("channel/delete")
     Call<CommonResponse> deleteChannelArchive(@Body DeleteArchivesRequest request);
+
+    @POST("chat/create")
+    Call<CommonResponse> saveChatMessage(@Body SaveChatRequest request);
+
+    @POST("twilio/update-chat-flag")
+    Call<CommonResponse> updateSaveChatFlag(@Body UpdateSaveChatFlag request);
+
+    @POST("chat/list")
+    Call<ArrayList<ChatMessage>> getSaveChatHistory(@Body ChatHistoryRequest request);
 
 }

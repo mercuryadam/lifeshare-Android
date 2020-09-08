@@ -181,11 +181,12 @@ public abstract class FilterableAdapter<ItemType, ListenerType extends BaseRecyc
         if (filteredList.size() > 0) {
             removedItem = filteredList.get(filteredList.size() - 1);
             filteredList.remove(filteredList.size() - 1);
-            notifyDataSetChanged();
         }
-        if (removedItem != null) {
-            originalList.remove(removedItem);
-        }
+
+//        if (removedItem != null) {
+        originalList.remove(originalList.size() - 1);
+//        }
+        notifyDataSetChanged();
     }
 
     /**
@@ -204,6 +205,7 @@ public abstract class FilterableAdapter<ItemType, ListenerType extends BaseRecyc
             originalList.remove(removedItem);
         }
     }
+
 
     /**
      * remove All items of list

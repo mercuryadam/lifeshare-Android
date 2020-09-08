@@ -31,6 +31,19 @@
         android:layout_above="@+id/ll_message"
         android:layout_marginRight="@dimen/size_60dp" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_save_chat"
+        style="@style/button_style_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/size_12dp"
+        android:paddingLeft="@dimen/size_30dp"
+        android:paddingRight="@dimen/size_30dp"
+        android:singleLine="true"
+        android:text="Save Chat"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:id="@+id/ll_message"
         android:layout_width="match_parent"

@@ -23,10 +23,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.save_broadcast.ShowPreviousBroadcastAndChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/splashTheme" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-3940256099942544~3347511713" />
 
         <activity
             android:name=".ui.select_connection.SelectConnectionsActivity"
@@ -67,7 +71,6 @@
                     android:screenOrientation="portrait"
                     android:windowSoftInputMode="stateAlwaysVisible|stateHidden" />
         -->
-
         <activity
             android:name=".ui.TwilioBroadcastActivityNew"
             android:screenOrientation="portrait"
@@ -149,19 +152,22 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-                <meta-data
-                    android:name="firebase_crashlytics_collection_enabled"
-                    android:value="true" />
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="true" />
+
         <receiver android:name=".receiver.AlarmReceiver">
             <intent-filter>
                 <action android:name="REFRESH_THIS" />
             </intent-filter>
         </receiver>
+
         <service
             android:name=".utils.ScreenCapturerService"
             android:enabled="true"
             android:foregroundServiceType="mediaProjection"
-            tools:targetApi="q"></service>
+            tools:targetApi="q" />
     </application>
 
 </manifest>

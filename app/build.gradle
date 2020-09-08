@@ -24,8 +24,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         vectorDrawables.useSupportLibrary = true
-        versionCode 4
-        versionName "1.1"
+        versionCode 5
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -50,11 +50,11 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            manifestPlaceholders = [deactivatedCrashanalitycs:"false"]
+            manifestPlaceholders = [deactivatedCrashanalitycs: "false"]
         }
-        debug{
+        debug {
             ext.enableCrashlytics = false
-            manifestPlaceholders = [deactivatedCrashanalitycs:"true"]
+            manifestPlaceholders = [deactivatedCrashanalitycs: "true"]
         }
     }
 
@@ -64,6 +64,7 @@ android {
 
 //            buildConfigField("String", "BASE_URL", '"http://52.14.203.109/public/api/v1/"')
             buildConfigField("String", "BASE_URL", '"http://3.136.176.13/public/api/v1/"')
+//            buildConfigField("String", "BASE_URL", '"https://5126d6a3ae17.ngrok.io/api/v1/"')
 
 
         }

@@ -158,6 +158,18 @@
             android:layout_marginStart="@dimen/size_24dp"
             android:padding="@dimen/size_12dp"
             android:text="@string/about_lifeshare" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_version"
+            style="@style/TextRegular.White.size12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/size_24dp"
+            android:padding="@dimen/size_12dp"
+            android:text="V1.0(6)" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.android.billingclient.api.Purchase;
 import com.google.gson.Gson;
 import com.lifeshare.LifeShare;
 import com.lifeshare.network.response.CreateRoomResponse;
@@ -22,6 +23,7 @@ public class PreferenceHelper {
     private final String IS_ACCEPT_TERM_OF_SERVICE = "IS_ACCEPT_TERM_OF_SERVICE";
     private final String USER_DATA = "USER_DATA";
     private final String SESSION_DATA = "SESSION_DATA";
+    private final String PURCHASE_DATA = "PURCHASE_DATA";
     private final String IS_FCM_TOKEN_UPDATED = "IS_FCM_TOKEN_UPDATED";
     private final String KEY_FCM_TOKEN = "KEY_FCM_TOKEN";
     private final String KEY_COUNT_VIEWER = "KEY_COUNT_VIEWER";
@@ -119,6 +121,26 @@ public class PreferenceHelper {
         }
         String data = new Gson().toJson(sessionData);
         mEdit.putString(SESSION_DATA, data);
+        save();
+    }
+
+    public Purchase getPurchaseData() {
+        String sessionData = mPrefs.getString(PURCHASE_DATA, null);
+        if (!TextUtils.isEmpty(sessionData)) {
+            Purchase sessionResponse = new Gson().fromJson(sessionData, Purchase.class);
+            return sessionResponse;
+        }
+        return null;
+    }
+
+    public void setPurchaseData(Purchase sessionData) {
+        if (sessionData == null) {
+            mEdit.putString(PURCHASE_DATA, null);
+            save();
+            return;
+        }
+        String data = new Gson().toJson(sessionData);
+        mEdit.putString(PURCHASE_DATA, data);
         save();
     }
 

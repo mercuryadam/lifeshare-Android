@@ -216,6 +216,22 @@
                     android:singleLine="true"
                     android:text="@string/subscribe"
                     android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSubscribeCheck"
+                    style="@style/button_style_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/size_8dp"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    android:layout_marginRight="@dimen/size_8dp"
+                    android:layout_marginBottom="@dimen/size_20dp"
+                    android:paddingLeft="@dimen/size_30dp"
+                    android:paddingRight="@dimen/size_30dp"
+                    android:singleLine="true"
+                    android:text="Check Subscription"
+                    android:textStyle="bold" />
                 <LinearLayout
                     android:id="@+id/llCATitle"
                     android:layout_width="match_parent"

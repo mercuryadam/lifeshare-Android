@@ -4,9 +4,11 @@ import android.text.TextUtils;
 
 import com.google.gson.JsonElement;
 import com.lifeshare.model.ChannelArchive;
+import com.lifeshare.model.ChatMessage;
 import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
+import com.lifeshare.network.request.ChatHistoryRequest;
 import com.lifeshare.network.request.CityRequest;
 import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
@@ -21,12 +23,14 @@ import com.lifeshare.network.request.LoginRequest;
 import com.lifeshare.network.request.NewTwilioTokenRequest;
 import com.lifeshare.network.request.RejectInvitationRequest;
 import com.lifeshare.network.request.ReportUserRequest;
+import com.lifeshare.network.request.SaveChatRequest;
 import com.lifeshare.network.request.SearchUserRequest;
 import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.SignUpRequest;
 import com.lifeshare.network.request.StateRequest;
 import com.lifeshare.network.request.UpdateDeviceTokenRequest;
 import com.lifeshare.network.request.UpdatePushNotificationRequest;
+import com.lifeshare.network.request.UpdateSaveChatFlag;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
@@ -244,6 +248,19 @@ public class WebAPIManager {
 
     public void deleteChannelArchive(DeleteArchivesRequest request, RemoteCallback<CommonResponse> callback) {
         mService.deleteChannelArchive(request).enqueue(callback);
+    }
+
+
+    public void saveChatMessage(SaveChatRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.saveChatMessage(request).enqueue(callback);
+    }
+
+    public void updateSaveChatFlag(UpdateSaveChatFlag request, RemoteCallback<CommonResponse> callback) {
+        mService.updateSaveChatFlag(request).enqueue(callback);
+    }
+
+    public void getSaveChatHistory(ChatHistoryRequest request, RemoteCallback<ArrayList<ChatMessage>> callback) {
+        mService.getSaveChatHistory(request).enqueue(callback);
     }
 
 

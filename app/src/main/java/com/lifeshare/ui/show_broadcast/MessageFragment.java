@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
@@ -37,6 +38,8 @@ import com.lifeshare.model.ChatMessage;
 import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
 import com.lifeshare.network.request.ReportUserRequest;
+import com.lifeshare.network.request.SaveChatRequest;
+import com.lifeshare.network.request.UpdateSaveChatFlag;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.LoginResponse;
 import com.lifeshare.utils.Const;
@@ -50,6 +53,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
     DatabaseReference databaseReference;
     private FilterRecyclerView rvMessage;
     private LinearLayout llMessage;
+    private AppCompatButton btnSaveChat;
     private AppCompatEditText etMessage;
     private ImageView ivSendMessage;
     private ImageView ivFlag;
@@ -80,6 +84,8 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
         }
     };
     private String publisherUserId;
+    private String roomId = "";
+    private String roomSid = "";
 
     public MessageFragment() {
         // Required empty public constructor
@@ -124,6 +130,8 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
         rvMessage = view.findViewById(R.id.rv_message);
         llMessage = view.findViewById(R.id.ll_message);
         etMessage = view.findViewById(R.id.et_message);
+        btnSaveChat = view.findViewById(R.id.btn_save_chat);
+        btnSaveChat.setOnClickListener(this);
         ivFlag = view.findViewById(R.id.iv_flag);
         etMessage.setImeOptions(EditorInfo.IME_ACTION_SEND);
         etMessage.setRawInputType(InputType.TYPE_CLASS_TEXT);
@@ -150,8 +158,10 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
 
         if (publisherUserId != null && Integer.parseInt(publisherUserId) != Integer.parseInt(PreferenceHelper.getInstance().getUser().getUserId())) {
             ivFlag.setVisibility(View.VISIBLE);
+            btnSaveChat.setVisibility(View.GONE);
         } else {
             ivFlag.setVisibility(View.GONE);
+            btnSaveChat.setVisibility(View.VISIBLE);
         }
     }
 
@@ -176,9 +186,23 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
             case R.id.iv_flag:
                 openDialog();
                 break;
+            case R.id.btn_save_chat:
+                saveChatHistory();
+                break;
         }
     }
 
+    private void saveChatHistory() {
+        UpdateSaveChatFlag request = new UpdateSaveChatFlag();
+        request.setId(roomId);
+        WebAPIManager.getInstance().updateSaveChatFlag(request, new RemoteCallback<CommonResponse>() {
+            @Override
+            public void onSuccess(CommonResponse response) {
+                btnSaveChat.setEnabled(false);
+                Toast.makeText(getContext(), "Your chat is being saved.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     private void openDialog() {
 
@@ -239,6 +263,9 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
         startRequestMap.put("profileUrl", user.getAvatar());
         startRequestMap.put("time", String.valueOf(TrueTime.now().getTime()));
         startRequestMap.put("message", etMessage.getText().toString().trim());
+
+        sendMessageToAPI(etMessage.getText().toString().trim());
+
         databaseReference.setValue(startRequestMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -247,8 +274,23 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
         });
     }
 
-    public void setCurrentStream(String publisherId) {
+    private void sendMessageToAPI(String message) {
+        SaveChatRequest request = new SaveChatRequest();
+        request.setMessage(message);
+        request.setId(roomId);
+        request.setRoomSid(roomSid);
+        WebAPIManager.getInstance().saveChatMessage(request, new RemoteCallback<CommonResponse>() {
+            @Override
+            public void onSuccess(CommonResponse response) {
+
+            }
+        });
+    }
+
+    public void setCurrentStream(String publisherId, String roomId, String roomSid) {
         publisherUserId = publisherId;
+        this.roomId = roomId;
+        this.roomSid = roomSid;
 
         if (adapter != null) {
             adapter.removeAllItems();
@@ -264,6 +306,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
             Toast.makeText(getActivity(), getString(R.string.please_enter_comment), Toast.LENGTH_SHORT).show();
             return false;
         }
+
         return true;
     }
 
