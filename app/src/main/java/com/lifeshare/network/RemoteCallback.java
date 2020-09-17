@@ -110,7 +110,9 @@ public abstract class RemoteCallback<T> implements Callback<T> {
      * onUnauthorized will be called when token miss matches with server
      */
     public void onUnauthorized(Throwable throwable) {
-        baseRemoteCallback.onUnauthorized(throwable);
+        if (baseRemoteCallback != null) {
+            baseRemoteCallback.onUnauthorized(throwable);
+        }
     }
 
     /**
@@ -121,7 +123,9 @@ public abstract class RemoteCallback<T> implements Callback<T> {
      *                  be displayed.
      */
     public void onFailed(Throwable throwable) {
-        baseRemoteCallback.onFailed(throwable);
+        if (baseRemoteCallback != null) {
+            baseRemoteCallback.onFailed(throwable);
+        }
     }
 
     /**
@@ -129,7 +133,9 @@ public abstract class RemoteCallback<T> implements Callback<T> {
      * network connection is not available in device.
      */
     public void onInternetFailed() {
-        baseRemoteCallback.onInternetFailed();
+        if (baseRemoteCallback != null) {
+            baseRemoteCallback.onInternetFailed();
+        }
     }
 
     /**
@@ -139,7 +145,9 @@ public abstract class RemoteCallback<T> implements Callback<T> {
      * @param message
      */
     public void onEmptyResponse(String message) {
-        baseRemoteCallback.onEmptyResponse(message);
+        if (baseRemoteCallback != null) {
+            baseRemoteCallback.onEmptyResponse(message);
+        }
     }
 
 }

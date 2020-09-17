@@ -16,6 +16,7 @@ public class Const {
     public static final String OTHER_PROFILE = "OTHER_PROFILE";
     public static final String STRAM_OBJECT = "STRAM_OBJECT";
     public static final String SELECTED_USERS = "SELECTED_USERS";
+    public static final String CHANNAL_DATA = "CHANNAL_DATA";
     // firebase table name
     public static final String TABLE_PURCHASE = "PURCHASE" + BuildConfig.FLAVOR;
     public static final String TABLE_PUBLISHER = "PUBLISHER_" + BuildConfig.FLAVOR;

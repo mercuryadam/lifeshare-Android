@@ -1,7 +1,6 @@
 package com.lifeshare.ui.save_broadcast;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +15,22 @@ import com.lifeshare.R;
 import com.lifeshare.customview.recyclerview.BaseRecyclerListener;
 import com.lifeshare.customview.recyclerview.FilterRecyclerView;
 import com.lifeshare.model.ChatMessage;
+import com.lifeshare.network.BaseRemoteCallback;
+import com.lifeshare.network.RemoteCallback;
+import com.lifeshare.network.WebAPIManager;
+import com.lifeshare.network.request.ChatHistoryRequest;
 
 import java.util.ArrayList;
 
 public class PreviousChatMessageFragment extends Fragment implements View.OnClickListener, BaseRecyclerListener<ChatMessage> {
 
     private static final String TAG = "PreviousChatMessageFrag";
+    private static final String REFERENCE_ID = "REFERENCE_ID";
     int pageNo = 1;
+    String roomId = "";
     boolean isLoading = false;
     int ITEM_OFFSET = 5;
+    String referenceId = "";
     private FilterRecyclerView rvMessage;
     private PreviousChatMessageListAdapter adapter;
 
@@ -32,8 +38,11 @@ public class PreviousChatMessageFragment extends Fragment implements View.OnClic
         // Required empty public constructor
     }
 
-    public static PreviousChatMessageFragment newInstance() {
+    public static PreviousChatMessageFragment newInstance(String referenceId) {
         PreviousChatMessageFragment fragment = new PreviousChatMessageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(REFERENCE_ID, referenceId);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -48,8 +57,11 @@ public class PreviousChatMessageFragment extends Fragment implements View.OnClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_show_chat_history, container, false);
-
         initView(view);
+        referenceId = getArguments().getString(REFERENCE_ID);
+        if (!referenceId.isEmpty()) {
+            getData();
+        }
         return view;
     }
 
@@ -73,28 +85,65 @@ public class PreviousChatMessageFragment extends Fragment implements View.OnClic
                 int totalItemCount = linearLayoutManager.getItemCount();
                 int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
                 Log.v(TAG, "onScrolled: " + lastVisibleItemPosition);
-                if (lastVisibleItemPosition >= adapter.getItemCount() - 5 && !isLoading) {
-                    pageNo++;
+                if (lastVisibleItemPosition >= adapter.getItemCount() - 5 && !isLoading && pageNo != (-1)) {
                     isLoading = true;
                     adapter.addItem(null);
-                    new CountDownTimer(5000, 1000) {
-                        public void onTick(long millisUntilFinished) {
-
-                        }
-
-                        public void onFinish() {
-                            getData();
-                        }
-                    }.start();
-
+                    getData();
                 }
             }
         });
-        getData();
+
     }
 
     private void getData() {
         Log.v(TAG, "getData: " + pageNo);
+
+        ChatHistoryRequest request = new ChatHistoryRequest();
+        request.setPageNo(String.valueOf(pageNo));
+        request.setId(String.valueOf(referenceId));
+
+        WebAPIManager.getInstance().getSaveChatHistory(request, new RemoteCallback<ArrayList<ChatMessage>>(new BaseRemoteCallback() {
+            @Override
+            public void onUnauthorized(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onFailed(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onInternetFailed() {
+
+            }
+
+            @Override
+            public void onEmptyResponse(String message) {
+                isLoading = false;
+                if (pageNo > 1) {
+                    adapter.removeLastItem();
+                }
+                pageNo = -1;
+
+            }
+        }) {
+            @Override
+            public void onSuccess(ArrayList<ChatMessage> response) {
+                isLoading = false;
+                if (pageNo > 1) {
+                    adapter.removeLastItem();
+                }
+                if (response.size() > 0) {
+                    pageNo++;
+                } else {
+                    pageNo = -1;
+                }
+                adapter.addItems(response);
+            }
+        });
+/*
+
         ArrayList<ChatMessage> messageArrayList = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             ChatMessage message = new ChatMessage();
@@ -112,6 +161,7 @@ public class PreviousChatMessageFragment extends Fragment implements View.OnClic
             adapter.removeLastItem();
         }
         adapter.addItems(messageArrayList);
+*/
 
     }
 

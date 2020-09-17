@@ -135,7 +135,7 @@ public class MyInvitationListActivity extends BaseActivity implements BaseRecycl
         showLoading();
         AcceptInvitation invitation = new AcceptInvitation();
         invitation.setFromId(item.getUserId());
-        WebAPIManager.getInstance().acceptInvitaion(invitation, new RemoteCallback<CommonResponse>() {
+        WebAPIManager.getInstance().acceptInvitaion(invitation, new RemoteCallback<CommonResponse>(this) {
             @Override
             public void onSuccess(CommonResponse response) {
                 hideLoading();
@@ -165,7 +165,7 @@ public class MyInvitationListActivity extends BaseActivity implements BaseRecycl
         showLoading();
         RejectInvitationRequest invitation = new RejectInvitationRequest();
         invitation.setToId(item.getUserId());
-        WebAPIManager.getInstance().rejectInvitation(invitation, new RemoteCallback<CommonResponse>() {
+        WebAPIManager.getInstance().rejectInvitation(invitation, new RemoteCallback<CommonResponse>(this) {
             @Override
             public void onSuccess(CommonResponse response) {
                 hideLoading();

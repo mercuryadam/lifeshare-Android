@@ -421,7 +421,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         CityRequest request = new CityRequest();
         request.setCountryId(selectedCountry.getId());
         request.setStateId(selectedState.getId());
-        WebAPIManager.getInstance().getCityList(request, new RemoteCallback<ArrayList<CityResponse>>() {
+        WebAPIManager.getInstance().getCityList(request, new RemoteCallback<ArrayList<CityResponse>>(this) {
             @Override
             public void onSuccess(ArrayList<CityResponse> response) {
                 hideLoading();
@@ -442,7 +442,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         showLoading();
         StateRequest request = new StateRequest();
         request.setCountryId(selectedCountry.getId());
-        WebAPIManager.getInstance().getStateList(request, new RemoteCallback<ArrayList<StateResponse>>() {
+        WebAPIManager.getInstance().getStateList(request, new RemoteCallback<ArrayList<StateResponse>>(this) {
             @Override
             public void onSuccess(ArrayList<StateResponse> response) {
                 hideLoading();
@@ -460,7 +460,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     private void getCountryList() {
         showLoading();
-        WebAPIManager.getInstance().getCountry(new RemoteCallback<ArrayList<CountryResponse>>() {
+        WebAPIManager.getInstance().getCountry(new RemoteCallback<ArrayList<CountryResponse>>(this) {
             @Override
             public void onSuccess(ArrayList<CountryResponse> response) {
                 hideLoading();

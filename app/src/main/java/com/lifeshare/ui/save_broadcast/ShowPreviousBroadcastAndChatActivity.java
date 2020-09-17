@@ -3,12 +3,13 @@ package com.lifeshare.ui.save_broadcast;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lifeshare.BaseActivity;
 import com.lifeshare.R;
+import com.lifeshare.network.response.ChannelArchiveResponse;
+import com.lifeshare.utils.Const;
 
 public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implements View.OnClickListener {
 
@@ -22,24 +23,29 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_previous_broadcast_and_chat);
         initView();
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            ChannelArchiveResponse response = getIntent().getExtras().getParcelable(Const.CHANNAL_DATA);
+
+            messageFragment = PreviousChatMessageFragment.newInstance(response.getReferenceId());
+            getSupportFragmentManager().beginTransaction().add(R.id.container, messageFragment).commit();
+        }
     }
 
     private void initView() {
         videoView = (VideoView) findViewById(R.id.videoView);
         fabMessage = (FloatingActionButton) findViewById(R.id.fabMessage);
 
-        videoView.setVideoPath("https://www.radiantmediaplayer.com/media/big-buck-bunny-360p.mp4");
+   /*     videoView.setVideoPath("https://www.radiantmediaplayer.com/media/big-buck-bunny-360p.mp4");
         videoView.start();
         MediaController ctlr = new MediaController(this);
         ctlr.setMediaPlayer(videoView);
         videoView.setMediaController(ctlr);
         videoView.requestFocus();
+   */
         fabMessage.setOnClickListener(this);
 
-        messageFragment = PreviousChatMessageFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, messageFragment).commit();
-
         container = (FrameLayout) findViewById(R.id.container);
+
     }
 
     @Override

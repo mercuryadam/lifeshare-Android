@@ -2,7 +2,7 @@ package com.lifeshare.network.request;
 
 public class ChatHistoryRequest {
     private String pageNo;
-    private String opentokSessionsId;
+    private String id;
 
     public String getPageNo() {
         return pageNo;
@@ -12,11 +12,11 @@ public class ChatHistoryRequest {
         this.pageNo = pageNo;
     }
 
-    public String getOpentokSessionsId() {
-        return opentokSessionsId;
+    public String getId() {
+        return id;
     }
 
-    public void setOpentokSessionsId(String opentokSessionsId) {
-        this.opentokSessionsId = opentokSessionsId;
+    public void setId(String id) {
+        this.id = id;
     }
 }

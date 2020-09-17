@@ -30,8 +30,6 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
 import com.lifeshare.BaseActivity;
 import com.lifeshare.LifeShare;
 import com.lifeshare.R;
@@ -41,19 +39,20 @@ import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
 import com.lifeshare.network.request.DeleteArchivesRequest;
 import com.lifeshare.network.request.GetArchiveListRequest;
+import com.lifeshare.network.request.SaveSubscriptionRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.LoginResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
 import com.lifeshare.ui.ProfileActivity;
+import com.lifeshare.ui.save_broadcast.ShowPreviousBroadcastAndChatActivity;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 import com.lifeshare.utils.Security;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -152,28 +151,29 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void insertIntoFirebase(Purchase purchase) {
 
-        DatabaseReference databaseReference = LifeShare.getFirebaseReference().child(Const.TABLE_PURCHASE).child(PreferenceHelper.getInstance().getUser().getUserId()).child(LifeShare.getFirebaseReference().push().getKey());
-        HashMap<String, String> startRequestMap = new HashMap<>();
-        startRequestMap.put("getDeveloperPayload", purchase.getDeveloperPayload());
-        startRequestMap.put("getOrderId", purchase.getOrderId());
-        startRequestMap.put("getOriginalJson", purchase.getOriginalJson());
-        startRequestMap.put("getPackageName", purchase.getPackageName());
-        startRequestMap.put("getPurchaseToken", purchase.getPurchaseToken());
-        startRequestMap.put("getSignature", purchase.getSignature());
-        startRequestMap.put("getSku", purchase.getSku());
-        startRequestMap.put("getObfuscatedAccountId", purchase.getAccountIdentifiers().getObfuscatedAccountId());
-        startRequestMap.put("getObfuscatedProfileId", purchase.getAccountIdentifiers().getObfuscatedProfileId());
-        startRequestMap.put("getPurchaseState", String.valueOf(purchase.getPurchaseState()));
-        startRequestMap.put("getPurchaseTime", String.valueOf(purchase.getPurchaseTime()));
-        startRequestMap.put("isAutoRenewing", String.valueOf(purchase.isAutoRenewing()));
-        startRequestMap.put("isAcknowledged", String.valueOf(purchase.isAcknowledged()));
-        databaseReference.setValue(startRequestMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+        SaveSubscriptionRequest request = new SaveSubscriptionRequest();
+        request.setDeveloperPayload(purchase.getDeveloperPayload());
+        request.setOrderId(purchase.getOrderId());
+        request.setOriginalJson(purchase.getOriginalJson());
+        request.setPackageName(purchase.getPackageName());
+        request.setPurchaseToken(purchase.getPurchaseToken());
+        request.setSignature(purchase.getSignature());
+        request.setSubscriptionId(purchase.getSku());
+        request.setObfuscatedAccountId(purchase.getAccountIdentifiers().getObfuscatedAccountId());
+        request.setObfuscatedProfileId(purchase.getAccountIdentifiers().getObfuscatedProfileId());
+        request.setPurchaseState(String.valueOf(purchase.getPurchaseState()));
+        request.setPurchaseTime(String.valueOf(purchase.getPurchaseTime()));
+        request.setAutoRenewing(String.valueOf(purchase.isAutoRenewing()));
+        request.setAcknowledged(String.valueOf(purchase.isAcknowledged()));
+        request.setExpriryTime("");
+
+
+        WebAPIManager.getInstance().saveSubscription(request, new RemoteCallback<CommonResponse>() {
             @Override
-            public void onSuccess(Void aVoid) {
-                showToast("updated into firebase");
+            public void onSuccess(CommonResponse response) {
+
             }
         });
-
     }
 
     @Override
@@ -339,13 +339,21 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                         }
                     });
                 } else {
-                    if (!item.getLink().trim().isEmpty()) {
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        String url = item.getLink();
-                        if (!url.startsWith("http://") && !url.startsWith("https://"))
-                            url = "http://" + url;
-                        i.setData(Uri.parse(url));
-                        startActivity(i);
+                    if (item.getType().equals("1")) {
+                        if (!item.getLink().trim().isEmpty()) {
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            String url = item.getLink();
+                            if (!url.startsWith("http://") && !url.startsWith("https://"))
+                                url = "http://" + url;
+                            i.setData(Uri.parse(url));
+                            startActivity(i);
+                        }
+                    } else {
+                        Intent intent = new Intent(ViewProfileActivity.this, ShowPreviousBroadcastAndChatActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(Const.CHANNAL_DATA, item);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     }
                 }
 
@@ -389,7 +397,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.btnSubscribeCheck:
-                checkUserSubScription();
+//                checkUserSubScription();
                 break;
         }
     }
@@ -422,7 +430,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         DeleteArchivesRequest request = new DeleteArchivesRequest();
         request.setId(String.valueOf(id));
 
-        WebAPIManager.getInstance().deleteChannelArchive(request, new RemoteCallback<CommonResponse>() {
+        WebAPIManager.getInstance().deleteChannelArchive(request, new RemoteCallback<CommonResponse>(this) {
             @Override
             public void onSuccess(CommonResponse response) {
                 hideLoading();
@@ -446,6 +454,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     public void handleDialogClose(DialogInterface dialog) {
         getListChannelArchive(userId);
     }
+/*
 
     private void checkUserSubScription() {
         if (billingClient != null) {
@@ -469,6 +478,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             }
         }
     }
+*/
 
     private void getAcknowdgement(Purchase purchase) {
 

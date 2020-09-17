@@ -74,7 +74,6 @@ import com.lifeshare.ui.admin_user.ReportsUserListActivity;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
 import com.lifeshare.ui.profile.ViewProfileActivity;
-import com.lifeshare.ui.save_broadcast.ShowPreviousBroadcastAndChatActivity;
 import com.lifeshare.ui.select_connection.SelectConnectionsActivity;
 import com.lifeshare.ui.show_broadcast.MessageFragment;
 import com.lifeshare.ui.show_broadcast.TwilioShowStreamActivityNew;
@@ -608,7 +607,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 getCountForViewers();
                 fabMessage.show();
                 rlChatView.setVisibility(View.VISIBLE);
-                messageFragment.setCurrentStream(PreferenceHelper.getInstance().getUser().getUserId(), response.getId(), response.getsID());
+                messageFragment.setCurrentStream(PreferenceHelper.getInstance().getUser().getUserId(), response.getId(), response.getsId());
             }
         });
     }
@@ -1134,7 +1133,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         tvHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TwilioBroadcastActivityNew.this, ShowPreviousBroadcastAndChatActivity.class));
                 dialog.dismiss();
             }
         });

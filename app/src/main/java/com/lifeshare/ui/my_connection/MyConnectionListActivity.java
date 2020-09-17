@@ -140,7 +140,7 @@ public class MyConnectionListActivity extends BaseActivity implements View.OnCli
         showLoading();
         DeleteConnectionRequest request = new DeleteConnectionRequest();
         request.setToId(item.getUserId());
-        WebAPIManager.getInstance().deleteMyConnection(request, new RemoteCallback<CommonResponse>() {
+        WebAPIManager.getInstance().deleteMyConnection(request, new RemoteCallback<CommonResponse>(this) {
             @Override
             public void onSuccess(CommonResponse response) {
                 hideLoading();

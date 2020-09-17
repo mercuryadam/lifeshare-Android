@@ -21,6 +21,7 @@ import com.lifeshare.network.request.NewTwilioTokenRequest;
 import com.lifeshare.network.request.RejectInvitationRequest;
 import com.lifeshare.network.request.ReportUserRequest;
 import com.lifeshare.network.request.SaveChatRequest;
+import com.lifeshare.network.request.SaveSubscriptionRequest;
 import com.lifeshare.network.request.SearchUserRequest;
 import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.StateRequest;
@@ -176,6 +177,9 @@ public interface WebAPIService {
 
     @POST("channel/list")
     Call<ArrayList<ChannelArchiveResponse>> listChannelArchive(@Body GetArchiveListRequest request);
+
+    @POST("user/storeSubscription")
+    Call<CommonResponse> saveSubscription(@Body SaveSubscriptionRequest request);
 
     @Multipart
     @POST("channel/create")

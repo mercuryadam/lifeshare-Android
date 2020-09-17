@@ -122,7 +122,7 @@ public class ReportsUserListActivity extends BaseActivity implements View.OnClic
         showLoading();
         DeleteUserRequest request = new DeleteUserRequest();
         request.setUserId(item.getUserId());
-        WebAPIManager.getInstance().deleteUser(request, new RemoteCallback<CommonResponse>() {
+        WebAPIManager.getInstance().deleteUser(request, new RemoteCallback<CommonResponse>(this) {
             @Override
             public void onSuccess(CommonResponse response) {
                 hideLoading();

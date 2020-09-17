@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 public class CreateRoomResponse implements Parcelable {
     private String id;
-    private String sID;
+    private String sId;
     private String roomName;
     private String type;
     public static final Creator<CreateRoomResponse> CREATOR = new Creator<CreateRoomResponse>() {
@@ -23,7 +23,7 @@ public class CreateRoomResponse implements Parcelable {
 
     protected CreateRoomResponse(Parcel in) {
         id = in.readString();
-        sID = in.readString();
+        sId = in.readString();
         roomName = in.readString();
         type = in.readString();
         token = in.readString();
@@ -37,7 +37,7 @@ public class CreateRoomResponse implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeString(sID);
+        dest.writeString(sId);
         dest.writeString(roomName);
         dest.writeString(type);
         dest.writeString(token);
@@ -59,12 +59,12 @@ public class CreateRoomResponse implements Parcelable {
         this.id = id;
     }
 
-    public String getsID() {
-        return sID;
+    public String getsId() {
+        return sId;
     }
 
-    public void setsID(String sID) {
-        this.sID = sID;
+    public void setsId(String sId) {
+        this.sId = sId;
     }
 
     public String getRoomName() {

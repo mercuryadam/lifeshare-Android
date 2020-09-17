@@ -2,7 +2,7 @@ package com.lifeshare.network.request;
 
 public class SaveChatRequest {
     private String id;
-    private String roomSid;
+    private String roomSId;
     private String message;
 
     public String getId() {
@@ -13,12 +13,12 @@ public class SaveChatRequest {
         this.id = id;
     }
 
-    public String getRoomSid() {
-        return roomSid;
+    public String getRoomSId() {
+        return roomSId;
     }
 
-    public void setRoomSid(String roomSid) {
-        this.roomSid = roomSid;
+    public void setRoomSId(String roomSId) {
+        this.roomSId = roomSId;
     }
 
     public String getMessage() {

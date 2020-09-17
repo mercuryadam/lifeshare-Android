@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.instacart.library.truetime.TrueTime;
+import com.lifeshare.BaseFragment;
 import com.lifeshare.LifeShare;
 import com.lifeshare.R;
 import com.lifeshare.customview.recyclerview.BaseRecyclerListener;
@@ -48,7 +48,7 @@ import com.lifeshare.utils.PreferenceHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MessageFragment extends Fragment implements View.OnClickListener, BaseRecyclerListener<ChatMessage> {
+public class MessageFragment extends BaseFragment implements View.OnClickListener, BaseRecyclerListener<ChatMessage> {
 
     DatabaseReference databaseReference;
     private FilterRecyclerView rvMessage;
@@ -195,10 +195,11 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
     private void saveChatHistory() {
         UpdateSaveChatFlag request = new UpdateSaveChatFlag();
         request.setId(roomId);
+        request.setSaveChat("1");
         WebAPIManager.getInstance().updateSaveChatFlag(request, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
-                btnSaveChat.setEnabled(false);
+//                btnSaveChat.setEnabled(false);
                 Toast.makeText(getContext(), "Your chat is being saved.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -278,11 +279,31 @@ public class MessageFragment extends Fragment implements View.OnClickListener, B
         SaveChatRequest request = new SaveChatRequest();
         request.setMessage(message);
         request.setId(roomId);
-        request.setRoomSid(roomSid);
+        request.setRoomSId(roomSid);
         WebAPIManager.getInstance().saveChatMessage(request, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
 
+            }
+
+            @Override
+            public void onFailed(Throwable throwable) {
+                super.onFailed(throwable);
+            }
+
+            @Override
+            public void onUnauthorized(Throwable throwable) {
+                super.onUnauthorized(throwable);
+            }
+
+            @Override
+            public void onInternetFailed() {
+                super.onInternetFailed();
+            }
+
+            @Override
+            public void onEmptyResponse(String message) {
+                super.onEmptyResponse(message);
             }
         });
     }

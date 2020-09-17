@@ -24,6 +24,7 @@ import com.lifeshare.network.request.NewTwilioTokenRequest;
 import com.lifeshare.network.request.RejectInvitationRequest;
 import com.lifeshare.network.request.ReportUserRequest;
 import com.lifeshare.network.request.SaveChatRequest;
+import com.lifeshare.network.request.SaveSubscriptionRequest;
 import com.lifeshare.network.request.SearchUserRequest;
 import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.SignUpRequest;
@@ -235,6 +236,10 @@ public class WebAPIManager {
 
     public void listChannelArchive(GetArchiveListRequest request, RemoteCallback<ArrayList<ChannelArchiveResponse>> callback) {
         mService.listChannelArchive(request).enqueue(callback);
+    }
+
+    public void saveSubscription(SaveSubscriptionRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.saveSubscription(request).enqueue(callback);
     }
 
     public void createChannelArchive(ChannelArchive request, RemoteCallback<CommonResponse> callback) {

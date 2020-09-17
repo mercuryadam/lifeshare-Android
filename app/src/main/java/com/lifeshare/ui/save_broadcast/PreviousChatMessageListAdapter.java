@@ -40,6 +40,7 @@ public class PreviousChatMessageListAdapter extends FilterableAdapter<ChatMessag
             if (val.getUserId().equalsIgnoreCase(PreferenceHelper.getInstance().getUser().getUserId())) {
                 viewHolder.llChatOther.setVisibility(View.GONE);
                 viewHolder.llChatSelf.setVisibility(View.VISIBLE);
+/*
 
                 if (holder.getAdapterPosition() > 0) {
                     if (getAllFilterItems().get(holder.getAdapterPosition() - 1).getUserId().equalsIgnoreCase(val.getUserId())) {
@@ -47,6 +48,10 @@ public class PreviousChatMessageListAdapter extends FilterableAdapter<ChatMessag
                         viewHolder.ivProfileSelf.setVisibility(View.INVISIBLE);
                     }
                 }
+*/
+
+                viewHolder.tvUsernameSelf.setVisibility(View.VISIBLE);
+                viewHolder.ivProfileSelf.setVisibility(View.VISIBLE);
 
                 Glide.with(LifeShare.getInstance())
                         .load(val.getProfileUrl())
@@ -65,13 +70,15 @@ public class PreviousChatMessageListAdapter extends FilterableAdapter<ChatMessag
                 viewHolder.llChatOther.setVisibility(View.VISIBLE);
                 viewHolder.llChatSelf.setVisibility(View.GONE);
 
-
+/*
                 if (holder.getAdapterPosition() > 0) {
                     if (getAllFilterItems().get(holder.getAdapterPosition() - 1).getUserId().equalsIgnoreCase(val.getUserId())) {
                         viewHolder.tvUsernameOther.setVisibility(View.GONE);
                         viewHolder.ivProfileOther.setVisibility(View.INVISIBLE);
                     }
-                }
+                }*/
+                viewHolder.tvUsernameOther.setVisibility(View.VISIBLE);
+                viewHolder.ivProfileOther.setVisibility(View.VISIBLE);
 
                 Glide.with(LifeShare.getInstance())
                         .load(val.getProfileUrl())
