@@ -17,6 +17,7 @@ import com.lifeshare.R;
 import com.lifeshare.customview.recyclerview.BaseRecyclerListener;
 import com.lifeshare.customview.recyclerview.FilterableAdapter;
 import com.lifeshare.network.response.ChannelArchiveResponse;
+import com.lifeshare.utils.DateTimeHelper;
 import com.lifeshare.utils.PreferenceHelper;
 
 import java.util.ArrayList;
@@ -50,12 +51,30 @@ public class ChannelArchiveAdapter extends FilterableAdapter<ChannelArchiveRespo
             }
         });
 
-        Glide.with(LifeShare.getInstance())
-                .load(val.getImage())
-                .apply(new RequestOptions().error(R.drawable.ic_document).placeholder(R.drawable.ic_document))
-                .into(viewHolder.ivBackGround);
+        if (val.getType().equals("1")) {
+            Glide.with(LifeShare.getInstance())
+                    .load(val.getImage())
+                    .apply(new RequestOptions().error(R.drawable.ic_archive).placeholder(R.drawable.ic_archive))
+                    .into(viewHolder.ivBackGround);
+            viewHolder.tvChannelName.setText(val.getTitle());
+        } else {
+            if (!val.getVideo_url().trim().isEmpty()) {
+                Glide.with(LifeShare.getInstance())
+                        .load(val.getImage())
+                        .apply(new RequestOptions().error(R.drawable.ic_video_chat).placeholder(R.drawable.ic_video_chat))
+                        .into(viewHolder.ivBackGround);
 
-        viewHolder.tvChannelName.setText(val.getTitle());
+            } else {
+                Glide.with(LifeShare.getInstance())
+                        .load(val.getImage())
+                        .apply(new RequestOptions().error(R.drawable.ic_chat).placeholder(R.drawable.ic_chat))
+                        .into(viewHolder.ivBackGround);
+
+            }
+            viewHolder.tvChannelName.setText(DateTimeHelper.getInstance().getDefaultDateTimeFromUtcDateTime(val.getTitle()));
+        }
+
+//        viewHolder.tvChannelName.setText(val.getTitle());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

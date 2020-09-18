@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,7 +75,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private AppCompatTextView tvCountryName;
     private AppCompatTextView tvPhoneNumber;
     private AppCompatButton btnSubscribe;
-    private AppCompatButton btnSubscribeCheck;
     private LinearLayout llEmailPhoneCity, llCATitle;
     private FilterRecyclerView rvChannelArchive;
     private ChannelArchiveAdapter channelArchiveAdapter;
@@ -93,7 +91,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
                     && purchases != null) {
 
-                showToast("SUCCESS_1 : " + billingResult.getResponseCode() + " - " + billingResult.getDebugMessage());
+//                showToast("SUCCESS_1 : " + billingResult.getResponseCode() + " - " + billingResult.getDebugMessage());
                 for (Purchase purchase : purchases) {
 //                    insertIntoFirebase(purchase);
 
@@ -101,13 +99,13 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                         // Invalid purchase
                         // show error to user
                         Log.v(TAG, "onPurchasesUpdated: " + "Got a purchase: " + purchase + "; but signature is bad. Skipping...");
-                        showToast("Got a purchase: " + purchase + "; but signature is bad. Skipping...");
+//                        showToast("Got a purchase: " + purchase + "; but signature is bad. Skipping...");
 //                        Log.i(TAG, "Got a purchase: " + purchase + "; but signature is bad. Skipping...");
                         return;
                     } else {
                         PreferenceHelper.getInstance().setPurchaseData(purchase);
                         Log.v(TAG, "onPurchasesUpdated: " + "purchase is valid");
-                        showToast("purchase is valid");
+//                        showToast("purchase is valid");
                         // purchase is valid
                         // Perform actions
 
@@ -121,7 +119,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
                 }
             } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-                showToast("USER_CANCELLED Billing Process");
+//                showToast("USER_CANCELLED Billing Process");
                 // Handle an error caused by a user cancelling the purchase flow.
             } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
                 showToast("ITEM_ALREADY_OWNED");
@@ -305,9 +303,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         tvCountryName = (AppCompatTextView) findViewById(R.id.tv_country_name);
         tvPhoneNumber = (AppCompatTextView) findViewById(R.id.tv_phone_number);
         btnSubscribe = (AppCompatButton) findViewById(R.id.btnSubscribe);
-        btnSubscribeCheck = (AppCompatButton) findViewById(R.id.btnSubscribeCheck);
         btnSubscribe.setOnClickListener(this);
-        btnSubscribeCheck.setOnClickListener(this);
         llEmailPhoneCity = findViewById(R.id.llEmailPhoneCity);
         llCATitle = findViewById(R.id.llCATitle);
         llCATitle.setOnClickListener(this);
@@ -386,7 +382,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 break;
 
             case R.id.btnSubscribe:
-                showToast("SKU size : " + (skuDetails.size()));
+//                showToast("SKU size : " + (skuDetails.size()));
                 if (skuDetails.size() > 0) {
                     BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
                             .setSkuDetails(skuDetails.get(0))
@@ -395,9 +391,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                             .build();
                     billingClient.launchBillingFlow(ViewProfileActivity.this, billingFlowParams);
                 }
-                break;
-            case R.id.btnSubscribeCheck:
-//                checkUserSubScription();
                 break;
         }
     }
@@ -493,7 +486,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 insertIntoFirebase(purchase);
                 String debugMessage = billingResult.getDebugMessage();
                 int responseCode = billingResult.getResponseCode();
-                showToast("SUCCESS_2 : " + responseCode + " - " + debugMessage);
+//                showToast("SUCCESS_2 : " + responseCode + " - " + debugMessage);
             }
         });
 
@@ -508,7 +501,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(BillingResult billingResult) {
-                showToast("Status Code :" + billingResult.getResponseCode() + " - " + billingResult.getDebugMessage());
+//                showToast("Status Code :" + billingResult.getResponseCode() + " - " + billingResult.getDebugMessage());
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
 
@@ -523,9 +516,9 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                                 @Override
                                 public void onSkuDetailsResponse(BillingResult billingResult,
                                                                  List<SkuDetails> skuDetailsList) {
-                                    Toast.makeText(ViewProfileActivity.this, "list size - " + skuDetailsList.size(), Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(ViewProfileActivity.this, "list size - " + skuDetailsList.size(), Toast.LENGTH_SHORT).show();
                                     if (skuDetailsList.size() > 0) {
-                                        Toast.makeText(ViewProfileActivity.this, "SKU - " + skuDetailsList.get(0).getSku(), Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(ViewProfileActivity.this, "SKU - " + skuDetailsList.get(0).getSku(), Toast.LENGTH_SHORT).show();
                                     }
                                     skuDetails = skuDetailsList;
 
@@ -536,7 +529,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onBillingServiceDisconnected() {
-                showToast("onBillingServiceDisconnected");
+//                showToast("onBillingServiceDisconnected");
                 // Try to restart the connection on the next request to
                 // Google Play by calling the startConnection() method.
             }

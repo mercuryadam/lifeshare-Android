@@ -196,12 +196,15 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         UpdateSaveChatFlag request = new UpdateSaveChatFlag();
         request.setId(roomId);
         request.setSaveChat("1");
+        showLoading();
         WebAPIManager.getInstance().updateSaveChatFlag(request, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
 //                btnSaveChat.setEnabled(false);
+                hideLoading();
                 Toast.makeText(getContext(), "Your chat is being saved.", Toast.LENGTH_SHORT).show();
             }
+
         });
     }
 
@@ -280,30 +283,37 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         request.setMessage(message);
         request.setId(roomId);
         request.setRoomSId(roomSid);
+
+        showLoading();
+
         WebAPIManager.getInstance().saveChatMessage(request, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
-
+                hideLoading();
             }
 
             @Override
             public void onFailed(Throwable throwable) {
                 super.onFailed(throwable);
+                hideLoading();
             }
 
             @Override
             public void onUnauthorized(Throwable throwable) {
                 super.onUnauthorized(throwable);
+                hideLoading();
             }
 
             @Override
             public void onInternetFailed() {
                 super.onInternetFailed();
+                hideLoading();
             }
 
             @Override
             public void onEmptyResponse(String message) {
                 super.onEmptyResponse(message);
+                hideLoading();
             }
         });
     }

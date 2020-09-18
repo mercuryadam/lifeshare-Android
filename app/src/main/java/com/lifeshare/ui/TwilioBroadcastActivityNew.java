@@ -65,6 +65,7 @@ import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteStreamingTwilioRequest;
 import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
+import com.lifeshare.network.response.CheckSubscriptionResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CreateRoomResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
@@ -456,37 +457,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 .into(ivProfileDashBoard);
     }
 
-    private void createRoomAndGetId() {
-        if (!checkInternetConnection()) {
-            return;
-        }
-        showLoading(getString(R.string.waiting_for_connection_msg));
-
-        if (selectedUsers != null) {
-            CreateRoomWithUserRequest createRoomWithUserRequest = new CreateRoomWithUserRequest();
-            createRoomWithUserRequest.setSaveBroadCast(false);
-            createRoomWithUserRequest.setUsers(selectedUsers);
-            WebAPIManager.getInstance().createRoom(createRoomWithUserRequest, new RemoteCallback<CreateRoomResponse>() {
-                @Override
-                public void onSuccess(CreateRoomResponse response) {
-                    sessionData = response;
-                    PreferenceHelper.getInstance().setRoomData(sessionData);
-                    if (response != null
-                            && !TextUtils.isEmpty(response.getRoomName())
-                            && !TextUtils.isEmpty(response.getToken())) {
-
-                        startScreenCapture();
-                        createFirebaseData(response);
-                    } else {
-                        showToast(getString(R.string.message_invalid_session));
-                        hideLoading();
-                    }
-
-                }
-            });
-        }
-
-    }
+    private boolean isSaveBroadcast = false;
 
     private void startScreenCapture() {
         VideoConstraints videoConstraints = new VideoConstraints.Builder()
@@ -520,46 +491,37 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-/*
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
-        setContentView(R.layout.twilio_activity_broadcast);
+    private boolean isSubscriptionActive = true;
 
-        initView();
-        new InitTrueTimeAsyncTask().execute();
-        getSupportActionBar().setTitle(getResources().getString(R.string.app_name) + "(OFF)");
-        getSupportFragmentManager().beginTransaction().add(R.id.container, messageFragment).commit();
+    private void createRoomAndGetId() {
+        if (!checkInternetConnection()) {
+            return;
+        }
+        showLoading(getString(R.string.waiting_for_connection_msg));
 
-        getSupportActionBar().hide();
-        setStreamingConnection();
+        if (selectedUsers != null) {
+            CreateRoomWithUserRequest createRoomWithUserRequest = new CreateRoomWithUserRequest();
+            createRoomWithUserRequest.setSaveBroadCast(isSaveBroadcast);
+            createRoomWithUserRequest.setUsers(selectedUsers);
+            WebAPIManager.getInstance().createRoom(createRoomWithUserRequest, new RemoteCallback<CreateRoomResponse>() {
+                @Override
+                public void onSuccess(CreateRoomResponse response) {
+                    sessionData = response;
+                    PreferenceHelper.getInstance().setRoomData(sessionData);
+                    if (response != null
+                            && !TextUtils.isEmpty(response.getRoomName())
+                            && !TextUtils.isEmpty(response.getToken())) {
 
-        // Initialize the Mobile Ads SDK.
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
+                        startScreenCapture();
+                        createFirebaseData(response);
+                    } else {
+                        showToast(getString(R.string.message_invalid_session));
+                        hideLoading();
+                    }
 
-        //Banner ad
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-        //Interstitial Ad
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                // Load the next interstitial.
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            }
-
-        });
+                }
+            });
+        }
 
     }
 
@@ -858,13 +820,91 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+/*
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
+        setContentView(R.layout.twilio_activity_broadcast);
+
+        initView();
+        new InitTrueTimeAsyncTask().execute();
+        getSupportActionBar().setTitle(getResources().getString(R.string.app_name) + "(OFF)");
+        getSupportFragmentManager().beginTransaction().add(R.id.container, messageFragment).commit();
+
+        getSupportActionBar().hide();
+        setStreamingConnection();
+
+        // Initialize the Mobile Ads SDK.
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        //Banner ad
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        //Interstitial Ad
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                // Load the next interstitial.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+
+        });
+
+        checkSubscription();
+
+    }
+
+    private void checkSubscription() {
+        WebAPIManager.getInstance().checkSubscription(new RemoteCallback<CheckSubscriptionResponse>(this) {
+            @Override
+            public void onSuccess(CheckSubscriptionResponse response) {
+
+            }
+        });
+    }
+
     private void checkAudioPermissionAndStartBroadCast() {
 
 //        startForGroundService();
         playAudio(this, R.raw.jingle_two);
 
-        RuntimeEasyPermission.newInstance(permissions_audio,
-                REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
+        if (isSubscriptionActive) {
+            otherDialog(TwilioBroadcastActivityNew.this, getResources().getString(R.string.save_broadcast_message), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DismissListenerWithStatus() {
+                @Override
+                public void onDismissed(String message) {
+                    if (message.equalsIgnoreCase(getResources().getString(R.string.yes))) {
+                        isSaveBroadcast = true;
+                        RuntimeEasyPermission.newInstance(permissions_audio,
+                                REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
+
+                    } else {
+                        isSaveBroadcast = false;
+                        RuntimeEasyPermission.newInstance(permissions_audio,
+                                REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
+
+                    }
+                }
+            });
+        } else {
+            isSaveBroadcast = false;
+            RuntimeEasyPermission.newInstance(permissions_audio,
+                    REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
+
+        }
+
+
+
 
 
     }
@@ -1278,7 +1318,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     @Override
     public void onPermissionAllow(int permissionCode) {
         if (permissionCode == REQUEST_AUDIO_PERM) {
-
 
             startActivityForResult(new Intent(this, SelectConnectionsActivity.class), REQUEST_SELECT_CONNECTION_USERS);
 

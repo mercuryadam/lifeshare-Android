@@ -35,6 +35,7 @@ import com.lifeshare.network.request.UpdateSaveChatFlag;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
+import com.lifeshare.network.response.CheckSubscriptionResponse;
 import com.lifeshare.network.response.CityResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
@@ -266,6 +267,11 @@ public class WebAPIManager {
 
     public void getSaveChatHistory(ChatHistoryRequest request, RemoteCallback<ArrayList<ChatMessage>> callback) {
         mService.getSaveChatHistory(request).enqueue(callback);
+    }
+
+
+    public void checkSubscription(RemoteCallback<CheckSubscriptionResponse> callback) {
+        mService.checkSubscription().enqueue(callback);
     }
 
 

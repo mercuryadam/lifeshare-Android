@@ -31,6 +31,7 @@ import com.lifeshare.network.request.UpdateSaveChatFlag;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
+import com.lifeshare.network.response.CheckSubscriptionResponse;
 import com.lifeshare.network.response.CityResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
@@ -196,5 +197,8 @@ public interface WebAPIService {
 
     @POST("chat/list")
     Call<ArrayList<ChatMessage>> getSaveChatHistory(@Body ChatHistoryRequest request);
+
+    @POST("user/checkSubscription")
+    Call<CheckSubscriptionResponse> checkSubscription();
 
 }
