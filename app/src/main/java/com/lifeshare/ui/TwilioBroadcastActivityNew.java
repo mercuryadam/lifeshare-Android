@@ -224,6 +224,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     private EncodingParameters encodingParameters;
     private LocalVideoTrack screenVideoTrack;
     private LocalAudioTrack localAudioTrack;
+    private boolean isSubscriptionActive = false;
     private Room room;
     private final ScreenCapturer.Listener screenCapturerListener = new ScreenCapturer.Listener() {
         @Override
@@ -460,13 +461,22 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     private boolean isSaveBroadcast = false;
 
     private void startScreenCapture() {
-        VideoConstraints videoConstraints = new VideoConstraints.Builder()
-                .aspectRatio(AspectRatio.ASPECT_RATIO_4_3)
-                .minVideoDimensions(VideoDimensions.CIF_VIDEO_DIMENSIONS)
-                .maxVideoDimensions(VideoDimensions.CIF_VIDEO_DIMENSIONS)
-                .minFps(5).maxFps(15)
-                .build();
+        VideoConstraints videoConstraints;
+        if (isSubscriptionActive) {
+            videoConstraints = new VideoConstraints.Builder()
+                    .aspectRatio(AspectRatio.ASPECT_RATIO_16_9)
+                    .minVideoDimensions(VideoDimensions.HD_1080P_VIDEO_DIMENSIONS)
+                    .maxVideoDimensions(VideoDimensions.HD_1080P_VIDEO_DIMENSIONS)
+                    .minFps(VideoConstraints.FPS_20).maxFps(VideoConstraints.FPS_30).build();
 
+        } else {
+            videoConstraints = new VideoConstraints.Builder()
+                    .aspectRatio(AspectRatio.ASPECT_RATIO_4_3)
+                    .minVideoDimensions(VideoDimensions.CIF_VIDEO_DIMENSIONS)
+                    .maxVideoDimensions(VideoDimensions.CIF_VIDEO_DIMENSIONS)
+                    .minFps(5).maxFps(15).build();
+
+        }
 
         screenVideoTrack = LocalVideoTrack.create(this, true, screenCapturer, videoConstraints);
         localAudioTrack = LocalAudioTrack.create(this, true, LOCAL_AUDIO_TRACK_NAME);
@@ -491,7 +501,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
     }
 
-    private boolean isSubscriptionActive = true;
 
     private void createRoomAndGetId() {
         if (!checkInternetConnection()) {
@@ -866,10 +875,23 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     }
 
     private void checkSubscription() {
+        showLoading();
         WebAPIManager.getInstance().checkSubscription(new RemoteCallback<CheckSubscriptionResponse>(this) {
             @Override
             public void onSuccess(CheckSubscriptionResponse response) {
+                hideLoading();
+                if (response.getStatus().equalsIgnoreCase("1")) {
+                    isSubscriptionActive = true;
+                } else {
+                    isSubscriptionActive = false;
+                }
+            }
 
+            @Override
+            public void onEmptyResponse(String message) {
+                super.onEmptyResponse(message);
+                hideLoading();
+                isSubscriptionActive = false;
             }
         });
     }

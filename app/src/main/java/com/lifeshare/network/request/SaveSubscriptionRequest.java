@@ -28,7 +28,7 @@ public class SaveSubscriptionRequest implements Parcelable {
     private String obfuscatedProfileId;
     private String originalJson;
     private String packageName;
-    private String expriryTime;
+    private String expiryTime;
 
     public SaveSubscriptionRequest() {
     }
@@ -47,7 +47,7 @@ public class SaveSubscriptionRequest implements Parcelable {
         obfuscatedProfileId = in.readString();
         originalJson = in.readString();
         packageName = in.readString();
-        expriryTime = in.readString();
+        expiryTime = in.readString();
     }
 
     public String getAcknowledged() {
@@ -154,12 +154,12 @@ public class SaveSubscriptionRequest implements Parcelable {
         this.packageName = packageName;
     }
 
-    public String getExpriryTime() {
-        return expriryTime;
+    public String getExpiryTime() {
+        return expiryTime;
     }
 
-    public void setExpriryTime(String expriryTime) {
-        this.expriryTime = expriryTime;
+    public void setExpiryTime(String expiryTime) {
+        this.expiryTime = expiryTime;
     }
 
     @Override
@@ -182,6 +182,6 @@ public class SaveSubscriptionRequest implements Parcelable {
         parcel.writeString(obfuscatedProfileId);
         parcel.writeString(originalJson);
         parcel.writeString(packageName);
-        parcel.writeString(expriryTime);
+        parcel.writeString(expiryTime);
     }
 }

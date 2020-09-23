@@ -61,7 +61,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
            Test105*
         * */
 
-        if (BuildConfig.FLAVOR.equalsIgnoreCase("Dev")) {
+        if (BuildConfig.FLAVOR.equalsIgnoreCase("Dev") && BuildConfig.BUILD_TYPE.equalsIgnoreCase("debug")) {
             etEmail.setText("kundan101");
             etPassword.setText("Test105*");
 /*

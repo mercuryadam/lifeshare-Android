@@ -1,0 +1,68 @@
+client Id
+108998090818-3tvuc9koh3s566poo1snib9456tfeasd.apps.googleusercontent.com
+
+secret
+FLfhEvRNoVY-X_i4bS3Sq4_N
+
+https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/androidpublisher&response_type=code&access_type=offline&redirect_uri=https://lifeshare-da14a.firebaseapp.com/__/auth/handler&client_id=108998090818-3tvuc9koh3s566poo1snib9456tfeasd.apps.googleusercontent.com
+
+
+https://lifeshare-da14a.firebaseapp.com/__/auth/handler?code=4/4QEyCJvKSuVcNTBRuS3M456SwhT2Hw7oQscgj3G-pO8qttzII4JPH6WCkHI041-yxWlW2beLKux00tRQL5nzvmU&scope=https://www.googleapis.com/auth/androidpublisher
+
+
+{
+    "access_token": "ya29.a0AfH6SMA6DD_EoCtZ7kJb9VIP4QqM0g2yZ_aI-AsU9p1whDagq5m0fOrGt2B7NVXm8zxJA9yrusckNwv3cgV_6XSeisRzNCdYL8XOqvVtdFmmK2cnaVA5hmOUtpiStsS-dlSez194o3C390G0zCMi-WztJjBDjGRLs7s",
+    "expires_in": 3599,
+    "refresh_token": "1//0gJ4AyGoa34EgCgYIARAAGBASNwF-L9Ir1VbV-YOzLGkzI77ATmoZialeGrMcCZciCuf5cUaL_JT8tXMFGAWiRUE3UlD2T8MOjng",
+    "scope": "https://www.googleapis.com/auth/androidpublisher",
+    "token_type": "Bearer"
+}
+
+
+{"acknowledged":"false","autoRenewing":"true","developerPayload":"","expiryTime":"","obfuscatedAccountId":"34","obfuscatedProfileId":"kundan101","orderId":"GPA.3352-4305-7990-36610","originalJson":"{\"orderId\":\"GPA.3352-4305-7990-36610\",\"packageName\":\"com.lifeshare\",\"productId\":\"test_id_monthly_1\",\"purchaseTime\":1600836523536,\"purchaseState\":0,\"purchaseToken\":\"dkkmlianldcelhmbmedccopo.AO-J1OwTqtEWLrQ3CEH3wp83fSGDFjcG6W2g_gIU-dPDo-2hOE4DcUda4-jzDdfA2bOFzHZwq1as3uwKWV5ZH8lNv9dEY2pwpyZ-7IOTScXMU23Il1qeWa0\",\"obfuscatedAccountId\":\"34\",\"obfuscatedProfileId\":\"kundan101\",\"autoRenewing\":true,\"acknowledged\":false}","packageName":"com.lifeshare","purchaseState":"1","purchaseTime":"1600836523536","purchaseToken":"dkkmlianldcelhmbmedccopo.AO-J1OwTqtEWLrQ3CEH3wp83fSGDFjcG6W2g_gIU-dPDo-2hOE4DcUda4-jzDdfA2bOFzHZwq1as3uwKWV5ZH8lNv9dEY2pwpyZ-7IOTScXMU23Il1qeWa0","signature":"D1bwywKIgwoXabF1csSVtIrV7ZvHV4iBlQwnEt7ICnby5IQwWrub5r5T+mB1prYLp7s5p/a/qWcqKMXiNv0/bkAIL0228V6J+2hf0BPPCswi09+XkYTTomZ469RMn9wd5lVkiYGrXJZdMf2N/9Cup8+/FfYXZLAVWeS+we1VmP3pr+UUkm+SYqreT5J76ZgZR8385hc3iCL1QjYbcKjUBzk3fHUthjAoPpudZYEd9+xvEBP2taiOxniRo3OPAAByv09PAl5mgL4eqJfZx7J7ToJb2N4xaMehVjb/GrVSCVBXfjpM7Ovby5hv4NUPLmx/+Lblt6gqZXxdH18JxjW12Q==","subscriptionId":"test_id_monthly_1"}
+
+
+
+https://androidpublisher.googleapis.com/androidpublisher/v3/applications/com.lifeshare/purchases/subscriptions/test_id_monthly_1/tokens/dkkmlianldcelhmbmedccopo.AO-J1OwTqtEWLrQ3CEH3wp83fSGDFjcG6W2g_gIU-dPDo-2hOE4DcUda4-jzDdfA2bOFzHZwq1as3uwKWV5ZH8lNv9dEY2pwpyZ-7IOTScXMU23Il1qeWa0
+
+
+{
+    "startTimeMillis": "1600836523536",
+    "expiryTimeMillis": "1600837652587",
+    "autoRenewing": true,
+    "priceCurrencyCode": "INR",
+    "priceAmountMicros": "85000000",
+    "countryCode": "IN",
+    "developerPayload": "",
+    "paymentState": 1,
+    "orderId": "GPA.3352-4305-7990-36610..1",
+    "purchaseType": 0,
+    "acknowledgementState": 1,
+    "kind": "androidpublisher#subscriptionPurchase",
+    "obfuscatedExternalAccountId": "34",
+    "obfuscatedExternalProfileId": "kundan101"
+}
+
+
+after cancel response
+
+{
+    "startTimeMillis": "1600836523536",
+    "expiryTimeMillis": "1600837533006",
+    "autoRenewing": false,
+    "priceCurrencyCode": "INR",
+    "priceAmountMicros": "85000000",
+    "countryCode": "IN",
+    "developerPayload": "",
+    "cancelReason": 0,
+    "userCancellationTimeMillis": "1600837453398",
+    "orderId": "GPA.3352-4305-7990-36610..1",
+    "purchaseType": 0,
+    "cancelSurveyResult": {
+        "cancelSurveyReason": 0
+    },
+    "acknowledgementState": 1,
+    "kind": "androidpublisher#subscriptionPurchase",
+    "obfuscatedExternalAccountId": "34",
+    "obfuscatedExternalProfileId": "kundan101"
+}

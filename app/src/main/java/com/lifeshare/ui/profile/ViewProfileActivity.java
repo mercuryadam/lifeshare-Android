@@ -1,5 +1,6 @@
 package com.lifeshare.ui.profile;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,6 +42,7 @@ import com.lifeshare.network.request.GetArchiveListRequest;
 import com.lifeshare.network.request.SaveSubscriptionRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
+import com.lifeshare.network.response.CheckSubscriptionResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.LoginResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
@@ -137,6 +139,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         }
 
     };
+    private boolean isSubscriptionActive = false;
 
     private boolean verifyValidSignature(String signedData, String signature) {
         try {
@@ -163,7 +166,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         request.setPurchaseTime(String.valueOf(purchase.getPurchaseTime()));
         request.setAutoRenewing(String.valueOf(purchase.isAutoRenewing()));
         request.setAcknowledged(String.valueOf(purchase.isAcknowledged()));
-        request.setExpriryTime("");
+        request.setExpiryTime("");
 
 
         WebAPIManager.getInstance().saveSubscription(request, new RemoteCallback<CommonResponse>() {
@@ -327,6 +330,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             public void onRecyclerItemClick(View view, int position, ChannelArchiveResponse item) {
                 if (view.getId() == R.id.ivDeleteArchive) {
                     otherDialog(ViewProfileActivity.this, getResources().getString(R.string.delete_channel_archive_message), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DismissListenerWithStatus() {
+
                         @Override
                         public void onDismissed(String message) {
                             if (message.equalsIgnoreCase(getResources().getString(R.string.yes))) {
@@ -345,6 +349,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                             startActivity(i);
                         }
                     } else {
+//                        item.setVideo_url("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
                         Intent intent = new Intent(ViewProfileActivity.this, ShowPreviousBroadcastAndChatActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putParcelable(Const.CHANNAL_DATA, item);
@@ -406,15 +411,44 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 channelArchiveList = response;
                 channelArchiveAdapter.removeAllItems();
                 channelArchiveAdapter.addItems(channelArchiveList);
-                hideLoading();
+                checkSubscription();
             }
 
             @Override
             public void onEmptyResponse(String message) {
-                hideLoading();
+                checkSubscription();
             }
         });
 
+    }
+
+    private void checkSubscription() {
+        WebAPIManager.getInstance().checkSubscription(new RemoteCallback<CheckSubscriptionResponse>(this) {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onSuccess(CheckSubscriptionResponse response) {
+                hideLoading();
+                if (response.getStatus().equalsIgnoreCase("1")) {
+                    isSubscriptionActive = true;
+                    btnSubscribe.setText(R.string.already_subscribed);
+                    btnSubscribe.setEnabled(false);
+                } else {
+                    isSubscriptionActive = false;
+                    btnSubscribe.setText(R.string.subscribe);
+                    btnSubscribe.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onEmptyResponse(String message) {
+                super.onEmptyResponse(message);
+                hideLoading();
+                btnSubscribe.setText(R.string.already_subscribed);
+                isSubscriptionActive = false;
+                btnSubscribe.setText(R.string.subscribe);
+                btnSubscribe.setEnabled(true);
+            }
+        });
     }
 
     private void deleteChannelArchive(Integer id) {

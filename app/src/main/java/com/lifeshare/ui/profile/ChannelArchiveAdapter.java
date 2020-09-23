@@ -58,7 +58,7 @@ public class ChannelArchiveAdapter extends FilterableAdapter<ChannelArchiveRespo
                     .into(viewHolder.ivBackGround);
             viewHolder.tvChannelName.setText(val.getTitle());
         } else {
-            if (!val.getVideo_url().trim().isEmpty()) {
+            if (val.getVideo_url() != null && !val.getVideo_url().trim().isEmpty()) {
                 Glide.with(LifeShare.getInstance())
                         .load(val.getImage())
                         .apply(new RequestOptions().error(R.drawable.ic_video_chat).placeholder(R.drawable.ic_video_chat))

@@ -1,7 +1,9 @@
 package com.lifeshare.ui.save_broadcast;
 
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
@@ -39,13 +41,18 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
         }
     }
 
+    private static final String TAG = "ShowPreviousBroadcastAn";
     private void setVideoView() {
 
-        videoView.setVideoPath(channelArchiveResponse.getVideo_url());
-        videoView.start();
+        try {
+
         MediaController mediaController = new MediaController(this);
-        mediaController.setMediaPlayer(videoView);
+//        mediaController.setMediaPlayer(videoView);
+            mediaController.setAnchorView(videoView);
         videoView.setMediaController(mediaController);
+//        videoView.setVideoURI(Uri.parse("https://upload-poc-demo.s3.ap-south-1.amazonaws.com/public/uploads/channels/video/RM4650f18d921c5930c24b802314ec58c7/RTb5515e1dbbc675e9f2b53bcb23549602.mp4"));
+            videoView.setVideoURI(Uri.parse("https://lifeshare-data.s3.ap-south-1.amazonaws.com/public/test.mp4"));
+            videoView.start();
         videoView.requestFocus();
         showLoading();
         videoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
@@ -57,7 +64,9 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
                 return false;
             }
         });
-
+        } catch (Exception e) {
+            Log.v(TAG, "setVideoView: " + e);
+        }
     }
 
     private void initView() {
