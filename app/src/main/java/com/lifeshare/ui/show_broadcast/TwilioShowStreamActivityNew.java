@@ -193,7 +193,7 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
 
             getNewToken(currentVisibleStram.getId());
 
-            messageFragment.setCurrentStream(currentVisibleStram.getUserId(), currentVisibleStram.getId(), currentVisibleStram.getsId());
+            messageFragment.setCurrentStream(currentVisibleStram.getUserId(), currentVisibleStram.getId(), currentVisibleStram.getsId(), false);
 
             tvToolbarTitle.setText(currentVisibleStram.getChannelName());
 

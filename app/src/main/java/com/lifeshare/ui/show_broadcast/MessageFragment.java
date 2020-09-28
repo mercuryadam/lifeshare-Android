@@ -86,6 +86,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     private String publisherUserId;
     private String roomId = "";
     private String roomSid = "";
+    private Boolean isSubscriptionActive = false;
 
     public MessageFragment() {
         // Required empty public constructor
@@ -156,13 +157,6 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             }
         });
 
-        if (publisherUserId != null && Integer.parseInt(publisherUserId) != Integer.parseInt(PreferenceHelper.getInstance().getUser().getUserId())) {
-            ivFlag.setVisibility(View.VISIBLE);
-            btnSaveChat.setVisibility(View.GONE);
-        } else {
-            ivFlag.setVisibility(View.GONE);
-            btnSaveChat.setVisibility(View.VISIBLE);
-        }
     }
 
     private void getData() {
@@ -173,6 +167,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                 .child(publisherUserId).child(Const.TABLE_CHAT_MESSAGE);
 
         databaseReference.addValueEventListener(valueEventListener);
+
 
     }
 
@@ -318,11 +313,11 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         });
     }
 
-    public void setCurrentStream(String publisherId, String roomId, String roomSid) {
+    public void setCurrentStream(String publisherId, String roomId, String roomSid, Boolean isSubActive) {
         publisherUserId = publisherId;
         this.roomId = roomId;
         this.roomSid = roomSid;
-
+        this.isSubscriptionActive = isSubActive;
         if (adapter != null) {
             adapter.removeAllItems();
         }
@@ -330,6 +325,21 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             databaseReference.removeEventListener(valueEventListener);
         }
         getData();
+        manageButtons();
+    }
+
+    private void manageButtons() {
+        if (publisherUserId != null && Integer.parseInt(publisherUserId) != Integer.parseInt(PreferenceHelper.getInstance().getUser().getUserId())) {
+            ivFlag.setVisibility(View.VISIBLE);
+            btnSaveChat.setVisibility(View.GONE);
+        } else {
+            ivFlag.setVisibility(View.GONE);
+            if (isSubscriptionActive) {
+                btnSaveChat.setVisibility(View.VISIBLE);
+            } else {
+                btnSaveChat.setVisibility(View.GONE);
+            }
+        }
     }
 
     private boolean isValid() {

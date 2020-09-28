@@ -95,7 +95,9 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 //                showToast("SUCCESS_1 : " + billingResult.getResponseCode() + " - " + billingResult.getDebugMessage());
                 for (Purchase purchase : purchases) {
                     if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                        getAcknowdgement(purchase);
+                        if (purchase.getSku().equals(Const.LIFESHARE_LIVE_MONTHLY_SUBSCRIPTION_ID_1)) {
+                            getAcknowdgement(purchase);
+                        }
                     }
                 }
 
@@ -142,7 +144,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onSuccess(CommonResponse response) {
                 hideLoading();
-                showToast(getString(R.string.verified_sucessfully));
+                showToast(response.getMessage());
                 getListChannelArchive(userId);
                 manageViewForSubscription("1");
             }
@@ -362,12 +364,17 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             case R.id.btnSubscribe:
 //                showToast("SKU size : " + (skuDetails.size()));
                 if (skuDetails.size() > 0) {
-                    BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                            .setSkuDetails(skuDetails.get(0))
-                            .setObfuscatedAccountId(PreferenceHelper.getInstance().getUser().getUserId())
-                            .setObfuscatedProfileId(PreferenceHelper.getInstance().getUser().getUsername())
-                            .build();
-                    billingClient.launchBillingFlow(ViewProfileActivity.this, billingFlowParams);
+                    for (int i = 0; i < skuDetails.size(); i++) {
+                        if (skuDetails.get(i).getSku().equals(Const.LIFESHARE_LIVE_MONTHLY_SUBSCRIPTION_ID_1)) {
+                            BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+                                    .setSkuDetails(skuDetails.get(i))
+                                    .setObfuscatedAccountId(PreferenceHelper.getInstance().getUser().getUserId())
+                                    .setObfuscatedProfileId(PreferenceHelper.getInstance().getUser().getUsername())
+                                    .build();
+                            billingClient.launchBillingFlow(ViewProfileActivity.this, billingFlowParams);
+                            break;
+                        }
+                    }
                 }
                 break;
         }
@@ -492,7 +499,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                     // The BillingClient is ready. You can query purchases here.
 
                     final List<String> skuList = new ArrayList<>();
-                    skuList.add("test_id_monthly_1"); // SKU Id
+                    skuList.add(Const.LIFESHARE_LIVE_MONTHLY_SUBSCRIPTION_ID_1); // SKU Id
                     SkuDetailsParams params = SkuDetailsParams.newBuilder()
                             .setSkusList(skuList)
                             .setType(BillingClient.SkuType.SUBS)

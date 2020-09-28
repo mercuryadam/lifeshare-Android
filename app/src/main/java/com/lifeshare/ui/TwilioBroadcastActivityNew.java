@@ -120,6 +120,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         implements EasyPermissions.PermissionCallbacks, View.OnClickListener, RuntimeEasyPermission.PermissionCallbacks {
 
     private static final int MEDIA_PROJECTION_REQUEST_CODE = 1;
+    private static final int VIEW_PROFILE_REQUEST_CODE = 188;
     private static final String TAG = "BroadcastActivity";
     private static final int RC_VIDEO_APP_PERM = 124;
     private static final int REQUEST_AUDIO_PERM = 1123;
@@ -578,7 +579,8 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 getCountForViewers();
                 fabMessage.show();
                 rlChatView.setVisibility(View.VISIBLE);
-                messageFragment.setCurrentStream(PreferenceHelper.getInstance().getUser().getUserId(), response.getId(), response.getsId());
+
+                messageFragment.setCurrentStream(PreferenceHelper.getInstance().getUser().getUserId(), response.getId(), response.getsId(), isSubscriptionActive);
             }
         });
     }
@@ -618,6 +620,9 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 case MEDIA_PROJECTION_REQUEST_CODE:
                     Toast.makeText(this, getString(R.string.screen_capture_permission_message), Toast.LENGTH_SHORT).show();
                     changeBroadcastButtonView();
+                    break;
+                case VIEW_PROFILE_REQUEST_CODE:
+                    checkSubscription();
                     break;
                 case REQUEST_SELECT_CONNECTION_USERS:
                     if (resultCode == RESULT_CANCELED) {
@@ -870,7 +875,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
         });
 
-        checkSubscription();
+
 
     }
 
@@ -1088,6 +1093,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
         initializeTwilioComponent();
 
+        checkSubscription();
     }
 
     private void initializeTwilioComponent() {
@@ -1229,7 +1235,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 Bundle bundle = new Bundle();
                 bundle.putString(Const.PROFILE, Const.MY_PROFILE);
                 intent.putExtras(bundle);
-                startActivity(intent);
+                startActivityForResult(intent, VIEW_PROFILE_REQUEST_CODE);
 
                 dialog.dismiss();
             }

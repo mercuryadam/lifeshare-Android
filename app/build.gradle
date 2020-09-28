@@ -44,7 +44,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            debuggable true
+            debuggable false
             shrinkResources true
             useProguard true
             signingConfig signingConfigs.release
@@ -130,10 +130,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:17.4.4'
 
     // Add the Firebase Crashlytics SDK.
-/*
     implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.1'
-*/
     implementation 'com.android.support:multidex:1.0.3'
 
     //Google Mobile Ads SDK
@@ -147,4 +145,4 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.10.4'
 }
 apply plugin: 'com.google.gms.google-services'
-//apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.crashlytics'

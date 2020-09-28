@@ -26,11 +26,12 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
 
     private static final String TAG = "ShowPreviousBroadcastAn";
     PreviousChatMessageFragment messageFragment;
-    PlayerManager playerManager = new PlayerManager(this);
+    PlayerManager playerManager;
     private FloatingActionButton fabMessage;
     private FrameLayout container;
     private ChannelArchiveResponse channelArchiveResponse;
     private ExoPlayer exoPlayer;
+    private PlayerView exoplayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +52,8 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
         }
     }
 
-    private PlayerView exoplayer;
-
     private void setVideoView() {
-
+        playerManager = new PlayerManager(this);
         Log.v(TAG, "setVideoView: " + channelArchiveResponse.getVideo_url());
         playerManager.init(this, exoplayer, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
 //            playerManager.init(this, exoplayer, "https://lifeshare-data.s3.ap-south-1.amazonaws.com/public/uploads/channels/video/RMf84e6af522ee6eb2348ec10816c33ec6/RTf70429ffb9ea0006792d47f2d732811a.mkv");
@@ -92,7 +91,7 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 Log.v(TAG, "onPlayerError: ");
-                }
+            }
 
             @Override
             public void onPositionDiscontinuity(int reason) {
@@ -129,6 +128,7 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
             case R.id.fabMessage:
                 if (container.getVisibility() == View.VISIBLE) {
                     container.setVisibility(View.GONE);
+                    playerManager.resumePlaying();
                 } else {
                     playerManager.paushPlaying();
                     container.setVisibility(View.VISIBLE);
