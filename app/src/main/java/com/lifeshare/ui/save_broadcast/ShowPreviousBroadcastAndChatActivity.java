@@ -1,27 +1,37 @@
 package com.lifeshare.ui.save_broadcast;
 
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.MediaController;
-import android.widget.VideoView;
 
+import androidx.annotation.Nullable;
+
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lifeshare.BaseActivity;
 import com.lifeshare.R;
 import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.utils.Const;
+import com.lifeshare.utils.PlayerManager;
 
 public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implements View.OnClickListener {
 
+    private static final String TAG = "ShowPreviousBroadcastAn";
     PreviousChatMessageFragment messageFragment;
-    private VideoView videoView;
+    PlayerManager playerManager = new PlayerManager(this);
     private FloatingActionButton fabMessage;
     private FrameLayout container;
     private ChannelArchiveResponse channelArchiveResponse;
+    private ExoPlayer exoPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,42 +51,76 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
         }
     }
 
-    private static final String TAG = "ShowPreviousBroadcastAn";
+    private PlayerView exoplayer;
+
     private void setVideoView() {
 
-        try {
-
-        MediaController mediaController = new MediaController(this);
-//        mediaController.setMediaPlayer(videoView);
-            mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
-//        videoView.setVideoURI(Uri.parse("https://upload-poc-demo.s3.ap-south-1.amazonaws.com/public/uploads/channels/video/RM4650f18d921c5930c24b802314ec58c7/RTb5515e1dbbc675e9f2b53bcb23549602.mp4"));
-            videoView.setVideoURI(Uri.parse("https://lifeshare-data.s3.ap-south-1.amazonaws.com/public/test.mp4"));
-            videoView.start();
-        videoView.requestFocus();
-        showLoading();
-        videoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+        Log.v(TAG, "setVideoView: " + channelArchiveResponse.getVideo_url());
+        playerManager.init(this, exoplayer, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+//            playerManager.init(this, exoplayer, "https://lifeshare-data.s3.ap-south-1.amazonaws.com/public/uploads/channels/video/RMf84e6af522ee6eb2348ec10816c33ec6/RTf70429ffb9ea0006792d47f2d732811a.mkv");
+        playerManager.getPlayerManagerNew().addListener(new Player.EventListener() {
             @Override
-            public boolean onInfo(MediaPlayer mediaPlayer, int i, int i1) {
-                if (i == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
-                    hideLoading();
+            public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
+                Log.v(TAG, "onTimelineChanged: ");
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+                Log.v(TAG, "onTracksChanged: ");
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+                Log.v(TAG, "onLoadingChanged: ");
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                Log.v(TAG, "onPlayerStateChanged: ");
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+                Log.v(TAG, "onRepeatModeChanged: ");
+            }
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+                Log.v(TAG, "onShuffleModeEnabledChanged: ");
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+                Log.v(TAG, "onPlayerError: ");
                 }
-                return false;
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {
+                Log.v(TAG, "onPositionDiscontinuity: ");
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+                Log.v(TAG, "onPlaybackParametersChanged: ");
+            }
+
+            @Override
+            public void onSeekProcessed() {
+
             }
         });
-        } catch (Exception e) {
-            Log.v(TAG, "setVideoView: " + e);
-        }
+
     }
 
     private void initView() {
-        videoView = (VideoView) findViewById(R.id.videoView);
+
         fabMessage = (FloatingActionButton) findViewById(R.id.fabMessage);
 
         fabMessage.setOnClickListener(this);
 
         container = (FrameLayout) findViewById(R.id.container);
 
+        exoplayer = (PlayerView) findViewById(R.id.exoplayer);
     }
 
     @Override
@@ -86,7 +130,7 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
                 if (container.getVisibility() == View.VISIBLE) {
                     container.setVisibility(View.GONE);
                 } else {
-                    videoView.pause();
+                    playerManager.paushPlaying();
                     container.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -102,5 +146,12 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
             super.onBackPressed();
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        playerManager.reset();
+        playerManager = null;
     }
 }

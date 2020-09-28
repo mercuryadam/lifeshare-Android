@@ -50,9 +50,7 @@ import com.lifeshare.ui.ProfileActivity;
 import com.lifeshare.ui.save_broadcast.ShowPreviousBroadcastAndChatActivity;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
-import com.lifeshare.utils.Security;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +83,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private String userId = "";
     private AppCompatTextView tvTotalViewer;
     private String base64Key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuRB1IGH8zunjzT4z3A3syZ/biyDUCfajoVQOdJYq41bXa3NI4vlcsqtH6d5+3RRqjiZd9i2ni7igrtL6LktT8a5G5m1ofwGC6Ic5a47mpPWOeu526DZpeJD4/J6dBlddbKaHgQe1Sw1PtAymjcesUQ+vqwbwanIZslgwCyoOCQqWPfLyORGWgTn80QedzB/ZMiY3Diy+73oifRPDS9vPhN0j6TMzVblmPJfU4TS/Vt4tJozpg4AMC4STIgD6LZV/p5fYXKSV83m7wzWNEtzA/Q3d2HR4fbxmCuYeaXGK2mAZgJRZDgoxeZu+a8fSQ3XliXohWXlRSlyza7jUmfVR3wIDAQAB";
+    private boolean isSubscriptionActive = false;
     private PurchasesUpdatedListener purchaseUpdateListener = new PurchasesUpdatedListener() {
 
         @Override
@@ -95,42 +94,22 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
 //                showToast("SUCCESS_1 : " + billingResult.getResponseCode() + " - " + billingResult.getDebugMessage());
                 for (Purchase purchase : purchases) {
-//                    insertIntoFirebase(purchase);
-
-                    if (!verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())) {
-                        // Invalid purchase
-                        // show error to user
-                        Log.v(TAG, "onPurchasesUpdated: " + "Got a purchase: " + purchase + "; but signature is bad. Skipping...");
-//                        showToast("Got a purchase: " + purchase + "; but signature is bad. Skipping...");
-//                        Log.i(TAG, "Got a purchase: " + purchase + "; but signature is bad. Skipping...");
-                        return;
-                    } else {
-                        PreferenceHelper.getInstance().setPurchaseData(purchase);
-                        Log.v(TAG, "onPurchasesUpdated: " + "purchase is valid");
-//                        showToast("purchase is valid");
-                        // purchase is valid
-                        // Perform actions
-
-                    }
-
-                    Log.v(TAG, "onPurchasesUpdated: " + purchase.getOriginalJson());
                     if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-
                         getAcknowdgement(purchase);
                     }
-
                 }
+
             } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
 //                showToast("USER_CANCELLED Billing Process");
                 // Handle an error caused by a user cancelling the purchase flow.
             } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-                showToast("ITEM_ALREADY_OWNED");
+                showToast("ITEM ALREADY OWNED");
                 // Handle an error caused by a user cancelling the purchase flow.
             } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
-                showToast("ITEM_NOT_OWNED");
+                showToast("ITEM NOT OWNED");
                 // Handle an error caused by a user cancelling the purchase flow.
             } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_UNAVAILABLE) {
-                showToast("ITEM_UNAVAILABLE");
+                showToast("ITEM UNAVAILABLE");
                 // Handle an error caused by a user cancelling the purchase flow.
             } else {
                 showToast("Billing Error : " + billingResult.getResponseCode() + ":" + billingResult.getDebugMessage());
@@ -139,18 +118,8 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         }
 
     };
-    private boolean isSubscriptionActive = false;
 
-    private boolean verifyValidSignature(String signedData, String signature) {
-        try {
-            return Security.verifyPurchase(base64Key, signedData, signature);
-        } catch (IOException e) {
-            Log.e(TAG, "Got an exception trying to validate a purchase: " + e);
-            return false;
-        }
-    }
-
-    private void insertIntoFirebase(Purchase purchase) {
+    private void updatePurchaseToServer(Purchase purchase) {
 
         SaveSubscriptionRequest request = new SaveSubscriptionRequest();
         request.setDeveloperPayload(purchase.getDeveloperPayload());
@@ -172,7 +141,10 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         WebAPIManager.getInstance().saveSubscription(request, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
-
+                hideLoading();
+                showToast(getString(R.string.verified_sucessfully));
+                getListChannelArchive(userId);
+                manageViewForSubscription("1");
             }
         });
     }
@@ -190,18 +162,20 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 llEmailPhoneCity.setVisibility(View.VISIBLE);
                 llCATitle.setVisibility(View.VISIBLE);
                 rvChannelArchive.setVisibility(View.VISIBLE);
+                btnSubscribe.setVisibility(View.VISIBLE);
                 userId = PreferenceHelper.getInstance().getUser().getUserId();
 //                setData();
-                getOtherProfileData(userId);
+                checkSubscription();
+
             } else {
 
                 btnEdit.setVisibility(View.GONE);
                 llEmailPhoneCity.setVisibility(View.GONE);
                 addArchivesFromDialog.setVisibility(View.GONE);
                 MyConnectionListResponse data = (MyConnectionListResponse) bundle.getParcelable(Const.USER_DATA);
+                btnSubscribe.setVisibility(View.GONE);
                 userId = data.getUserId();
                 getOtherProfileData(data.getUserId());
-
             }
             setRecyclerView();
         }
@@ -215,13 +189,11 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void getOtherProfileData(String userId) {
-        showLoading();
         UserProfileRequest request = new UserProfileRequest();
         request.setUserId(userId);
         WebAPIManager.getInstance().getUserProfile(request, new RemoteCallback<LoginResponse>() {
             @Override
             public void onSuccess(LoginResponse response) {
-                hideLoading();
                 setOtherUserData(response);
                 getListChannelArchive(response.getUserId());
             }
@@ -349,6 +321,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                             startActivity(i);
                         }
                     } else {
+
 //                        item.setVideo_url("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
                         Intent intent = new Intent(ViewProfileActivity.this, ShowPreviousBroadcastAndChatActivity.class);
                         Bundle bundle = new Bundle();
@@ -404,39 +377,33 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
         GetArchiveListRequest request = new GetArchiveListRequest();
         request.setUserId(userId);
-        showLoading();
         WebAPIManager.getInstance().listChannelArchive(request, new RemoteCallback<ArrayList<ChannelArchiveResponse>>() {
             @Override
             public void onSuccess(ArrayList<ChannelArchiveResponse> response) {
                 channelArchiveList = response;
                 channelArchiveAdapter.removeAllItems();
                 channelArchiveAdapter.addItems(channelArchiveList);
-                checkSubscription();
+                hideLoading();
             }
 
             @Override
             public void onEmptyResponse(String message) {
-                checkSubscription();
+                hideLoading();
             }
         });
 
     }
 
     private void checkSubscription() {
+        showLoading();
         WebAPIManager.getInstance().checkSubscription(new RemoteCallback<CheckSubscriptionResponse>(this) {
             @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(CheckSubscriptionResponse response) {
                 hideLoading();
-                if (response.getStatus().equalsIgnoreCase("1")) {
-                    isSubscriptionActive = true;
-                    btnSubscribe.setText(R.string.already_subscribed);
-                    btnSubscribe.setEnabled(false);
-                } else {
-                    isSubscriptionActive = false;
-                    btnSubscribe.setText(R.string.subscribe);
-                    btnSubscribe.setEnabled(true);
-                }
+                manageViewForSubscription(response.getStatus());
+
+                getOtherProfileData(userId);
             }
 
             @Override
@@ -449,6 +416,19 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 btnSubscribe.setEnabled(true);
             }
         });
+    }
+
+    private void manageViewForSubscription(String status) {
+        if (status.equalsIgnoreCase("1")) {
+            isSubscriptionActive = true;
+            btnSubscribe.setText(R.string.already_subscribed);
+            btnSubscribe.setEnabled(false);
+        } else {
+            isSubscriptionActive = false;
+            btnSubscribe.setText(R.string.subscribe);
+            btnSubscribe.setEnabled(true);
+        }
+
     }
 
     private void deleteChannelArchive(Integer id) {
@@ -481,34 +461,9 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     public void handleDialogClose(DialogInterface dialog) {
         getListChannelArchive(userId);
     }
-/*
-
-    private void checkUserSubScription() {
-        if (billingClient != null) {
-            Log.v(TAG, "checkUserSubScription: " + billingClient.queryPurchases(BillingClient.SkuType.SUBS).getPurchasesList().size());
-
-            List<Purchase> purchasesList = billingClient.queryPurchases(BillingClient.SkuType.SUBS).getPurchasesList();
-            for (int i = 0; i < purchasesList.size(); i++) {
-                Log.v(TAG, "checkUserSubScription 1: " + purchasesList.get(i).getAccountIdentifiers().getObfuscatedAccountId());
-                Log.v(TAG, "checkUserSubScription 2: " + purchasesList.get(i).getAccountIdentifiers().getObfuscatedProfileId());
-                Log.v(TAG, "checkUserSubScription 3: " + purchasesList.get(i).isAcknowledged());
-                Log.v(TAG, "checkUserSubScription 4: " + purchasesList.get(i).getOriginalJson());
-                if (!purchasesList.get(i).isAutoRenewing()) {
-                    // https://play.google.com/store/account/subscriptions?sku=your-sub-product-id&package=your-app-package
-
-                    showToast("There is a problem with your subscription. Click here to go to the\n" +
-                            "Google Play subscription settings to fix your payment method");
-                }
-                if (!purchasesList.get(i).isAcknowledged() && purchasesList.get(i).getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                    getAcknowdgement(purchasesList.get(i));
-                }
-            }
-        }
-    }
-*/
 
     private void getAcknowdgement(Purchase purchase) {
-
+        showLoading();
         AcknowledgePurchaseParams params = AcknowledgePurchaseParams.newBuilder()
                 .setPurchaseToken(purchase.getPurchaseToken())
                 .build();
@@ -517,10 +472,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
                 Log.v(TAG, "onAcknowledgePurchaseResponse: " + purchase.getOriginalJson());
-                insertIntoFirebase(purchase);
-                String debugMessage = billingResult.getDebugMessage();
-                int responseCode = billingResult.getResponseCode();
-//                showToast("SUCCESS_2 : " + responseCode + " - " + debugMessage);
+                updatePurchaseToServer(purchase);
             }
         });
 

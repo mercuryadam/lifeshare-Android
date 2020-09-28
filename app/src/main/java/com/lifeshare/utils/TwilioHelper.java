@@ -20,7 +20,8 @@ public class TwilioHelper {
     public static final String PREF_AUDIO_CODEC = "audio_codec";
     public static final String PREF_AUDIO_CODEC_DEFAULT = OpusCodec.NAME;
     public static final String PREF_VIDEO_CODEC = "video_codec";
-    public static final String PREF_VIDEO_CODEC_DEFAULT = Vp8Codec.NAME;
+    //    public static final String PREF_VIDEO_CODEC_DEFAULT = Vp8Codec.NAME;
+    public static final String PREF_VIDEO_CODEC_DEFAULT = Vp9Codec.NAME;
     public static final String PREF_SENDER_MAX_AUDIO_BITRATE = "sender_max_audio_bitrate";
     public static final String PREF_SENDER_MAX_AUDIO_BITRATE_DEFAULT = "0";
     public static final String PREF_SENDER_MAX_VIDEO_BITRATE = "sender_max_video_bitrate";
@@ -29,8 +30,6 @@ public class TwilioHelper {
     public static final String PREF_ENABLE_AUTOMATIC_SUBSCRIPTION = "enable_automatic_subscription";
     public static final boolean PREF_ENABLE_AUTOMATIC_SUBSCRIPTION_DEFAULT = true;
     public static final boolean PREF_VP8_SIMULCAST_DEFAULT = false;
-    public static String TWILIO_ACCESS_TOKEN_PUBLISHER = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzYxMjljM2RhMjAyZjY1NzY1NTUzOThhNDFkM2ViMDM0LTE1OTg1MjkyODkiLCJpc3MiOiJTSzYxMjljM2RhMjAyZjY1NzY1NTUzOThhNDFkM2ViMDM0Iiwic3ViIjoiQUNjZWIwMjVjNzdlMTc5NTU5MmVjYTVhNDEyNGVkNDY4NSIsImV4cCI6MTU5ODUzMjg4OSwiZ3JhbnRzIjp7ImlkZW50aXR5IjoiUHVibGlzaGVyIiwidmlkZW8iOnt9fX0.TUrvewIrZXxRtvlj1KRP8UxWrlNK61vDI9mNOhoPnSw";
-    public static String TWILIO_ACCESS_TOKEN_SUBSCRIBER = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzYxMjljM2RhMjAyZjY1NzY1NTUzOThhNDFkM2ViMDM0LTE1OTg1Mjk0NjkiLCJpc3MiOiJTSzYxMjljM2RhMjAyZjY1NzY1NTUzOThhNDFkM2ViMDM0Iiwic3ViIjoiQUNjZWIwMjVjNzdlMTc5NTU5MmVjYTVhNDEyNGVkNDY4NSIsImV4cCI6MTU5ODUzMzA2OSwiZ3JhbnRzIjp7ImlkZW50aXR5IjoiU1VCIiwidmlkZW8iOnt9fX0.wGaXqcFILYaqTqjdnbfzSUg62sYB5zNQEDnTbtjQ4X4";
 
     public static TwilioHelper INSTANCE;
 

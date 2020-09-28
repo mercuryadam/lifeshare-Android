@@ -23,6 +23,7 @@ allprojects {
 
         maven { url 'https://tokbox.bintray.com/maven/' }
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 

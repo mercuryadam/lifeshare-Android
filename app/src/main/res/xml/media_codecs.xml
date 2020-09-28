@@ -1,0 +1,28 @@
+<MediaCodec
+    name="OMX.*.h264.decode"
+    type="video/avc">
+    <Limit
+        name="size"
+        max="3840x2176"
+        min="48x48" />
+    <Limit
+        name="alignment"
+        value="2x2" />
+    <Limit
+        name="block-size"
+        value="16x16" />
+    <Limit
+        name="blocks-per-second"
+        max="783360"
+        min="1" />
+    <Limit
+        name="bitrate"
+        range="1-120000000" />
+    <Feature name="adaptive-playback" />
+    <Feature
+        name="secure-playback"
+        required="true" />
+    <Limit
+        name="concurrent-instances"
+        max="32" />
+</MediaCodec>

@@ -20,7 +20,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="message_invalid_user">Your account is not recognized</string>
     <string name="message_invalid_session">Invalid session</string>
     <string name="logout_message">Are you sure you want to logout?</string>
-    <string name="save_broadcast_message">Do you want save this broadcast into your channel archives?</string>
+    <string name="save_broadcast_message">Do you want to save this broadcast into your channel archives?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="please_enter_email">Please enter email</string>
@@ -148,5 +148,6 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="un_select_all">Unselect All</string>
     <string name="subscribe">Subscribe</string>
     <string name="already_subscribed">Already Subscribed</string>
+    <string name="verified_sucessfully">Verified successfully</string>
 
 </resources>

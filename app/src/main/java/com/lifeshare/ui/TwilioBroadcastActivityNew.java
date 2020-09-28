@@ -465,8 +465,8 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         if (isSubscriptionActive) {
             videoConstraints = new VideoConstraints.Builder()
                     .aspectRatio(AspectRatio.ASPECT_RATIO_16_9)
-                    .minVideoDimensions(VideoDimensions.HD_1080P_VIDEO_DIMENSIONS)
-                    .maxVideoDimensions(VideoDimensions.HD_1080P_VIDEO_DIMENSIONS)
+                    .minVideoDimensions(VideoDimensions.HD_540P_VIDEO_DIMENSIONS)
+                    .maxVideoDimensions(VideoDimensions.HD_540P_VIDEO_DIMENSIONS)
                     .minFps(VideoConstraints.FPS_20).maxFps(VideoConstraints.FPS_30).build();
 
         } else {
