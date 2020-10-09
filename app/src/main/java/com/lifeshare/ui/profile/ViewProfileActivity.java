@@ -313,6 +313,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                         }
                     });
                 } else {
+
                     if (item.getType().equals("1")) {
                         if (!item.getLink().trim().isEmpty()) {
                             Intent i = new Intent(Intent.ACTION_VIEW);
@@ -324,7 +325,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                         }
                     } else {
 
-//                        item.setVideo_url("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
                         Intent intent = new Intent(ViewProfileActivity.this, ShowPreviousBroadcastAndChatActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putParcelable(Const.CHANNAL_DATA, item);

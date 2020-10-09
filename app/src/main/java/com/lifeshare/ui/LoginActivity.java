@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.lifeshare.BaseActivity;
 import com.lifeshare.BuildConfig;
 import com.lifeshare.R;
@@ -94,7 +98,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.btn_login:
                 if (isValid()) {
-                    checkLogin();
+                    if (PreferenceHelper.getInstance().getFcmToken().isEmpty()) {
+
+                        if (!checkInternetConnection()) {
+                            return;
+                        }
+                        showLoading();
+
+                        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                            @Override
+                            public void onSuccess(InstanceIdResult instanceIdResult) {
+                                hideLoading();
+                                String token = instanceIdResult.getToken();
+                                PreferenceHelper.getInstance().setFcmToken(token);
+                                Log.v(TAG, "onSuccess:token : " + token);
+                                checkLogin();
+                            }
+                        });
+
+                    } else {
+                        checkLogin();
+                    }
                 }
                 break;
             case R.id.tv_forgot_password:

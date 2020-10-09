@@ -55,7 +55,8 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
     private void setVideoView() {
         playerManager = new PlayerManager(this);
         Log.v(TAG, "setVideoView: " + channelArchiveResponse.getVideo_url());
-        playerManager.init(this, exoplayer, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+        playerManager.init(this, exoplayer, channelArchiveResponse.getVideo_url());
+//        playerManager.init(this, exoplayer, "https://lifeshare-data.s3.ap-south-1.amazonaws.com/public/uploads/channels/video/RMda48cadfd89702306dd6cf7892deea11/CJ48a4dd2e731acce7d45a6f011070cc2e.mp4");
 //            playerManager.init(this, exoplayer, "https://lifeshare-data.s3.ap-south-1.amazonaws.com/public/uploads/channels/video/RMf84e6af522ee6eb2348ec10816c33ec6/RTf70429ffb9ea0006792d47f2d732811a.mkv");
         playerManager.getPlayerManagerNew().addListener(new Player.EventListener() {
             @Override
