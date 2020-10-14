@@ -26,7 +26,6 @@ import com.lifeshare.network.request.SearchUserRequest;
 import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.StateRequest;
 import com.lifeshare.network.request.UpdateDeviceTokenRequest;
-import com.lifeshare.network.request.UpdatePushNotificationRequest;
 import com.lifeshare.network.request.UpdateSaveChatFlag;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
@@ -96,12 +95,6 @@ public interface WebAPIService {
 
     @POST("user/device-token/update")
     Call<JsonElement> updateDeviceToken(@Body UpdateDeviceTokenRequest request);
-
-    @POST("")
-    Call<JsonElement> updatePushNotificationStatus(@Body UpdatePushNotificationRequest request);
-
-    @POST("")
-    Call<JsonElement> getAllRemainingPushNotification();
 
     @POST("user/list")
     Call<ArrayList<SearchUserResponse>> searchUser(@Body SearchUserRequest request);

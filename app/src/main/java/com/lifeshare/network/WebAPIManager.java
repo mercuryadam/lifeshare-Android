@@ -30,7 +30,6 @@ import com.lifeshare.network.request.SendNotificationRequest;
 import com.lifeshare.network.request.SignUpRequest;
 import com.lifeshare.network.request.StateRequest;
 import com.lifeshare.network.request.UpdateDeviceTokenRequest;
-import com.lifeshare.network.request.UpdatePushNotificationRequest;
 import com.lifeshare.network.request.UpdateSaveChatFlag;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
@@ -147,13 +146,6 @@ public class WebAPIManager {
         mService.updateDeviceToken(request).enqueue(callback);
     }
 
-    public void updatePushNotificationStatus(UpdatePushNotificationRequest request, RemoteCallback<JsonElement> callback) {
-        mService.updatePushNotificationStatus(request).enqueue(callback);
-    }
-
-    public void getAllRemainingPushNotification(RemoteCallback<JsonElement> callback) {
-        mService.getAllRemainingPushNotification().enqueue(callback);
-    }
 
     public void sendInvitaion(InvitationRequest request, RemoteCallback<CommonResponse> callback) {
         mService.sendInvitaion(request).enqueue(callback);

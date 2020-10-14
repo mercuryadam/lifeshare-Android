@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ import java.util.HashMap;
 
 public class MessageFragment extends BaseFragment implements View.OnClickListener, BaseRecyclerListener<ChatMessage> {
 
+    private static final String TAG = "MessageFragment";
     DatabaseReference databaseReference;
     private FilterRecyclerView rvMessage;
     private LinearLayout llMessage;
@@ -156,6 +158,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                 return false;
             }
         });
+        manageButtons();
 
     }
 
@@ -325,19 +328,22 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
             databaseReference.removeEventListener(valueEventListener);
         }
         getData();
+        Log.v(TAG, "setCurrentStream: " + isAdded());
         manageButtons();
     }
 
     private void manageButtons() {
-        if (publisherUserId != null && Integer.parseInt(publisherUserId) != Integer.parseInt(PreferenceHelper.getInstance().getUser().getUserId())) {
-            ivFlag.setVisibility(View.VISIBLE);
-            btnSaveChat.setVisibility(View.GONE);
-        } else {
-            ivFlag.setVisibility(View.GONE);
-            if (isSubscriptionActive) {
-                btnSaveChat.setVisibility(View.VISIBLE);
-            } else {
+        if (ivFlag != null && btnSaveChat != null) {
+            if (publisherUserId != null && Integer.parseInt(publisherUserId) != Integer.parseInt(PreferenceHelper.getInstance().getUser().getUserId())) {
+                ivFlag.setVisibility(View.VISIBLE);
                 btnSaveChat.setVisibility(View.GONE);
+            } else {
+                ivFlag.setVisibility(View.GONE);
+                if (isSubscriptionActive) {
+                    btnSaveChat.setVisibility(View.VISIBLE);
+                } else {
+                    btnSaveChat.setVisibility(View.GONE);
+                }
             }
         }
     }

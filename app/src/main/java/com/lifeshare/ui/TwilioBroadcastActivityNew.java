@@ -827,10 +827,11 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         container.setVisibility(View.GONE);
         deleteStreaming();
 
+
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         } else {
-            Log.d("TAG", "The interstitial wasn't loaded yet.");
+            Log.v(TAG, "stopBroadcast: The interstitial wasn't loaded yet");
         }
     }
 
@@ -870,6 +871,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
             @Override
             public void onAdClosed() {
                 // Load the next interstitial.
+                Log.v(TAG, "onAdClosed: ");
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
             }
 
