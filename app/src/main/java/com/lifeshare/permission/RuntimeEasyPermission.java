@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.lifeshare.LifeShare;
 import com.lifeshare.R;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class RuntimeEasyPermission extends DialogFragment {
             return false;
         }
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(getContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(LifeShare.getInstance(), permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }

@@ -1,6 +1,7 @@
 package com.lifeshare.ui.show_broadcast;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -40,6 +41,8 @@ import com.lifeshare.network.response.StreamUserListResponse;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 import com.lifeshare.utils.TwilioHelper;
+import com.twilio.audioswitch.AudioDevice;
+import com.twilio.audioswitch.AudioSwitch;
 import com.twilio.video.AudioCodec;
 import com.twilio.video.ConnectOptions;
 import com.twilio.video.EncodingParameters;
@@ -63,8 +66,10 @@ import com.twilio.video.VideoView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import kotlin.Unit;
 
 import static com.lifeshare.utils.Const.LAST_VIEW_UPDATE_INTERVAL_TIME;
 
@@ -85,7 +90,7 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
 
         }
     };
-
+    AudioManager audioManager;
     private StreamUserListResponse currentVisibleStram;
     //    private AppBarLayout receiverAppbar;
     private ProgressBar streamProgressBar;
@@ -126,6 +131,7 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
         }
     };
     private VideoView primaryVideoView;
+    private ImageView ivVolume;
     private LocalAudioTrack localAudioTrack;
     private LocalVideoTrack localVideoTrack;
     private AudioCodec audioCodec;
@@ -136,11 +142,14 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
     private LocalParticipant localParticipant;
     private int savedVolumeControlStream;
     private String remoteParticipantIdentity;
+    private AudioSwitch audioSwitch;
 
     private void initView() {
         Log.v(TAG, "initView: " + LifeShare.getFirebaseReference().push().getKey());
         tvToolbarTitle = (AppCompatTextView) findViewById(R.id.tvToolbarTitle);
         rvViewer = findViewById(R.id.rv_viewer);
+        ivVolume = findViewById(R.id.ivVolume);
+        ivVolume.setOnClickListener(this);
         primaryVideoView = findViewById(R.id.primary_video_view);
         rvViewer.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         viewerListAdapter = new ViewerListAdapter(new BaseRecyclerListener<ViewerUser>() {
@@ -176,14 +185,31 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
     }
 
     private void initializeTwiloCompoenent() {
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setSpeakerphoneOn(true);
+        audioManager.setMicrophoneMute(true);
+
+        audioSwitch = new AudioSwitch(getApplicationContext());
         savedVolumeControlStream = getVolumeControlStream();
         setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
-//        createAudioAndVideoTracks();
+        audioSwitch.start((audioDevices, audioDevice) -> {
+//            updateAudioDeviceIcon(audioDevice);
+            return Unit.INSTANCE;
+        });
+
+        List<AudioDevice> availableAudioDevices = audioSwitch.getAvailableAudioDevices();
+        Log.v(TAG, "initializeTwiloCompoenent: " + availableAudioDevices.get(availableAudioDevices.size() - 1));
+        audioSwitch.selectDevice(availableAudioDevices.get(availableAudioDevices.size() - 1));
+
+        localAudioTrack = LocalAudioTrack.create(this, true);
+        localAudioTrack.enable(true);
+
         setTwilioCodec();
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void
+    onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.twilio_activity_show_stream_new);
         initView();
@@ -455,20 +481,26 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
             case R.id.ic_back:
                 onBackPressed();
                 break;
+            case R.id.ivVolume:
+                if (audioManager.isMicrophoneMute()) {
+                    audioManager.setMicrophoneMute(false);
+                    ivVolume.setImageResource(R.drawable.ic_unmute);
+
+                } else {
+                    audioManager.setMicrophoneMute(true);
+                    ivVolume.setImageResource(R.drawable.ic_mute);
+                }
+                break;
         }
     }
 
-    private void createAudioAndVideoTracks() {
-//        localAudioTrack = LocalAudioTrack.create(this, true, LOCAL_AUDIO_TRACK_NAME);
-    }
 
     private void connectToRoom(String roomName, String token) {
         Log.v(TAG, "connectToRoom: roomName : " + roomName + " - Token:" + token);
         llStreamProgress.setVisibility(View.VISIBLE);
         streamProgressBar.setVisibility(View.VISIBLE);
         tvStreamMessage.setText(getString(R.string.waiting_for_connection_msg));
-
-
+        audioSwitch.activate();
         ConnectOptions.Builder connectOptionsBuilder = new ConnectOptions.Builder(token)
                 .roomName(roomName);
 
@@ -476,9 +508,8 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
          * Add local audio track to connect options to share with participants.
          */
         if (localAudioTrack != null) {
-      /*      connectOptionsBuilder
+            connectOptionsBuilder
                     .audioTracks(Collections.singletonList(localAudioTrack));
-      */
         }
 
         /*
@@ -502,6 +533,7 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
         connectOptionsBuilder.enableAutomaticSubscription(enableAutomaticSubscription);
 
         room = Video.connect(this, connectOptionsBuilder.build(), roomListener());
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -562,7 +594,6 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
                 Log.v(TAG, "onParticipantDisconnected: " + remoteParticipant.getSid());
                 Log.v(TAG, "onParticipantDisconnected:Room - " + room.getSid());
 //                showToast("onParticipantDisconnected - "+ room.getSid());
-
 
 
             }
@@ -801,8 +832,9 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
                         remoteParticipant.getIdentity(),
                         remoteVideoTrack.isEnabled(),
                         remoteVideoTrack.getName()));
-//                if (remoteParticipant.getSid().equals(currentVisibleStram.getsId())) {
+//                if (remoteParticipant.getSid().equals(currentVisibleStram.getsId()))
                 primaryVideoView.setVisibility(View.VISIBLE);
+                audioManager.setMicrophoneMute(true);
                 addRemoteParticipantVideo(remoteVideoTrack);
 //                }
             }

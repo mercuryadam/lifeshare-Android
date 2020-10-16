@@ -106,6 +106,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <ImageView
+            android:id="@+id/ivVolume"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
+            android:background="@color/black_transparent"
+            android:padding="@dimen/size_8dp"
+            android:src="@drawable/ic_mute" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabMessage"
             android:layout_width="wrap_content"

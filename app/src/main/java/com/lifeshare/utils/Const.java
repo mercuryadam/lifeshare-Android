@@ -25,6 +25,7 @@ public class Const {
     public static final String TABLE_COUNT_VIEWER = "COUNT_VIEWER_" + BuildConfig.FLAVOR;
     // do not change this
     public static final String LIFESHARE_LIVE_MONTHLY_SUBSCRIPTION_ID_1 = "lifeshare_live_monthly_subscription_id_1";
+    public static final String TEST_SUBSCRIPTION_ID = "test_id_monthly_1";
 
     //
     public static final int GET_STREAM_USER_INTERVAL_TIME = 10000; // in millisecond

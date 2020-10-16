@@ -39,6 +39,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
@@ -123,7 +124,8 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     private static final int VIEW_PROFILE_REQUEST_CODE = 188;
     private static final String TAG = "BroadcastActivity";
     private static final int RC_VIDEO_APP_PERM = 124;
-    private static final int REQUEST_AUDIO_PERM = 1123;
+    private static final int REQUEST_AUDIO_PERM_PUBLISH_BROADCAST = 1123;
+    private static final int REQUEST_AUDIO_PERM_SHOW_BROADCAST = 1120;
     private static final int REQUEST_MEDIA_PROJECTION = 100;
     private static final int REQUEST_SELECT_CONNECTION_USERS = 159;
     private static final String LOCAL_AUDIO_TRACK_NAME = "mic";
@@ -243,6 +245,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
     };
     private String selectedUsers;
     private LocalParticipant localParticipant;
+    private boolean isSaveBroadcast = false;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -458,8 +461,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 .apply(new RequestOptions().error(R.drawable.user_placeholder).placeholder(R.drawable.user_placeholder))
                 .into(ivProfileDashBoard);
     }
-
-    private boolean isSaveBroadcast = false;
 
     private void startScreenCapture() {
         VideoConstraints videoConstraints;
@@ -875,8 +876,12 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
             }
 
+            @Override
+            public void onAdFailedToLoad(LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                Log.v(TAG, "onAdFailedToLoad: " + loadAdError.getMessage() + ", " + loadAdError.getDomain() + " , " + loadAdError.toString());
+            }
         });
-
 
 
     }
@@ -915,12 +920,12 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                     if (message.equalsIgnoreCase(getResources().getString(R.string.yes))) {
                         isSaveBroadcast = true;
                         RuntimeEasyPermission.newInstance(permissions_audio,
-                                REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
+                                REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getSupportFragmentManager());
 
                     } else {
                         isSaveBroadcast = false;
                         RuntimeEasyPermission.newInstance(permissions_audio,
-                                REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
+                                REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getSupportFragmentManager());
 
                     }
                 }
@@ -928,12 +933,9 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         } else {
             isSaveBroadcast = false;
             RuntimeEasyPermission.newInstance(permissions_audio,
-                    REQUEST_AUDIO_PERM, "Allow microphone permission").show(getSupportFragmentManager());
+                    REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getSupportFragmentManager());
 
         }
-
-
-
 
 
     }
@@ -1063,15 +1065,25 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
             @Override
             public void onRecyclerItemClick(View view, int position, StreamUserListResponse item) {
-                if (!item.getId().isEmpty()) {
-                    LifeShare.getInstance().clearNotificationById(Integer.parseInt(item.getId()));
+                if (RuntimeEasyPermission.newInstance(permissions_audio,
+                        REQUEST_AUDIO_PERM_SHOW_BROADCAST, "Allow microphone permission").hasPermissions(permissions_audio)) {
+
+
+                    if (!item.getId().isEmpty()) {
+                        LifeShare.getInstance().clearNotificationById(Integer.parseInt(item.getId()));
+                    }
+                    playAudio(TwilioBroadcastActivityNew.this, R.raw.click);
+                    Intent intent = new Intent(TwilioBroadcastActivityNew.this, TwilioShowStreamActivityNew.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(Const.STREAM_DATA, item);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                } else {
+                    RuntimeEasyPermission.newInstance(permissions_audio,
+                            REQUEST_AUDIO_PERM_SHOW_BROADCAST, "Allow microphone permission").show(getSupportFragmentManager());
+
                 }
-                playAudio(TwilioBroadcastActivityNew.this, R.raw.click);
-                Intent intent = new Intent(TwilioBroadcastActivityNew.this, TwilioShowStreamActivityNew.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(Const.STREAM_DATA, item);
-                intent.putExtras(bundle);
-                startActivity(intent);
             }
         });
         rvFriendBroadcast.setEmptyMsgHolder(tvNoData);
@@ -1107,7 +1119,6 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         savedVolumeControlStream = getVolumeControlStream();
         setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
         audioSwitch.start((audioDevices, audioDevice) -> {
-//            updateAudioDeviceIcon(audioDevice);
             return Unit.INSTANCE;
         });
 
@@ -1347,10 +1358,8 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
     @Override
     public void onPermissionAllow(int permissionCode) {
-        if (permissionCode == REQUEST_AUDIO_PERM) {
-
+        if (permissionCode == REQUEST_AUDIO_PERM_PUBLISH_BROADCAST) {
             startActivityForResult(new Intent(this, SelectConnectionsActivity.class), REQUEST_SELECT_CONNECTION_USERS);
-
         }
     }
 
@@ -1383,7 +1392,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 
     @Override
     public void onPermissionDeny(int permissionCode) {
-        if (permissionCode == REQUEST_AUDIO_PERM) {
+        if (permissionCode == REQUEST_AUDIO_PERM_PUBLISH_BROADCAST) {
             Toast.makeText(this, R.string.msg_permission_denied, Toast.LENGTH_SHORT).show();
         }
     }
