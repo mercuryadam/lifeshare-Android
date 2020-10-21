@@ -75,7 +75,13 @@ public class ChannelArchiveAdapter extends FilterableAdapter<ChannelArchiveRespo
         }
 
 //        viewHolder.tvChannelName.setText(val.getTitle());
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.tvChannelName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onRecyclerItemClick(v, holder.getAdapterPosition(), val);
+            }
+        });
+        viewHolder.ivBackGround.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onRecyclerItemClick(v, holder.getAdapterPosition(), val);

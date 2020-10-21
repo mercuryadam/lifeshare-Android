@@ -19,6 +19,8 @@ import com.lifeshare.utils.PreferenceHelper;
 
 //import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+//import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 
 
 /**
@@ -55,12 +57,13 @@ public class LifeShare extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        /*FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
+   /*     FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
         if (BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")) {
             FirebaseApp.initializeApp(getApplicationContext());
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
             FirebaseCrashlytics.getInstance().sendUnsentReports();
-        }*/
+        }
+   */
     }
 
     public void updateFcmTokenToServer() {

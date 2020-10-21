@@ -202,7 +202,7 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
         audioSwitch.selectDevice(availableAudioDevices.get(availableAudioDevices.size() - 1));
 
         localAudioTrack = LocalAudioTrack.create(this, true);
-        localAudioTrack.enable(true);
+        localAudioTrack.enable(false);
 
         setTwilioCodec();
     }
@@ -484,10 +484,12 @@ public class TwilioShowStreamActivityNew extends BaseActivity implements View.On
             case R.id.ivVolume:
                 if (audioManager.isMicrophoneMute()) {
                     audioManager.setMicrophoneMute(false);
+                    localAudioTrack.enable(true);
                     ivVolume.setImageResource(R.drawable.ic_unmute);
 
                 } else {
                     audioManager.setMicrophoneMute(true);
+                    localAudioTrack.enable(false);
                     ivVolume.setImageResource(R.drawable.ic_mute);
                 }
                 break;

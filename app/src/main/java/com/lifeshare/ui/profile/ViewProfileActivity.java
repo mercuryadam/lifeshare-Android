@@ -46,6 +46,7 @@ import com.lifeshare.network.response.CheckSubscriptionResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.LoginResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
+import com.lifeshare.ui.ImageFullScreenDialogFragment;
 import com.lifeshare.ui.ProfileActivity;
 import com.lifeshare.ui.save_broadcast.ShowPreviousBroadcastAndChatActivity;
 import com.lifeshare.utils.Const;
@@ -82,7 +83,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private ImageView addArchivesFromDialog;
     private String userId = "";
     private AppCompatTextView tvTotalViewer;
-    private String base64Key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuRB1IGH8zunjzT4z3A3syZ/biyDUCfajoVQOdJYq41bXa3NI4vlcsqtH6d5+3RRqjiZd9i2ni7igrtL6LktT8a5G5m1ofwGC6Ic5a47mpPWOeu526DZpeJD4/J6dBlddbKaHgQe1Sw1PtAymjcesUQ+vqwbwanIZslgwCyoOCQqWPfLyORGWgTn80QedzB/ZMiY3Diy+73oifRPDS9vPhN0j6TMzVblmPJfU4TS/Vt4tJozpg4AMC4STIgD6LZV/p5fYXKSV83m7wzWNEtzA/Q3d2HR4fbxmCuYeaXGK2mAZgJRZDgoxeZu+a8fSQ3XliXohWXlRSlyza7jUmfVR3wIDAQAB";
     private boolean isSubscriptionActive = false;
     private PurchasesUpdatedListener purchaseUpdateListener = new PurchasesUpdatedListener() {
 
@@ -145,8 +145,8 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             public void onSuccess(CommonResponse response) {
                 hideLoading();
                 showToast(response.getMessage());
-                getListChannelArchive(userId);
                 manageViewForSubscription("1");
+                getListChannelArchive();
             }
         });
     }
@@ -166,7 +166,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 rvChannelArchive.setVisibility(View.VISIBLE);
                 btnSubscribe.setVisibility(View.VISIBLE);
                 userId = PreferenceHelper.getInstance().getUser().getUserId();
-//                setData();
                 checkSubscription();
 
             } else {
@@ -177,7 +176,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 MyConnectionListResponse data = (MyConnectionListResponse) bundle.getParcelable(Const.USER_DATA);
                 btnSubscribe.setVisibility(View.GONE);
                 userId = data.getUserId();
-                getOtherProfileData(data.getUserId());
+                checkSubscription();
             }
             setRecyclerView();
         }
@@ -190,14 +189,14 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         super.onResume();
     }
 
-    private void getOtherProfileData(String userId) {
+    private void getOtherProfileData() {
         UserProfileRequest request = new UserProfileRequest();
         request.setUserId(userId);
         WebAPIManager.getInstance().getUserProfile(request, new RemoteCallback<LoginResponse>() {
             @Override
             public void onSuccess(LoginResponse response) {
                 setOtherUserData(response);
-                getListChannelArchive(response.getUserId());
+                getListChannelArchive();
             }
         });
 
@@ -313,15 +312,24 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                         }
                     });
                 } else {
-
                     if (item.getType().equals("1")) {
-                        if (!item.getLink().trim().isEmpty()) {
-                            Intent i = new Intent(Intent.ACTION_VIEW);
-                            String url = item.getLink();
-                            if (!url.startsWith("http://") && !url.startsWith("https://"))
-                                url = "http://" + url;
-                            i.setData(Uri.parse(url));
-                            startActivity(i);
+
+                        if (view.getId() == R.id.ivBackGround && !item.getImage().isEmpty()) {
+
+                            DialogFragment dialogFragment = ImageFullScreenDialogFragment.newInstance(item.getImage());
+                            dialogFragment.show(getSupportFragmentManager(), "ImageFullScreenDialogFragment");
+
+                        } else if (view.getId() == R.id.tvChannelName) {
+
+                            if (!item.getLink().trim().isEmpty()) {
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                String url = item.getLink();
+                                if (!url.startsWith("http://") && !url.startsWith("https://"))
+                                    url = "http://" + url;
+                                i.setData(Uri.parse(url));
+                                startActivity(i);
+                            }
+
                         }
                     } else {
 
@@ -380,10 +388,15 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void getListChannelArchive(String userId) {
+    private void getListChannelArchive() {
+        if (!userId.equals(PreferenceHelper.getInstance().getUser().getUserId()) && !isSubscriptionActive) {
+            llCATitle.setVisibility(View.GONE);
+            return;
+        }
 
         GetArchiveListRequest request = new GetArchiveListRequest();
         request.setUserId(userId);
+        showLoading();
         WebAPIManager.getInstance().listChannelArchive(request, new RemoteCallback<ArrayList<ChannelArchiveResponse>>() {
             @Override
             public void onSuccess(ArrayList<ChannelArchiveResponse> response) {
@@ -409,8 +422,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             public void onSuccess(CheckSubscriptionResponse response) {
                 hideLoading();
                 manageViewForSubscription(response.getStatus());
-
-                getOtherProfileData(userId);
+                getOtherProfileData();
             }
 
             @Override
@@ -435,6 +447,12 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             btnSubscribe.setText(R.string.subscribe);
             btnSubscribe.setEnabled(true);
         }
+        if (!isSubscriptionActive && !userId.equals(PreferenceHelper.getInstance().getUser().getUserId())) {
+            btnSubscribe.setText(R.string.subscribe);
+            btnSubscribe.setVisibility(View.VISIBLE);
+        } else {
+            btnSubscribe.setVisibility(View.GONE);
+        }
 
     }
 
@@ -448,7 +466,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onSuccess(CommonResponse response) {
                 hideLoading();
-                getListChannelArchive(userId);
+                getListChannelArchive();
             }
 
             @Override
@@ -466,7 +484,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void handleDialogClose(DialogInterface dialog) {
-        getListChannelArchive(userId);
+        getListChannelArchive();
     }
 
     private void getAcknowdgement(Purchase purchase) {
