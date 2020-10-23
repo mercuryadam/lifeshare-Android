@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity {
     private AppCompatTextView tvHome;
     private AppCompatTextView logout;
     private AppCompatTextView tvDialogName;
+    private AppCompatTextView tvInvite;
     private CircleImageView ivProfile;
     private AppCompatImageView ivClose;
 
@@ -183,6 +184,7 @@ public class MainActivity extends BaseActivity {
         tvMyConnections = (AppCompatTextView) dialog.findViewById(R.id.tv_my_connections);
         tvInvitations = (AppCompatTextView) dialog.findViewById(R.id.tv_invitations);
         tvDialogName = (AppCompatTextView) dialog.findViewById(R.id.tv_name);
+        tvInvite = (AppCompatTextView) dialog.findViewById(R.id.tv_invite);
 
         tvDialogName.setText(PreferenceHelper.getInstance().getUser().getFirstName() + " " + PreferenceHelper.getInstance().getUser().getLastName());
 
@@ -191,6 +193,14 @@ public class MainActivity extends BaseActivity {
                 .apply(new RequestOptions().error(R.drawable.user_placeholder).placeholder(R.drawable.user_placeholder))
                 .into(ivProfile);
 
+
+        tvInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, MyInvitationListActivity.class));
+                dialog.dismiss();
+            }
+        });
 
         tvInvitations.setOnClickListener(new View.OnClickListener() {
             @Override

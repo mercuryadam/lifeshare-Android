@@ -150,5 +150,9 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="subscribe">Subscribe</string>
     <string name="already_subscribed">Already Subscribed</string>
     <string name="verified_sucessfully">Verified successfully</string>
+    <string name="invite_contacts">Invite Contacts</string>
+    <string name="invite">Invite</string>
+    <string name="skip">Skip</string>
+    <string name="please_select_any_contact">Please select any contact</string>
 
 </resources>

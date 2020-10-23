@@ -447,13 +447,16 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             btnSubscribe.setText(R.string.subscribe);
             btnSubscribe.setEnabled(true);
         }
-        if (!isSubscriptionActive && !userId.equals(PreferenceHelper.getInstance().getUser().getUserId())) {
-            btnSubscribe.setText(R.string.subscribe);
+        if (userId.equals(PreferenceHelper.getInstance().getUser().getUserId())) {
             btnSubscribe.setVisibility(View.VISIBLE);
         } else {
-            btnSubscribe.setVisibility(View.GONE);
+            if (isSubscriptionActive) {
+                btnSubscribe.setVisibility(View.GONE);
+            } else {
+                btnSubscribe.setText(R.string.subscribe);
+                btnSubscribe.setVisibility(View.VISIBLE);
+            }
         }
-
     }
 
     private void deleteChannelArchive(Integer id) {

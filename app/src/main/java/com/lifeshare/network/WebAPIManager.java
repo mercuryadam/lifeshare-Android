@@ -10,6 +10,7 @@ import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.ChatHistoryRequest;
 import com.lifeshare.network.request.CityRequest;
+import com.lifeshare.network.request.ContactInvitationRequest;
 import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
@@ -261,6 +262,9 @@ public class WebAPIManager {
         mService.getSaveChatHistory(request).enqueue(callback);
     }
 
+    public void contactInvitation(ContactInvitationRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.contactInvitation(request).enqueue(callback);
+    }
 
     public void checkSubscription(RemoteCallback<CheckSubscriptionResponse> callback) {
         mService.checkSubscription().enqueue(callback);

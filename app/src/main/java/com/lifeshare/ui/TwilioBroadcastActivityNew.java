@@ -74,6 +74,7 @@ import com.lifeshare.network.response.StreamUserListResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
 import com.lifeshare.ui.admin_user.ReportsUserListActivity;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
+import com.lifeshare.ui.inviteFriends.ContactListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
 import com.lifeshare.ui.profile.ViewProfileActivity;
 import com.lifeshare.ui.select_connection.SelectConnectionsActivity;
@@ -1166,6 +1167,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         AppCompatTextView tvAboutLifeshare = (AppCompatTextView) dialog.findViewById(R.id.tv_about_lifeshare);
         AppCompatTextView tvVersion = (AppCompatTextView) dialog.findViewById(R.id.tv_version);
         AppCompatTextView tvReports = (AppCompatTextView) dialog.findViewById(R.id.tv_report);
+        AppCompatTextView tvInvite = (AppCompatTextView) dialog.findViewById(R.id.tv_invite);
         View view = (View) dialog.findViewById(R.id.view);
 
         tvVersion.setText("V" + BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")");
@@ -1195,6 +1197,16 @@ public class TwilioBroadcastActivityNew extends BaseActivity
                 startActivity(browserIntent);
             }
         });
+
+
+        tvInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TwilioBroadcastActivityNew.this, ContactListActivity.class));
+                dialog.dismiss();
+            }
+        });
+
         tvReports.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

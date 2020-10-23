@@ -10,6 +10,8 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.lifeshare.BaseActivity;
 import com.lifeshare.R;
+import com.lifeshare.ui.inviteFriends.ContactListActivity;
+import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 
 public class TermOfServicesActivity extends BaseActivity implements View.OnClickListener {
@@ -41,7 +43,9 @@ public class TermOfServicesActivity extends BaseActivity implements View.OnClick
             case R.id.btn_accept:
 
                 PreferenceHelper.getInstance().setTermOfServices(true);
-                startActivity(new Intent(TermOfServicesActivity.this, TwilioBroadcastActivityNew.class));
+                Intent intent = new Intent(TermOfServicesActivity.this, ContactListActivity.class);
+                intent.putExtra(Const.IS_FROM, Const.TERM_AND_CONDITION_SCREEN);
+                startActivity(intent);
                 finish();
 
                 break;

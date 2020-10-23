@@ -3,6 +3,8 @@ package com.lifeshare.utils;
 import com.lifeshare.BuildConfig;
 
 public class Const {
+    public static final String IS_FROM = "IS_FROM";
+    public static final String TERM_AND_CONDITION_SCREEN = "TERM_AND_CONDITION_SCREEN";
     public static final String NEW_INVITATION = "NEW_INVITATION";
     public static final String NEW_INVITATION_ACTION = "NEW_INVITATION_ACTION";
     public static final String INVITATION_ACCEPT = "INVITATION_ACCEPT";

@@ -114,6 +114,17 @@
                     android:text="@string/invitations" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_invite"
+                    style="@style/TextRegular.White.size18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/size_32dp"
+                    android:layout_marginEnd="@dimen/size_20dp"
+                    android:padding="@dimen/size_8dp"
+                    android:text="@string/invite_contacts" />
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_report"
                     style="@style/TextRegular.White.size18"
                     android:layout_width="wrap_content"
