@@ -49,7 +49,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.instacart.library.truetime.TrueTime;
 import com.lifeshare.BaseActivity;
 import com.lifeshare.BuildConfig;
 import com.lifeshare.LifeShare;
@@ -116,7 +115,6 @@ import kotlin.Unit;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.lifeshare.utils.Const.GET_STREAM_USER_INTERVAL_TIME;
-import static com.lifeshare.utils.Const.LAST_VIEW_UPDATE_INTERVAL_TIME;
 
 public class TwilioBroadcastActivityNew extends BaseActivity
         implements EasyPermissions.PermissionCallbacks, View.OnClickListener, RuntimeEasyPermission.PermissionCallbacks {
@@ -173,11 +171,11 @@ public class TwilioBroadcastActivityNew extends BaseActivity
             for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                 ViewerUser response = postSnapshot.getValue(ViewerUser.class);
                 if (response.getUserId() != null && !response.getUserId().equalsIgnoreCase(PreferenceHelper.getInstance().getUser().getUserId())) {
-                    Log.v(TAG, "onDataChange: " + ((TrueTime.now().getTime()) - Long.parseLong(response.getLastViewTime())));
-                    Log.v(TAG, "onDataChange: True Time - " + ((TrueTime.now().getTime()) + " response time - " + Long.parseLong(response.getLastViewTime())));
-                    if (((TrueTime.now().getTime()) - Long.parseLong(response.getLastViewTime())) <= LAST_VIEW_UPDATE_INTERVAL_TIME) {
+//                    Log.v(TAG, "onDataChange: " + ((TrueTime.now().getTime()) - Long.parseLong(response.getLastViewTime())));
+//                    Log.v(TAG, "onDataChange: True Time - " + ((TrueTime.now().getTime()) + " response time - " + Long.parseLong(response.getLastViewTime())));
+//                    if (((TrueTime.now().getTime()) - Long.parseLong(response.getLastViewTime())) <= LAST_VIEW_UPDATE_INTERVAL_TIME) {
                         viewerUsersList.add(response);
-                    }
+//                    }
                 }
             }
             Log.v(TAG, "onDataChange: viewerUsersList - " + viewerUsersList.size());
