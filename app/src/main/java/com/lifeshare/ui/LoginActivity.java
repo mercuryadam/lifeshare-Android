@@ -60,10 +60,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         etPassword = (AppCompatEditText) findViewById(R.id.et_password);
         btnLogin = (AppCompatButton) findViewById(R.id.btn_login);
 
-        /* Admin User
-        * admin@lifesharemobileapp.com
-           Test105*
-        * */
 
         if (BuildConfig.FLAVOR.equalsIgnoreCase("Dev") && BuildConfig.BUILD_TYPE.equalsIgnoreCase("debug")) {
             etEmail.setText("kundan101");

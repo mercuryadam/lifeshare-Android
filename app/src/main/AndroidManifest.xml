@@ -13,7 +13,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:name=".LifeShare"
@@ -24,8 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup">
         <activity
             android:name=".ui.save_broadcast.ShowPreviousBroadcastAndChatActivity"
             android:screenOrientation="portrait"
@@ -98,10 +97,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="e440fc49ebbb73e6eb5cfd8ac46473451e7ed29f" />
-
         <activity
             android:name=".ui.LoginActivity"
             android:screenOrientation="portrait"
@@ -159,12 +154,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <!--
 
-                <meta-data
-                    android:name="firebase_crashlytics_collection_enabled"
-                    android:value="true" />
-        -->
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="true" />
 
         <receiver android:name=".receiver.AlarmReceiver">
             <intent-filter>

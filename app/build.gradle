@@ -41,7 +41,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            debuggable true
+            debuggable false
             shrinkResources true
             useProguard true
             signingConfig signingConfigs.release
@@ -72,10 +72,7 @@ android {
         Live {
             dimension("buildType")
 
-//            buildConfigField("String", "BASE_URL", '"http://52.14.203.109/public/api/v1/"')
             buildConfigField("String", "BASE_URL", '"http://3.136.176.13/public/api/v1/"')
-//            buildConfigField("String", "BASE_URL", '"https://5126d6a3ae17.ngrok.io/api/v1/"')
-
 
         }
 
@@ -140,7 +137,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:17.4.4'
 
     // Add the Firebase Crashlytics SDK.
-//    implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
+    implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
     implementation 'com.android.support:multidex:1.0.3'
 
     //Google Mobile Ads SDK
