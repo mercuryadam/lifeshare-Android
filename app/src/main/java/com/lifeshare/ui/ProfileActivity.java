@@ -233,9 +233,19 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         signUpRequest.setEmail(etEmail.getText().toString().trim());
         signUpRequest.setDescription(etShortDiscription.getText().toString().trim());
         signUpRequest.setAvatar(imagePath);
-        signUpRequest.setCity(selectedCity.getId());
-        signUpRequest.setState(selectedState.getId());
-        signUpRequest.setCountry(selectedCountry.getId());
+
+        if (selectedCity != null) {
+            signUpRequest.setCity(selectedCity.getId());
+        } else signUpRequest.setCity("");
+
+        if (selectedState != null) {
+            signUpRequest.setState(selectedState.getId());
+        } else signUpRequest.setState("");
+
+        if (selectedCountry != null) {
+            signUpRequest.setCountry(selectedCountry.getId());
+        } else signUpRequest.setCountry("");
+
         signUpRequest.setMobile(etPhoneNumber.getText().toString().trim());
 
         showLoading();
@@ -272,10 +282,10 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             showToast(getResources().getString(R.string.please_enter_email));
             return false;
         }
-        if (TextUtils.isEmpty(etPhoneNumber.getText().toString().trim())) {
+       /* if (TextUtils.isEmpty(etPhoneNumber.getText().toString().trim())) {
             showToast(getResources().getString(R.string.please_enter_mobile_number));
             return false;
-        }
+        }*/
 
         if (!Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString().trim()).matches()) {
             showToast(getResources().getString(R.string.please_enter_valid_email));
@@ -286,7 +296,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             return false;
         }
 
-        if (TextUtils.isEmpty(etCountry.getText().toString().trim())) {
+       /* if (TextUtils.isEmpty(etCountry.getText().toString().trim())) {
             showToast(getResources().getString(R.string.please_enter_country));
             return false;
         }
@@ -297,7 +307,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         if (TextUtils.isEmpty(etCity.getText().toString().trim())) {
             showToast(getResources().getString(R.string.please_enter_city));
             return false;
-        }
+        }*/
 
 
         return true;

@@ -172,9 +172,19 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         signUpRequest.setDeviceToken(PreferenceHelper.getInstance().getFcmToken());
         signUpRequest.setDescription(etShortDiscription.getText().toString().trim());
         signUpRequest.setAvatar(imagePath);
-        signUpRequest.setCity(selectedCity.getId());
-        signUpRequest.setState(selectedState.getId());
-        signUpRequest.setCountry(selectedCountry.getId());
+
+        if (selectedCity != null) {
+            signUpRequest.setCity(selectedCity.getId());
+        } else signUpRequest.setCity("");
+
+        if (selectedState != null) {
+            signUpRequest.setState(selectedState.getId());
+        } else signUpRequest.setState("");
+
+        if (selectedCountry != null) {
+            signUpRequest.setCountry(selectedCountry.getId());
+        } else signUpRequest.setCountry("");
+
         signUpRequest.setMobile(etPhoneNumber.getText().toString().trim());
         showLoading();
 
@@ -221,10 +231,10 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             showToast(getResources().getString(R.string.please_enter_valid_email));
             return false;
         }
-        if (TextUtils.isEmpty(etPhoneNumber.getText().toString().trim())) {
+       /* if (TextUtils.isEmpty(etPhoneNumber.getText().toString().trim())) {
             showToast(getResources().getString(R.string.please_enter_mobile_number));
             return false;
-        }
+        }*/
 
         if (TextUtils.isEmpty(etPassword.getText().toString().trim())) {
             showToast(getResources().getString(R.string.please_enter_password));
@@ -242,7 +252,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             showToast(getResources().getString(R.string.pass_not_match));
             return false;
         }
-        if (TextUtils.isEmpty(etCountry.getText().toString().trim())) {
+       /* if (TextUtils.isEmpty(etCountry.getText().toString().trim())) {
             showToast(getResources().getString(R.string.please_enter_country));
             return false;
         }
@@ -253,7 +263,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         if (TextUtils.isEmpty(etCity.getText().toString().trim())) {
             showToast(getResources().getString(R.string.please_enter_city));
             return false;
-        }
+        }*/
 
         if (TextUtils.isEmpty(etShortDiscription.getText().toString().trim())) {
             showToast(getResources().getString(R.string.please_enter_short_discription));
