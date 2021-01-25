@@ -85,7 +85,6 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="profile">Profile</string>
     <string name="profile_update_message">Your profile has been updated successfully</string>
     <string name="no_viewers_available">No viewers available</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="please_enter_comment">Please enter comment</string>
