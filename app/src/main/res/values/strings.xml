@@ -81,6 +81,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="err_image_not_exist_in_device">This image is not in device storage please pick another image</string>
     <string name="msg_permission_denied">Permission Denied</string>
     <string name="update">Update</string>
+
     <string name="short_discription">Short description</string>
     <string name="profile">Profile</string>
     <string name="profile_update_message">Your profile has been updated successfully</string>
