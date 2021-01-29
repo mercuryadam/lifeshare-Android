@@ -15,6 +15,8 @@ public class SignUpRequest {
     private String state;
     private String country;
     private String mobile;
+    private String loginType;
+    private String socialMediaID;
 
     public String getCity() {
         return city;
@@ -126,5 +128,24 @@ public class SignUpRequest {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+
+
+    public String getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(String loginType) {
+        this.loginType = loginType;
+    }
+
+
+    public String getSocialMediaID() {
+        return socialMediaID;
+    }
+
+    public void setSocialMediaID(String socialMediaID) {
+        this.socialMediaID = socialMediaID;
     }
 }

@@ -149,6 +149,13 @@ dependencies {
     implementation "com.twilio:audioswitch:1.0.0"
     implementation "com.twilio:video-android:5.10.2"
     implementation 'com.google.android.exoplayer:exoplayer:2.10.4'
+
+    //Google SignIn
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
+    //Facebook
+    implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
+
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'

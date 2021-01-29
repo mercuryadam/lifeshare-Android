@@ -32,6 +32,7 @@ import com.lifeshare.network.response.CityResponse;
 import com.lifeshare.network.response.CountryResponse;
 import com.lifeshare.network.response.LoginResponse;
 import com.lifeshare.network.response.StateResponse;
+import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 
 import java.util.ArrayList;
@@ -161,6 +162,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             return;
         }
         SignUpRequest signUpRequest = new SignUpRequest();
+        signUpRequest.setLoginType(Const.DEFAULT_LOG_IN);
         signUpRequest.setFirstName(etFirstName.getText().toString().trim());
         signUpRequest.setLastName(etLastName.getText().toString().trim());
         signUpRequest.setEmail(etEmail.getText().toString().trim());

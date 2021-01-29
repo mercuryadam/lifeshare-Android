@@ -1,34 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.save_broadcast.ShowPreviousBroadcastAndChatActivity">
 
-
-    <com.google.android.exoplayer2.ui.PlayerView
+    <LinearLayout
+        android:id="@+id/ll_toolbar"
         android:layout_width="match_parent"
-        android:id="@+id/exoplayer"
-        android:layout_height="match_parent"
-        android:visibility="visible">
-
-    </com.google.android.exoplayer2.ui.PlayerView>
-
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabMessage"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/size_20dp"
-        android:src="@drawable/ic_message_white"
-        android:visibility="visible" />
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:padding="@dimen/size_12dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_back"
+            android:layout_width="@dimen/size_40dp"
+            android:layout_height="@dimen/size_40dp"
+            android:padding="@dimen/size_6dp"
+            android:tint="@color/colorPrimary"
+            android:src="@drawable/ic_back" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvToolbarTitle"
+            style="@style/TextRegular.Black.size16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="@dimen/size_12dp"
+            android:paddingRight="@dimen/size_12dp"
+            android:text="@string/streamed_details" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_share_video"
+            android:layout_width="@dimen/size_40dp"
+            android:layout_height="@dimen/size_40dp"
+            android:src="@drawable/ic_share" />
+    </LinearLayout>
 
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:layout_width="match_parent"
+            android:id="@+id/exoplayer"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+        </com.google.android.exoplayer2.ui.PlayerView>
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/size_20dp"
+            android:src="@drawable/ic_message_white"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -6,6 +6,8 @@ import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.ChatHistoryRequest;
+import com.lifeshare.network.request.CheckSocialMediaRequest;
+import com.lifeshare.network.request.CheckVersionRequest;
 import com.lifeshare.network.request.CityRequest;
 import com.lifeshare.network.request.ContactInvitationRequest;
 import com.lifeshare.network.request.CreateRoomWithUserRequest;
@@ -32,6 +34,7 @@ import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CheckSubscriptionResponse;
+import com.lifeshare.network.response.CheckVersionResponse;
 import com.lifeshare.network.response.CityResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
@@ -197,5 +200,12 @@ public interface WebAPIService {
 
     @POST("user/contactInvitation")
     Call<CommonResponse> contactInvitation(@Body ContactInvitationRequest request);
+
+    @POST("check-version")
+    Call<CheckVersionResponse> checkVersion(@Body CheckVersionRequest request);
+
+    @POST("check-social-account")
+    Call<LoginResponse> checkSocialMedia(@Body CheckSocialMediaRequest request);
+
 
 }

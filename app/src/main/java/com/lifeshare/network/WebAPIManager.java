@@ -9,6 +9,8 @@ import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.ChatHistoryRequest;
+import com.lifeshare.network.request.CheckSocialMediaRequest;
+import com.lifeshare.network.request.CheckVersionRequest;
 import com.lifeshare.network.request.CityRequest;
 import com.lifeshare.network.request.ContactInvitationRequest;
 import com.lifeshare.network.request.CreateRoomWithUserRequest;
@@ -36,6 +38,7 @@ import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CheckSubscriptionResponse;
+import com.lifeshare.network.response.CheckVersionResponse;
 import com.lifeshare.network.response.CityResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
@@ -81,6 +84,14 @@ public class WebAPIManager {
         mService.checkLogin(request).enqueue(callback);
     }
 
+    public void checkVersion(CheckVersionRequest request, RemoteCallback<CheckVersionResponse> callback) {
+        mService.checkVersion(request).enqueue(callback);
+    }
+
+    public void checkSocialMedia(CheckSocialMediaRequest request, RemoteCallback<LoginResponse> callback) {
+        mService.checkSocialMedia(request).enqueue(callback);
+    }
+
     public void signUp(SignUpRequest request, RemoteCallback<LoginResponse> callback) {
 
         HashMap<String, RequestBody> bodyMap = new HashMap<>();
@@ -97,6 +108,8 @@ public class WebAPIManager {
         bodyMap.put("mobile", getResponseBody(request.getMobile()));
         bodyMap.put("deviceId", getResponseBody(request.getDeviceId()));
         bodyMap.put("deviceToken", getResponseBody(request.getDeviceToken()));
+        bodyMap.put("loginType", getResponseBody(request.getLoginType()));
+        bodyMap.put("socialMediaID", getResponseBody(request.getSocialMediaID()));
         MultipartBody.Part bodyImage = prepareBody("avatar", request.getAvatar());
 
         mService.signUp(bodyMap, bodyImage).enqueue(callback);

@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">LifeShare</string>
 
+    <string name="facebook_app_id">463658245014536</string>
+    <string name="fb_login_protocol_scheme">fb463658245014536</string>
+    <string name="client_id">244259953990428</string>
+    <string name="client_secret">7fedb91ec76f148a0c52367116aaee60</string>
+    <string name="callback_url">https://instagram.com/</string>
+    <string name="base_url">https://api.instagram.com/</string>
+    <string name="redirect_url">https://www.google.com/</string>
+    <string name="get_user_info_url">https://graph.instagram.com/me?fields=id,username&amp;access_token</string>
+    <string name="instagram_auth">https://api.instagram.com/oauth/access_token</string>
+    <string name="get_user_info_url_first">https://api.instagram.com/v1/users/self/?access_token=</string>
+    <string name="instagram_login">INSTAGRAM SIGN IN</string>
+
+
     <string name="rationale_video_app">This app needs access to your camera and mic so you can perform video calls</string>
     <string name="start_broadcast_by_enable_option_menu">Start broadcast by enable option menu</string>
     <string name="waiting_for_connection_msg">Waiting for connection with session</string>
@@ -154,5 +167,9 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="invite">Invite</string>
     <string name="skip">Skip</string>
     <string name="please_select_any_contact">Please select any contact</string>
+    <string name="streamed_details">Streamed Details</string>
+    <string name="share_video">Share video</string>
+    <string name="share_video_message">I\'m using this app to broadcast my stream! Join me using the LifeShare app.\n\n</string>
+    <string name="login_with">Login With:</string>
 
 </resources>

@@ -1,11 +1,14 @@
 package com.lifeshare.ui.save_broadcast;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -24,6 +27,9 @@ import com.lifeshare.utils.PlayerManager;
 
 public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implements View.OnClickListener {
 
+
+    //client ID: 186625114995-ukmqg68sjvgt5hqilao3ff9hj90tl28b.apps.googleusercontent.com
+    // secret key: WW81KSd_kcjS-LQZcOozGixI
     private static final String TAG = "ShowPreviousBroadcastAn";
     PreviousChatMessageFragment messageFragment;
     PlayerManager playerManager;
@@ -32,6 +38,8 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
     private ChannelArchiveResponse channelArchiveResponse;
     private ExoPlayer exoPlayer;
     private PlayerView exoplayer;
+    private AppCompatImageView ivShareVideo, icBack;
+    private LinearLayout llToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,7 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
                 container.setVisibility(View.VISIBLE);
                 fabMessage.hide();
             } else {
+                llToolbar.setVisibility(View.VISIBLE);
                 setVideoView();
             }
         }
@@ -119,8 +128,13 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
         fabMessage.setOnClickListener(this);
 
         container = (FrameLayout) findViewById(R.id.container);
+        llToolbar = (LinearLayout) findViewById(R.id.ll_toolbar);
 
         exoplayer = (PlayerView) findViewById(R.id.exoplayer);
+        ivShareVideo = findViewById(R.id.iv_share_video);
+        icBack = findViewById(R.id.ic_back);
+        ivShareVideo.setOnClickListener(this);
+        icBack.setOnClickListener(this);
     }
 
     @Override
@@ -134,6 +148,19 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
                     playerManager.paushPlaying();
                     container.setVisibility(View.VISIBLE);
                 }
+                break;
+
+            case R.id.iv_share_video:
+                try {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_video_message) + channelArchiveResponse.getVideo_url().trim());
+                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share_video)));
+                } catch (Exception e) {
+                }
+                break;
+            case R.id.ic_back:
+                onBackPressed();
                 break;
         }
     }
@@ -152,7 +179,9 @@ public class ShowPreviousBroadcastAndChatActivity extends BaseActivity implement
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        playerManager.reset();
-        playerManager = null;
+        if (playerManager != null) {
+            playerManager.reset();
+            playerManager = null;
+        }
     }
 }

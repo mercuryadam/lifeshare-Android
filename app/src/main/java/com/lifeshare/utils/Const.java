@@ -3,6 +3,15 @@ package com.lifeshare.utils;
 import com.lifeshare.BuildConfig;
 
 public class Const {
+    public static final String FACEBOOK_APP_ID = "463658245014536";
+    public static final String DEVICE_TYPE = "Android";
+    public static final String UP_TO_DATE = "1";
+    public static final String APP_UPDATE = "2";
+    public static final String FORCE_UPDATE = "3";
+    public static final String DEFAULT_LOG_IN = "1";
+    public static final String FB_LOG_IN = "2";
+    public static final String GOOGLE_LOG_IN = "3";
+    public static final String INSTAGRAM_LOG_IN = "4";
     public static final String IS_FROM = "IS_FROM";
     public static final String TERM_AND_CONDITION_SCREEN = "TERM_AND_CONDITION_SCREEN";
     public static final String NEW_INVITATION = "NEW_INVITATION";
