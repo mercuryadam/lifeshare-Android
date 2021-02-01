@@ -1,5 +1,6 @@
 package com.lifeshare.ui;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -77,6 +79,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private GoogleSignInClient mGoogleSignInClient;
     LoginButton fbLoginButton;
     CallbackManager callbackManager;
+    AlertDialog alertDialog;
 
 
     public static boolean isValidEmail(CharSequence target) {
@@ -459,17 +462,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             @Override
             public void onFailed(Throwable throwable) {
                 super.onFailed(throwable);
-                SignUp(loginType, socialMediaID, email, fName, lName);
+                addChannelAndSignUpDialog(loginType, socialMediaID, email, fName, lName);
             }
         });
     }
 
-    private void SignUp(String loginType, String socialMediaID, String email, String fName, String lName) {
+    private void SignUp(String channelName, String loginType, String socialMediaID, String email, String fName, String lName) {
         if (!checkInternetConnection()) {
             return;
         }
         SignUpRequest signUpRequest = new SignUpRequest();
-        signUpRequest.setUsername("channel123");
+        signUpRequest.setUsername(channelName);
         signUpRequest.setLoginType(loginType);
         signUpRequest.setFirstName(fName);
         signUpRequest.setLastName(lName);
@@ -493,6 +496,38 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
+            }
+        });
+    }
+
+
+    private void addChannelAndSignUpDialog(String loginType, String socialMediaID, String email, String fName, String lName) {
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.add_channel_name_doalog, null);
+        AlertDialog.Builder mAlertBuilder = new AlertDialog.Builder(this, R.style.InvitationDialog);
+        mAlertBuilder.setView(promptView);
+
+        final AppCompatEditText etChannel = (AppCompatEditText) promptView.findViewById(R.id.et_username);
+        mAlertBuilder.setPositiveButton(getString(R.string.create_account), null);
+
+        // create an alert dialog
+        alertDialog = mAlertBuilder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        if (alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (TextUtils.isEmpty(etChannel.getText().toString().trim())) {
+                    showToast(getResources().getString(R.string.please_enter_username));
+                } else {
+                    alertDialog.cancel();
+                    SignUp(etChannel.getText().toString().trim(), loginType, socialMediaID, email, fName, lName);
+                }
             }
         });
     }

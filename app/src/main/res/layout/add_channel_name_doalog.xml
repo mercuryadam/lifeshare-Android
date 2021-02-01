@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/TextRegular.Black.size14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_12dp"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:text="@string/channel_name"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_username"
+        style="@style/edittext_style_new"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_8dp"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:layout_marginRight="@dimen/size_8dp"
+        android:drawableStart="@drawable/ic_channal"
+        android:drawablePadding="@dimen/size_16dp"
+        android:gravity="center|left"
+        android:hint="@string/enter_your_channel_name"
+        android:inputType="text"
+        android:padding="@dimen/size_14dp"
+        android:singleLine="true" />
+
+
+</LinearLayout>
