@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -508,7 +509,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         mAlertBuilder.setView(promptView);
 
         final AppCompatEditText etChannel = (AppCompatEditText) promptView.findViewById(R.id.et_username);
-        mAlertBuilder.setPositiveButton(getString(R.string.create_account), null);
+        final AppCompatEditText etEmail = (AppCompatEditText) promptView.findViewById(R.id.et_email);
+        final AppCompatButton btnSubmit = (AppCompatButton) promptView.findViewById(R.id.btn_sign_up);
+        final LinearLayout llEmail = (LinearLayout) promptView.findViewById(R.id.llEmail);
+
+        if (loginType.equals(Const.INSTAGRAM_LOG_IN)) {
+            llEmail.setVisibility(View.VISIBLE);
+        } else {
+            llEmail.setVisibility(View.GONE);
+        }
 
         // create an alert dialog
         alertDialog = mAlertBuilder.create();
@@ -518,16 +527,31 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
         alertDialog.show();
 
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (TextUtils.isEmpty(etChannel.getText().toString().trim())) {
-                    showToast(getResources().getString(R.string.please_enter_username));
+                if (loginType.equals(Const.INSTAGRAM_LOG_IN)) {
+
+                    if (TextUtils.isEmpty(etChannel.getText().toString().trim())) {
+                        showToast(getResources().getString(R.string.please_enter_username));
+                    } else if (TextUtils.isEmpty(etEmail.getText().toString().trim())) {
+                        showToast(getResources().getString(R.string.please_enter_email));
+                    } else {
+                        alertDialog.cancel();
+                        SignUp(etChannel.getText().toString().trim(), loginType, socialMediaID, etEmail.getText().toString().trim(), fName, lName);
+                    }
+
                 } else {
-                    alertDialog.cancel();
-                    SignUp(etChannel.getText().toString().trim(), loginType, socialMediaID, email, fName, lName);
+                    if (TextUtils.isEmpty(etChannel.getText().toString().trim())) {
+                        showToast(getResources().getString(R.string.please_enter_username));
+                    } else {
+                        alertDialog.cancel();
+                        SignUp(etChannel.getText().toString().trim(), loginType, socialMediaID, email, fName, lName);
+                    }
                 }
+
+
             }
         });
     }

@@ -172,5 +172,6 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="share_video">Share video</string>
     <string name="share_video_message">I\'m using this app to broadcast my stream! Join me using the LifeShare app.\n\n</string>
     <string name="login_with">Login With:</string>
+    <string name="submit">Submit</string>
 
 </resources>
