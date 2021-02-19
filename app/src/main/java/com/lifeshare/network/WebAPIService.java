@@ -10,6 +10,7 @@ import com.lifeshare.network.request.CheckSocialMediaRequest;
 import com.lifeshare.network.request.CheckVersionRequest;
 import com.lifeshare.network.request.CityRequest;
 import com.lifeshare.network.request.ContactInvitationRequest;
+import com.lifeshare.network.request.ContactInvitationViaMobileRequest;
 import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
@@ -206,6 +207,9 @@ public interface WebAPIService {
 
     @POST("check-social-account")
     Call<LoginResponse> checkSocialMedia(@Body CheckSocialMediaRequest request);
+
+    @POST("user/contactInvitationViaMobile")
+    Call<CommonResponse> contactInvitationViaMobile(@Body ContactInvitationViaMobileRequest request);
 
 
 }

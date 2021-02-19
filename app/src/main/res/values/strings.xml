@@ -8,7 +8,7 @@
     <string name="callback_url">https://instagram.com/</string>
     <string name="base_url">https://api.instagram.com/</string>
     <string name="redirect_url">https://www.google.com/</string>
-    <string name="get_user_info_url">https://graph.instagram.com/me?fields=id,username&amp;access_token</string>
+    <string name="get_user_info_url">https://graph.instagram.com/%s?fields=id,username&amp;access_token=</string>
     <string name="instagram_auth">https://api.instagram.com/oauth/access_token</string>
     <string name="get_user_info_url_first">https://api.instagram.com/v1/users/self/?access_token=</string>
     <string name="instagram_login">INSTAGRAM SIGN IN</string>
@@ -135,6 +135,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="broadcasting">Broadcasting</string>
     <string name="new_password">New password</string>
     <string name="country">Country</string>
+    <string name="country_code">Select Country Code</string>
     <string name="State">State</string>
     <string name="City">City</string>
     <string name="Phone_number">Phone number</string>

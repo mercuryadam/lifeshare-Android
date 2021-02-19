@@ -32,6 +32,9 @@ public class ContactListModel {
     }
 
     public String getMobile() {
+        mobile = mobile.replaceAll("[^\\d]", "");
+        mobile = mobile.trim();
+        mobile = mobile.replaceAll(" +", "");
         return mobile;
     }
 

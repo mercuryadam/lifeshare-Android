@@ -19,6 +19,12 @@ public class CountryResponse implements Parcelable, Comparable<CountryResponse> 
     String name;
     String phonecode;
 
+    public CountryResponse(String id, String name, String phonecode) {
+        this.id = id;
+        this.name = name;
+        this.phonecode = phonecode;
+    }
+
     protected CountryResponse(Parcel in) {
         id = in.readString();
         name = in.readString();

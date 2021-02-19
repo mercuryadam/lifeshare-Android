@@ -73,7 +73,7 @@ import com.lifeshare.network.response.StreamUserListResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
 import com.lifeshare.ui.admin_user.ReportsUserListActivity;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
-import com.lifeshare.ui.inviteFriends.ContactListActivity;
+import com.lifeshare.ui.inviteFriends.InviteViaMobileActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListActivity;
 import com.lifeshare.ui.profile.ViewProfileActivity;
 import com.lifeshare.ui.select_connection.SelectConnectionsActivity;
@@ -174,7 +174,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
 //                    Log.v(TAG, "onDataChange: " + ((TrueTime.now().getTime()) - Long.parseLong(response.getLastViewTime())));
 //                    Log.v(TAG, "onDataChange: True Time - " + ((TrueTime.now().getTime()) + " response time - " + Long.parseLong(response.getLastViewTime())));
 //                    if (((TrueTime.now().getTime()) - Long.parseLong(response.getLastViewTime())) <= LAST_VIEW_UPDATE_INTERVAL_TIME) {
-                        viewerUsersList.add(response);
+                    viewerUsersList.add(response);
 //                    }
                 }
             }
@@ -1200,7 +1200,7 @@ public class TwilioBroadcastActivityNew extends BaseActivity
         tvInvite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TwilioBroadcastActivityNew.this, ContactListActivity.class));
+                startActivity(new Intent(TwilioBroadcastActivityNew.this, InviteViaMobileActivity.class));
                 dialog.dismiss();
             }
         });

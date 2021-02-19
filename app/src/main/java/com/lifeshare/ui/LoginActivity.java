@@ -372,19 +372,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void getUserInfoByAccessToken(String token) {
-        new RequestInstagramAPI(token).execute();
+        new InstaAuthCodeAPI(token).execute();
     }
 
-    private class RequestInstagramAPI extends AsyncTask<Void, String, String> {
+    private class InstaAuthCodeAPI extends AsyncTask<Void, String, String> {
         String token;
 
-        public RequestInstagramAPI(String token) {
+        public InstaAuthCodeAPI(String token) {
             this.token = token;
         }
 
         @Override
         protected String doInBackground(Void... params) {
-
+            showLoading();
             OkHttpClient client = new OkHttpClient();
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -403,6 +403,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 Response response = client.newCall(request).execute();
                 return response.body().string();
             } catch (IOException e) {
+                hideLoading();
                 e.printStackTrace();
                 return null;
             }
@@ -414,15 +415,148 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             if (response != null) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    Log.d("AuthenticationDialog", jsonObject.getString("access_token"));
-                    Log.d("AuthenticationDialog", jsonObject.getString("user_id"));
                     if (jsonObject.has("user_id")) {
-                        logInWithSocialMedia(Const.INSTAGRAM_LOG_IN, jsonObject.getString("user_id"), "", "", "");
+                        new RequestInstagramUserNameAPI(jsonObject.getString("user_id"), jsonObject.getString("access_token")).execute();
+                    }else {
+                        hideLoading();
+                        Toast toast = Toast.makeText(getApplicationContext(), "Login error!", Toast.LENGTH_LONG);
+                        toast.show();
                     }
                 } catch (JSONException e) {
+                    hideLoading();
+                    e.printStackTrace();
+                }
+            }else {
+                hideLoading();
+                Toast toast = Toast.makeText(getApplicationContext(), "Login error!", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+
+
+    }
+
+    private class RequestInstagramUserNameAPI extends AsyncTask<Void, String, String> {
+        String access_token;
+        String userID;
+
+        public RequestInstagramUserNameAPI(String userID, String access_token) {
+            this.access_token = access_token;
+            this.userID = userID;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(getString(R.string.get_user_info_url, userID) + access_token)
+                    .get()
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            } catch (IOException e) {
+                hideLoading();
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            if (response != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    if (jsonObject.has("id") && jsonObject.has("username")) {
+                        new RequestInstagramFirstNameAPI(jsonObject.getString("id"), jsonObject.getString("username")).execute();
+
+                    }else {
+                        hideLoading();
+                        Toast toast = Toast.makeText(getApplicationContext(), "Login error!", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                } catch (JSONException e) {
+                    hideLoading();
                     e.printStackTrace();
                 }
             } else {
+                hideLoading();
+                Toast toast = Toast.makeText(getApplicationContext(), "Login error!", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+
+
+    }
+
+    private class RequestInstagramFirstNameAPI extends AsyncTask<Void, String, String> {
+        String username;
+        String userID;
+
+        public RequestInstagramFirstNameAPI(String userID, String username) {
+            this.userID = userID;
+            this.username = username;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url("https://www.instagram.com/" + username + "/?__a=1")
+                    .header("user-agent", "OkHttp Headers.java")
+                    .get()
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                Log.d("AuthenticationDialog", "FIRSTNAME RESPONSE CODE:::" + response.code());
+
+                return response.body().string();
+            } catch (IOException e) {
+                hideLoading();
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            super.onPostExecute(response);
+            if (response != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.has("graphql")) {
+                        JSONObject graphql = new JSONObject(jsonObject.getString("graphql"));
+                        if (graphql.has("user")) {
+                            JSONObject user = new JSONObject(graphql.getString("user"));
+
+
+                            if (user.has("full_name")) {
+                                String fullName = user.getString("full_name");
+
+                                String[] arrayFullName = fullName.split(" ");
+
+                                if (arrayFullName.length == 2) {
+                                    logInWithSocialMedia(Const.INSTAGRAM_LOG_IN, userID, "", arrayFullName[0], arrayFullName[1]);
+                                }
+                            }
+                        }
+                    }else {
+                        hideLoading();
+                        Toast toast = Toast.makeText(getApplicationContext(), "Login error!", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                } catch (JSONException e) {
+                    hideLoading();
+                    e.printStackTrace();
+                }
+            } else {
+                hideLoading();
                 Toast toast = Toast.makeText(getApplicationContext(), "Login error!", Toast.LENGTH_LONG);
                 toast.show();
             }

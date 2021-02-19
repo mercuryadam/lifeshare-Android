@@ -250,6 +250,10 @@
         <item name="android:gravity">center|left</item>
     </style>
 
+    <style name="country_code_picker_style" parent="TextRegular.Black.size16">
+        <item name="android:background">@drawable/country_code_square_background</item>
+    </style>
+
     <style name="edittext_message_style" parent="TextRegular.Black.size14">
         <item name="android:background">@color/white</item>
         <item name="android:elevation">@dimen/size_0dp</item>
@@ -290,6 +294,7 @@
         <item name="android:windowBackground">@color/black_transparent</item>
         <item name="android:windowCloseOnTouchOutside">false</item>
     </style>
+
     <style name="WideDialog" parent="Base.Theme.AppCompat.Dialog">
         <item name="android:windowMinWidthMajor">90%</item>
         <item name="android:windowMinWidthMinor">90%</item>

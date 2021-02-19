@@ -13,6 +13,7 @@ import com.lifeshare.network.request.CheckSocialMediaRequest;
 import com.lifeshare.network.request.CheckVersionRequest;
 import com.lifeshare.network.request.CityRequest;
 import com.lifeshare.network.request.ContactInvitationRequest;
+import com.lifeshare.network.request.ContactInvitationViaMobileRequest;
 import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
@@ -277,6 +278,10 @@ public class WebAPIManager {
 
     public void contactInvitation(ContactInvitationRequest request, RemoteCallback<CommonResponse> callback) {
         mService.contactInvitation(request).enqueue(callback);
+    }
+
+    public void contactInvitationViaMobile(ContactInvitationViaMobileRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.contactInvitationViaMobile(request).enqueue(callback);
     }
 
     public void checkSubscription(RemoteCallback<CheckSubscriptionResponse> callback) {
