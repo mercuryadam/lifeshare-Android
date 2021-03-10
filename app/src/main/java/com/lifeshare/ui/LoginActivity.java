@@ -158,7 +158,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                 if (!loggedOut) {
                     // Picasso.with(this).load(Profile.getCurrentProfile().getProfilePictureUri(200, 200)).into(imageView);
-                    Log.d("TAG", "Username is: " + Profile.getCurrentProfile().getName());
 
                     //Using Graph API
                     getUserProfile(AccessToken.getCurrentAccessToken());
@@ -596,7 +595,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
             @Override
             public void onFailed(Throwable throwable) {
-                super.onFailed(throwable);
                 addChannelAndSignUpDialog(loginType, socialMediaID, email, fName, lName);
             }
         });
