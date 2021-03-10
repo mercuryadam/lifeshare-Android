@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">LifeShare</string>
 
-    <string name="facebook_app_id">463658245014536</string>
-    <string name="fb_login_protocol_scheme">fb463658245014536</string>
-    <string name="client_id">244259953990428</string>
-    <string name="client_secret">7fedb91ec76f148a0c52367116aaee60</string>
+    <string name="facebook_app_id">341635573866778</string>
+    <string name="fb_login_protocol_scheme">fb341635573866778</string>
+    <string name="client_id">232809425212015</string>
+    <string name="client_secret">447b03a69ce41eaee55c6175b8383532</string>
+    <string name="redirect_url">https://turftalk.staging9.com/admin/login/</string>
     <string name="callback_url">https://instagram.com/</string>
     <string name="base_url">https://api.instagram.com/</string>
-    <string name="redirect_url">https://www.google.com/</string>
     <string name="get_user_info_url">https://graph.instagram.com/%s?fields=id,username&amp;access_token=</string>
     <string name="instagram_auth">https://api.instagram.com/oauth/access_token</string>
     <string name="get_user_info_url_first">https://api.instagram.com/v1/users/self/?access_token=</string>
@@ -142,7 +142,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="address">Address</string>
     <string name="unblock_user">Unblock User</string>
     <string name="block_user">Block User</string>
-    <string name="enter_discription">Enter discription</string>
+    <string name="enter_discription">Enter description</string>
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
     <string name="reports">Reports</string>
