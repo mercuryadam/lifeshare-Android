@@ -74,7 +74,7 @@ public class UserReportsDetailListActivity extends BaseActivity implements View.
         DeleteUserRequest request = new DeleteUserRequest();
         request.setUserId(user.getUserId());
         showLoading();
-        WebAPIManager.getInstance().getAllReportForUser(request, new RemoteCallback<ArrayList<ReportDetailListResponse>>(this) {
+        WebAPIManager.getInstance().getAllReportForUserAgora(request, new RemoteCallback<ArrayList<ReportDetailListResponse>>(this) {
             @Override
             public void onSuccess(ArrayList<ReportDetailListResponse> response) {
                 adapter.removeAllItems();

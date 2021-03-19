@@ -3,6 +3,7 @@ package com.lifeshare.network;
 import com.google.gson.JsonElement;
 import com.lifeshare.model.ChatMessage;
 import com.lifeshare.network.request.AcceptInvitation;
+import com.lifeshare.network.request.AgoraCreateRequest;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.ChatHistoryRequest;
@@ -33,6 +34,7 @@ import com.lifeshare.network.request.UpdateDeviceTokenRequest;
 import com.lifeshare.network.request.UpdateSaveChatFlag;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
+import com.lifeshare.network.response.AgoraCreateResponse;
 import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CheckSubscriptionResponse;
 import com.lifeshare.network.response.CheckVersionResponse;
@@ -211,5 +213,31 @@ public interface WebAPIService {
     @POST("user/contactInvitationViaMobile")
     Call<CommonResponse> contactInvitationViaMobile(@Body ContactInvitationViaMobileRequest request);
 
+
+    @POST("agora/create")
+    Call<AgoraCreateResponse> agoraCreate(@Body AgoraCreateRequest request);
+
+    @POST("agora/list")
+    Call<ArrayList<StreamUserListResponse>> getAgoraBroadcastList();
+
+    @POST("agora/send/notification")
+    Call<CommonResponse> agoraNotifyOther(@Body SendNotificationRequest request);
+
+    @POST("agora/delete")
+    Call<CommonResponse> deleteStreamingAgora(@Body DeleteStreamingTwilioRequest request);
+
+    @POST("agora/report")
+    Call<CommonResponse> submitReportUserAgora(@Body ReportUserRequest request);
+
+    @POST("agora/report/users")
+    Call<ArrayList<ReportListResponse>> getReportedUserListAgora();
+
+    @POST("agora/report/users/list")
+    Call<ArrayList<ReportDetailListResponse>> getAllReportForUserAgora(@Body DeleteUserRequest request);
+
+
+    ///agora/report
+    ///agora/report/users
+    ///agora/report/users/list
 
 }

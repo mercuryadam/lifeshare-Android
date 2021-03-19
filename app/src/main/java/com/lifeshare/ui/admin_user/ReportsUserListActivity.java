@@ -61,7 +61,7 @@ public class ReportsUserListActivity extends BaseActivity implements View.OnClic
         }
 
         showLoading();
-        WebAPIManager.getInstance().getReportedUserList(new RemoteCallback<ArrayList<ReportListResponse>>(this) {
+        WebAPIManager.getInstance().getReportedUserListAgora(new RemoteCallback<ArrayList<ReportListResponse>>(this) {
             @Override
             public void onSuccess(ArrayList<ReportListResponse> response) {
                 adapter.removeAllItems();

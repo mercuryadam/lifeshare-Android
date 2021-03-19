@@ -14,9 +14,9 @@ import com.google.gson.Gson;
 import com.lifeshare.LifeShare;
 import com.lifeshare.R;
 import com.lifeshare.network.response.StreamUserListResponse;
-import com.lifeshare.ui.TwilioBroadcastActivityNew;
+import com.lifeshare.ui.BroadcastUsingAgoraActivity;
 import com.lifeshare.ui.invitation.MyInvitationListActivity;
-import com.lifeshare.ui.show_broadcast.TwilioShowStreamActivityNew;
+import com.lifeshare.ui.show_broadcast.AgoraShowStreamActivity;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 
@@ -40,7 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (PreferenceHelper.getInstance().getUser() != null) {
             LifeShare.getInstance().updateFcmTokenToServer();
         }
-    }
+    }// {"from_id":4,"opentokDetail":"[]","to_id":5,"type":"STREAM_STARTED","message":"Keval Garala is broadcasting now"}
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -84,10 +84,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     break;
                 case Const.NEW_INVITATION:
-                    Intent mainIntent = new Intent(this, TwilioBroadcastActivityNew.class);
+                    Intent mainIntent = new Intent(this, BroadcastUsingAgoraActivity.class);
                     mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-                    stackBuilder.addParentStack(TwilioBroadcastActivityNew
+                    stackBuilder.addParentStack(BroadcastUsingAgoraActivity
                             .class);
                     stackBuilder.addNextIntent(mainIntent);
                     intent = new Intent(getApplicationContext(), MyInvitationListActivity.class);
@@ -113,20 +113,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             StreamUserListResponse streamObject = new Gson().fromJson(opentokDetail, StreamUserListResponse.class);
 
-            Intent mainIntent = new Intent(this, TwilioBroadcastActivityNew.class);
+            Intent mainIntent = new Intent(this, BroadcastUsingAgoraActivity.class);
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            stackBuilder.addParentStack(TwilioBroadcastActivityNew
-                    .class);
+            stackBuilder.addParentStack(BroadcastUsingAgoraActivity.class);
             stackBuilder.addNextIntent(mainIntent);
-            Intent intent = new Intent(getApplicationContext(), TwilioShowStreamActivityNew.class);
+            Intent intent = new Intent(getApplicationContext(), AgoraShowStreamActivity.class);
             Bundle bundle = new Bundle();
             bundle.putParcelable(Const.STREAM_DATA, streamObject);
             intent.putExtras(bundle);
             stackBuilder.addNextIntent(intent);
 
+            NotificationUtil notifyUtil;
+            if (streamObject.getId() != null)
+                notifyUtil = new NotificationUtil(getApplicationContext(), Const.STREAM_STARTED, getString(R.string.app_name), message, stackBuilder, Integer.parseInt(streamObject.getId()));
+            else
+                notifyUtil = new NotificationUtil(getApplicationContext(), Const.STREAM_STARTED, getString(R.string.app_name), message, stackBuilder, new Random().nextInt());
 
-            NotificationUtil notifyUtil = new NotificationUtil(getApplicationContext(), Const.STREAM_STARTED, getString(R.string.app_name), message, stackBuilder, Integer.parseInt(streamObject.getId()));
             notifyUtil.show();
         } catch (Exception e) {
             Log.v(TAG, "showStreamNotification: " + e.getMessage());

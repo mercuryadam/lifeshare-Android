@@ -239,7 +239,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         ReportUserRequest request = new ReportUserRequest();
         request.setMessage(message);
         request.setUserId(publisherUserId);
-        WebAPIManager.getInstance().submitReportUser(request, new RemoteCallback<CommonResponse>() {
+        WebAPIManager.getInstance().submitReportUserAgora(request, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
 

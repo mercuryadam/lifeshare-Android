@@ -3,6 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.lifeshare">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+
+
     <application
         android:name=".LifeShare"
         android:allowBackup="false"
@@ -14,19 +29,29 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.inviteFriends.InviteViaMobileActivity"
+
+        <activity android:name=".ui.show_broadcast.AgoraShowStreamActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeReceiver"
+            android:windowSoftInputMode="stateAlwaysVisible|stateHidden" />
+
+        <activity android:name=".ui.BroadcastUsingAgoraActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible|stateHidden" />
+
+
+        <activity
+            android:name=".ui.inviteFriends.InviteViaMobileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/splashTheme" />
         <activity
             android:name=".ui.save_broadcast.ShowPreviousBroadcastAndChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/splashTheme" />
-
         <activity
             android:name=".ui.select_connection.SelectConnectionsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/splashTheme" />
-
         <activity
             android:name=".ui.inviteFriends.ContactListActivity"
             android:screenOrientation="portrait"
@@ -74,7 +99,6 @@
             android:name=".ui.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/splashTheme" />
-
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait"
@@ -84,7 +108,6 @@
             android:name=".ui.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/splashTheme" />
-
         <activity
             android:name=".ui.ChangePasswordActivity"
             android:screenOrientation="portrait"
@@ -129,6 +152,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".agorahelper.capture.ScreenCapture$ScreenCaptureAssistantActivity"
+            android:theme="@android:style/Theme.Translucent" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/app_ad_id" />
@@ -156,19 +183,16 @@
             android:name=".customview.bubbleview.BubblesService"
             android:enabled="true"
             android:exported="false" />
-
         <service
             android:name=".receiver.ForegroundService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaProjection"
             tools:targetApi="q" />
-
         <service
             android:name=".receiver.StreamingIntentService"
             android:enabled="true"
             android:exported="false" />
-
         <service android:name=".fcm.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -180,16 +204,5 @@
             android:foregroundServiceType="mediaProjection"
             tools:targetApi="q" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 </manifest>

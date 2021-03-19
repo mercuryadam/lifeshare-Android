@@ -13,6 +13,8 @@
     <string name="get_user_info_url_first">https://api.instagram.com/v1/users/self/?access_token=</string>
     <string name="instagram_login">INSTAGRAM SIGN IN</string>
 
+    <string name="agora_app_id">4e32c0f9d01040c18eae0f61950489db</string>
+
 
     <string name="rationale_video_app">This app needs access to your camera and mic so you can perform video calls</string>
     <string name="start_broadcast_by_enable_option_menu">Start broadcast by enable option menu</string>
@@ -174,5 +176,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="share_video_message">I\'m using this app to broadcast my stream! Join me using the LifeShare app.\n\n</string>
     <string name="login_with">Login With:</string>
     <string name="submit">Submit</string>
+    <string name="err_while_joining">Error while joining</string>
+
 
 </resources>

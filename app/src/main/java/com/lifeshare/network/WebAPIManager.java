@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.lifeshare.model.ChannelArchive;
 import com.lifeshare.model.ChatMessage;
 import com.lifeshare.network.request.AcceptInvitation;
+import com.lifeshare.network.request.AgoraCreateRequest;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.ChatHistoryRequest;
@@ -37,6 +38,7 @@ import com.lifeshare.network.request.UpdateDeviceTokenRequest;
 import com.lifeshare.network.request.UpdateSaveChatFlag;
 import com.lifeshare.network.request.UpdateViewerCountRequest;
 import com.lifeshare.network.request.UserProfileRequest;
+import com.lifeshare.network.response.AgoraCreateResponse;
 import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CheckSubscriptionResponse;
 import com.lifeshare.network.response.CheckVersionResponse;
@@ -317,5 +319,33 @@ public class WebAPIManager {
             body = MultipartBody.Part.createFormData(key, file.getName(), reqFile);
         }
         return body;
+    }
+
+    public void agoraCreate(AgoraCreateRequest request, RemoteCallback<AgoraCreateResponse> callback) {
+        mService.agoraCreate(request).enqueue(callback);
+    }
+
+    public void getAgoraBroadcastList(RemoteCallback<ArrayList<StreamUserListResponse>> callback) {
+        mService.getAgoraBroadcastList().enqueue(callback);
+    }
+
+    public void agoraNotifyOther(SendNotificationRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.agoraNotifyOther(request).enqueue(callback);
+    }
+
+    public void deleteStreamingAgora(DeleteStreamingTwilioRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.deleteStreamingAgora(request).enqueue(callback);
+    }
+
+    public void submitReportUserAgora(ReportUserRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.submitReportUserAgora(request).enqueue(callback);
+    }
+
+    public void getReportedUserListAgora(RemoteCallback<ArrayList<ReportListResponse>> callback) {
+        mService.getReportedUserListAgora().enqueue(callback);
+    }
+
+    public void getAllReportForUserAgora(DeleteUserRequest request, RemoteCallback<ArrayList<ReportDetailListResponse>> callback) {
+        mService.getAllReportForUserAgora(request).enqueue(callback);
     }
 }

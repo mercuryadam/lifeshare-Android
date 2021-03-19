@@ -28,6 +28,7 @@ import com.lifeshare.network.WebAPIManager;
 import com.lifeshare.network.request.ContactInvitationRequest;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
+import com.lifeshare.ui.BroadcastUsingAgoraActivity;
 import com.lifeshare.ui.TwilioBroadcastActivityNew;
 import com.lifeshare.utils.Const;
 
@@ -125,7 +126,7 @@ public class ContactListActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_skip:
-                startActivity(new Intent(ContactListActivity.this, TwilioBroadcastActivityNew.class));
+                startActivity(new Intent(ContactListActivity.this, BroadcastUsingAgoraActivity.class));
                 finish();
                 break;
             case R.id.btn_invite:
@@ -163,7 +164,7 @@ public class ContactListActivity extends BaseActivity implements View.OnClickLis
                 hideLoading();
                 showToast(response.getMessage());
                 if (isFromTermAndCondition) {
-                    startActivity(new Intent(ContactListActivity.this, TwilioBroadcastActivityNew.class));
+                    startActivity(new Intent(ContactListActivity.this, BroadcastUsingAgoraActivity.class));
                     finish();
                 } else {
                     finish();

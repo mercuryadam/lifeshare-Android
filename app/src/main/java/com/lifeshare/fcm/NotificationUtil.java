@@ -47,7 +47,7 @@ public class NotificationUtil {
         this.notificationType = notificationType;
     }
 
-    public NotificationUtil(Context context, String notificationType, String title, String desc, TaskStackBuilder stackBuilder, int notifId) {
+    public NotificationUtil(Context context, String notificationType, String title, String desc, TaskStackBuilder stackBuilder, Integer notifId) {
         this.mContext = context.getApplicationContext();
         this.mTitle = title;
         this.mDesc = desc;

@@ -52,7 +52,7 @@ public class ScreenCapturerManager {
         currentState = State.END_FOREGROUND;
     }
 
-    void unbindService() {
+    public void unbindService() {
         mContext.unbindService(connection);
         currentState = State.UNBIND_SERVICE;
     }

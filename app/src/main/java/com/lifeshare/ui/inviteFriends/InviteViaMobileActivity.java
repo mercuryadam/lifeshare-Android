@@ -31,6 +31,7 @@ import com.lifeshare.network.request.ContactInvitationViaMobileRequest;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
+import com.lifeshare.ui.BroadcastUsingAgoraActivity;
 import com.lifeshare.ui.TwilioBroadcastActivityNew;
 import com.lifeshare.utils.Const;
 
@@ -131,7 +132,7 @@ public class InviteViaMobileActivity extends BaseActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_skip:
-                startActivity(new Intent(InviteViaMobileActivity.this, TwilioBroadcastActivityNew.class));
+                startActivity(new Intent(InviteViaMobileActivity.this, BroadcastUsingAgoraActivity.class));
                 finish();
                 break;
             case R.id.btn_invite:
@@ -181,7 +182,7 @@ public class InviteViaMobileActivity extends BaseActivity implements View.OnClic
                 hideLoading();
                 showToast(response.getMessage());
                 if (isFromTermAndCondition) {
-                    startActivity(new Intent(InviteViaMobileActivity.this, TwilioBroadcastActivityNew.class));
+                    startActivity(new Intent(InviteViaMobileActivity.this, BroadcastUsingAgoraActivity.class));
                     finish();
                 } else {
                     finish();

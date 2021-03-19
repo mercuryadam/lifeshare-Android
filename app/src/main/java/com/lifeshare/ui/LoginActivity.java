@@ -296,7 +296,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
                 if (PreferenceHelper.getInstance().getIsAcceptTermOfService()) {
-                    startActivity(new Intent(LoginActivity.this, TwilioBroadcastActivityNew.class));
+                    startActivity(new Intent(LoginActivity.this, BroadcastUsingAgoraActivity.class));
                     finish();
                 } else {
                     startActivity(new Intent(LoginActivity.this, TermOfServicesActivity.class));
@@ -585,7 +585,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
                 if (PreferenceHelper.getInstance().getIsAcceptTermOfService()) {
-                    startActivity(new Intent(LoginActivity.this, TwilioBroadcastActivityNew.class));
+                    startActivity(new Intent(LoginActivity.this, BroadcastUsingAgoraActivity.class));
                     finish();
                 } else {
                     startActivity(new Intent(LoginActivity.this, TermOfServicesActivity.class));

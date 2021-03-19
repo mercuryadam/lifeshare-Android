@@ -46,7 +46,7 @@ public class SplashActivity extends BaseActivity {
         } else {
             if (PreferenceHelper.getInstance().getIsAcceptTermOfService()) {
                 deleteStreamingIfAvailable();
-                startActivity(new Intent(SplashActivity.this, TwilioBroadcastActivityNew.class));
+                startActivity(new Intent(SplashActivity.this, BroadcastUsingAgoraActivity.class));
             } else {
                 startActivity(new Intent(SplashActivity.this, TermOfServicesActivity.class));
             }
