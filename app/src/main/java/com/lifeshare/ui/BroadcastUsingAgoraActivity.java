@@ -93,8 +93,6 @@ import com.lifeshare.utils.ScreenCapturerManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -377,12 +375,9 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
 
                             @Override
                             public void run() {
-                                Random random = new Random();
                                 isBroadcasting = true;
 
-                                showToast("UID " + uid);
-
-                                agoraCreate(channel, true, selectedUsers, PreferenceHelper.getInstance().getUser().getUserId() + String.format(Locale.getDefault(), "%04d", random.nextInt(10000)));
+                                agoraCreate(channel, true, selectedUsers, String.valueOf(uid).replace("-", ""));
                             }
                         });
                     }
@@ -1373,6 +1368,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
 
     public void onLiveSharingScreenClicked(boolean join) {
 
+
         if (join) {
             initModules();
             mScreenCapture.start();
@@ -1380,7 +1376,8 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
                     Pattern.compile("[^a-zA-Z0-9_]+").matcher(PreferenceHelper.getInstance().getUser().getChannelName().replace(" ", "")).replaceAll(""),
                     "", 0);
         } else {
-            mRtcEngine.leaveChannel();
+            if (mRtcEngine != null)
+                mRtcEngine.leaveChannel();
             mScreenCapture.stop();
         }
     }

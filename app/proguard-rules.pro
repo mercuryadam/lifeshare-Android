@@ -83,6 +83,10 @@
 -dontwarn okio.**
 -dontwarn javax.annotation.**
 
+#Agora
+-keep class androidx.lifecycle.** { *; }
+-keep class io.agora.**{*;}
+
 #Remove Logs
 -assumenosideeffects class android.util.Log {
   public static *** v(...);

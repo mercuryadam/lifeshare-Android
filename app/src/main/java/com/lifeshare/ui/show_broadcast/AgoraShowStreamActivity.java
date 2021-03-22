@@ -151,7 +151,6 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
         ivProfile = (CircleImageView) findViewById(R.id.ivProfile);
         icBack.setOnClickListener(this);
 
-        initializeTwiloCompoenent();
     }
 
     private void initializeTwiloCompoenent() {

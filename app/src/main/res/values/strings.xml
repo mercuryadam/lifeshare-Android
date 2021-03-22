@@ -13,7 +13,7 @@
     <string name="get_user_info_url_first">https://api.instagram.com/v1/users/self/?access_token=</string>
     <string name="instagram_login">INSTAGRAM SIGN IN</string>
 
-    <string name="agora_app_id">4e32c0f9d01040c18eae0f61950489db</string>
+    <string name="agora_app_id">543b5d171b7743ffaf0757ffc423b724</string>
 
 
     <string name="rationale_video_app">This app needs access to your camera and mic so you can perform video calls</string>
