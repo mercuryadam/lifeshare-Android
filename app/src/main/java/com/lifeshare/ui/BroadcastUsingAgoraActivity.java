@@ -787,7 +787,6 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
         if (PreferenceHelper.getInstance().getCountOfViewer() > 0) {
             updateCountForViewerToServer();
         }
-        deleteStreaming();
 
 
         if (mInterstitialAd.isLoaded()) {
@@ -1382,6 +1381,14 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
             if (mScreenCapture != null) {
                 mScreenCapture.stop();
             }
+
+            if (opnTokID != null) {
+                if (!opnTokID.isEmpty()) {
+                    deleteStreaming();
+                }
+            }
+
+            deInitModules();
         }
     }
 
@@ -1410,6 +1417,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
             public void onSuccess(CommonResponse response) {
                 PreferenceHelper.getInstance().setRoomData(null);
                 hideLoading();
+                opnTokID = "";
                 if (PreferenceHelper.getInstance().getCountOfViewer() > 0) {
                     updateCountForViewerToServer();
                 }
