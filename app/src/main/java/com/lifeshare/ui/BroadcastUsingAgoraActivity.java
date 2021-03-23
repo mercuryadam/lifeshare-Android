@@ -377,7 +377,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
                             public void run() {
                                 isBroadcasting = true;
 
-                                agoraCreate(channel, true, selectedUsers, String.valueOf(uid).replace("-", ""));
+                                agoraCreate(channel, isSaveBroadcast, selectedUsers, String.valueOf(uid).replace("-", ""));
                             }
                         });
                     }
@@ -590,6 +590,8 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
                     break;
             }
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void removePublisherFromFirebase() {
@@ -1375,20 +1377,14 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
                     Pattern.compile("[^a-zA-Z0-9_]+").matcher(PreferenceHelper.getInstance().getUser().getChannelName().replace(" ", "")).replaceAll(""),
                     "", 0);
         } else {
-            if (mRtcEngine != null) {
-                mRtcEngine.leaveChannel();
-            }
-            if (mScreenCapture != null) {
-                mScreenCapture.stop();
-            }
-
             if (opnTokID != null) {
                 if (!opnTokID.isEmpty()) {
                     deleteStreaming();
                 }
             }
-
-            deInitModules();
+            if (mScreenCapture != null) {
+                mScreenCapture.stop();
+            }
         }
     }
 
@@ -1417,6 +1413,12 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
             public void onSuccess(CommonResponse response) {
                 PreferenceHelper.getInstance().setRoomData(null);
                 hideLoading();
+
+                if (mRtcEngine != null) {
+                    mRtcEngine.leaveChannel();
+                }
+                deInitModules();
+
                 opnTokID = "";
                 if (PreferenceHelper.getInstance().getCountOfViewer() > 0) {
                     updateCountForViewerToServer();
@@ -1427,12 +1429,20 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
 
             @Override
             public void onFailed(Throwable throwable) {
+                if (mRtcEngine != null) {
+                    mRtcEngine.leaveChannel();
+                }
+                deInitModules();
                 hideLoading();
                 disconnectSessionAndManageState();
             }
 
             @Override
             public void onUnauthorized(Throwable throwable) {
+                if (mRtcEngine != null) {
+                    mRtcEngine.leaveChannel();
+                }
+                deInitModules();
                 hideLoading();
                 disconnectSessionAndManageState();
 
@@ -1440,6 +1450,10 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
 
             @Override
             public void onEmptyResponse(String message) {
+                if (mRtcEngine != null) {
+                    mRtcEngine.leaveChannel();
+                }
+                deInitModules();
                 hideLoading();
                 disconnectSessionAndManageState();
             }

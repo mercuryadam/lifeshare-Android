@@ -119,6 +119,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             stackBuilder.addParentStack(BroadcastUsingAgoraActivity.class);
             stackBuilder.addNextIntent(mainIntent);
             Intent intent = new Intent(getApplicationContext(), AgoraShowStreamActivity.class);
+
+            PreferenceHelper.getInstance().setNotificationIntent(streamObject);
+
             intent.putExtra(Const.STREAM_DATA, streamObject);
             stackBuilder.addNextIntent(intent);
 

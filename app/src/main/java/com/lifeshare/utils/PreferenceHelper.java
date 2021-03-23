@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.lifeshare.LifeShare;
 import com.lifeshare.network.response.CreateRoomResponse;
 import com.lifeshare.network.response.LoginResponse;
+import com.lifeshare.network.response.StreamUserListResponse;
 
 /**
  * Created by chirag.patel on 27/11/18.
@@ -22,6 +23,7 @@ public class PreferenceHelper {
     private final String IS_FIRST_TIME = "IS_FIRST_TIME";
     private final String IS_ACCEPT_TERM_OF_SERVICE = "IS_ACCEPT_TERM_OF_SERVICE";
     private final String USER_DATA = "USER_DATA";
+    private final String NOTIFICATION_INTENT = "NOTIFICATION_INTENT";
     private final String SESSION_DATA = "SESSION_DATA";
     private final String PURCHASE_DATA = "PURCHASE_DATA";
     private final String IS_FCM_TOKEN_UPDATED = "IS_FCM_TOKEN_UPDATED";
@@ -82,7 +84,29 @@ public class PreferenceHelper {
         String userData = new Gson().toJson(user);
         mEdit.putString(USER_DATA, userData);
         save();
-    }/*
+    }
+
+    public StreamUserListResponse getNotificationIntent() {
+        String userData = mPrefs.getString(NOTIFICATION_INTENT, "");
+        if (!TextUtils.isEmpty(userData)) {
+            StreamUserListResponse user = new Gson().fromJson(userData, StreamUserListResponse.class);
+            return user;
+        }
+        return null;
+    }
+
+    public void setNotificationIntent(StreamUserListResponse user) {
+        if (user == null) {
+            mEdit.putString(NOTIFICATION_INTENT, "");
+            save();
+            return;
+        }
+        String userData = new Gson().toJson(user);
+        mEdit.putString(NOTIFICATION_INTENT, userData);
+        save();
+    }
+
+    /*
     public CreateSessionResponse getSessionData() {
         String sessionData = mPrefs.getString(SESSION_DATA, null);
         if (!TextUtils.isEmpty(sessionData)) {

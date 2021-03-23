@@ -1,7 +1,8 @@
 package com.lifeshare.ui.show_broadcast;
 
-import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -153,7 +154,14 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
+        if (intent != null && intent.getExtras() != null) {
+            currentVisibleStram = intent.getParcelableExtra(Const.STREAM_DATA);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +171,10 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
         new InitTrueTimeAsyncTask().execute();
         if (getIntent() != null && getIntent().getExtras() != null) {
             currentVisibleStram = getIntent().getParcelableExtra(Const.STREAM_DATA);
+
+            if (currentVisibleStram == null && Build.VERSION.SDK_INT == 30) {
+                currentVisibleStram = PreferenceHelper.getInstance().getNotificationIntent();
+            }
         }
 
         if (currentVisibleStram != null) {
@@ -481,7 +493,8 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
             initModules();
             mRtcEngine.joinChannel(null, channelName, "", 0);
         } else {
-            mRtcEngine.leaveChannel();
+            if (mRtcEngine != null)
+                mRtcEngine.leaveChannel();
             //on leave
             removeUserFromViewer();
             currentVisibleStram = null;

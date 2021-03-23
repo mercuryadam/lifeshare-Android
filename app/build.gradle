@@ -101,7 +101,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
@@ -143,8 +143,6 @@ dependencies {
     //Google billing
     implementation "com.android.billingclient:billing:3.0.0"
 
-    implementation "com.twilio:audioswitch:1.0.0"
-    implementation "com.twilio:video-android:5.10.2"
     implementation 'com.google.android.exoplayer:exoplayer:2.10.4'
 
     //Google SignIn
