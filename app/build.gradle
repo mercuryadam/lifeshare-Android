@@ -124,20 +124,17 @@ dependencies {
     debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
     releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
 
-    implementation "com.google.firebase:firebase-core:17.4.4"
-    implementation "com.google.firebase:firebase-messaging:20.2.3"
-    implementation "com.google.firebase:firebase-database:19.3.1"
+    implementation platform('com.google.firebase:firebase-bom:26.7.0')
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-messaging'
 
     implementation 'com.github.instacart.truetime-android:library:3.4'
     implementation("com.github.bumptech.glide:glide:4.0.0-RC0") {
         exclude group: 'com.android.support'
     }
 
-    // Recommended: Add the Firebase SDK for Google Analytics.
-    implementation 'com.google.firebase:firebase-analytics-ktx:17.4.4'
-
-    // Add the Firebase Crashlytics SDK.
-    implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
     implementation 'com.android.support:multidex:1.0.3'
 
     //Google Mobile Ads SDK
