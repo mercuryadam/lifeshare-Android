@@ -1376,14 +1376,18 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
                     Pattern.compile("[^a-zA-Z0-9_]+").matcher(PreferenceHelper.getInstance().getUser().getChannelName().replace(" ", "")).replaceAll(""),
                     "", 0);
         } else {
-            if (mRtcEngine != null)
+            if (mRtcEngine != null) {
                 mRtcEngine.leaveChannel();
-            mScreenCapture.stop();
+            }
+            if (mScreenCapture != null) {
+                mScreenCapture.stop();
+            }
         }
     }
 
     private void deInitModules() {
-        RtcEngine.destroy();
+        if (mRtcEngine != null)
+            RtcEngine.destroy();
         mRtcEngine = null;
 
         if (mScreenCapture != null) {

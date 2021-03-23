@@ -153,15 +153,6 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
 
     }
 
-    private void initializeTwiloCompoenent() {
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setSpeakerphoneOn(true);
-        audioManager.setMicrophoneMute(true);
-
-        savedVolumeControlStream = getVolumeControlStream();
-        setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
-
-    }
 
 
     @Override
@@ -337,16 +328,6 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
             countDownTimerViewerLastTime.cancel();
         }
         removeUserFromViewer();
-
-        /*
-         * Tear down audio management and restore previous volume stream
-         */
-        setVolumeControlStream(savedVolumeControlStream);
-
-        /*
-         * Always disconnect from the room before leaving the Activity to
-         * ensure any memory allocated to the Room resource is freed.
-         */
         RtcEngine.destroy();
         mRtcEngine = null;
 
@@ -378,30 +359,44 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
                 mRtcEngine = RtcEngine.create(getApplicationContext(), getString(R.string.agora_app_id), new IRtcEngineEventHandler() {
                     @Override
                     public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
-                        Log.d(LOG_TAG, "onJoinChannelSuccess " + channel + " " + elapsed);
-                        Log.d(LOG_TAG, "CHANNEL UID " + channel + " " + uid);
 
-                      /*  localParticipant = room.getLocalParticipant();
-                        setTitle(room.getName());*/
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d(LOG_TAG, "onJoinChannelSuccess " + channel + " " + elapsed);
+                                Log.d(LOG_TAG, "CHANNEL UID " + channel + " " + uid);
+                                addViewerToStream();
+                                updateCountForViewer();
 
-                        addViewerToStream();
-                        updateCountForViewer();
+                                llStreamProgress.setVisibility(View.GONE);
+                                fabMessage.show();
+                            }
+                        });
 
-                        llStreamProgress.setVisibility(View.GONE);
-                        fabMessage.show();
                     }
 
 
                     @Override
                     public void onWarning(int warn) {
-                        Log.d(LOG_TAG, "onWarning " + warn);
-                        showToast(getString(R.string.err_while_joining));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d(LOG_TAG, "onWarn " + warn);
+                                showToast(getString(R.string.err_while_joining));
+                            }
+                        });
                     }
 
                     @Override
                     public void onError(int err) {
-                        Log.d(LOG_TAG, "onError " + err);
-                        showToast(getString(R.string.err_while_joining));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d(LOG_TAG, "onError " + err);
+                                showToast(getString(R.string.err_while_joining));
+                            }
+                        });
+
                     }
 
                     @Override
