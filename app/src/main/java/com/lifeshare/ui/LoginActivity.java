@@ -653,7 +653,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
         // create an alert dialog
         alertDialog = mAlertBuilder.create();
-        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCancelable(false);
         if (alertDialog.isShowing()) {
             alertDialog.dismiss();
         }

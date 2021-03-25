@@ -36,7 +36,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
         btnReset = (AppCompatButton) findViewById(R.id.btn_reset);
         btnReset.setOnClickListener(this);
 
-        if (BuildConfig.FLAVOR.equalsIgnoreCase("Dev")) {
+        if (!BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")) {
             etEmail.setText("chirag.patel@9spl.com");
         }
     }
