@@ -28,7 +28,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -221,7 +220,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
                 break;
             case R.id.insta_login_button:
-                AuthenticationDialog authenticationDialog = new AuthenticationDialog(this, this);
+                AuthenticationDialog authenticationDialog = new AuthenticationDialog(this, this, this);
                 authenticationDialog.setCancelable(true);
                 authenticationDialog.show();
                 break;
@@ -290,7 +289,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                 //get remaining notification
 //                LifeShare.getInstance().getAllRemainingPushNotification();
-
+                PreferenceHelper.getInstance().setIsLogIn(true);
                 PreferenceHelper.getInstance().setUser(response);
                 PreferenceHelper.getInstance().setFcmTokenUpdated(false);
 
@@ -383,7 +382,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
         @Override
         protected String doInBackground(Void... params) {
-            showLoading();
+
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showLoading();
+                }
+            });
+
             OkHttpClient client = new OkHttpClient();
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -425,7 +432,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     hideLoading();
                     e.printStackTrace();
                 }
-            }else {
+            } else {
                 hideLoading();
                 Toast toast = Toast.makeText(getApplicationContext(), "Login error!", Toast.LENGTH_LONG);
                 toast.show();
@@ -473,7 +480,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     if (jsonObject.has("id") && jsonObject.has("username")) {
                         new RequestInstagramFirstNameAPI(jsonObject.getString("id"), jsonObject.getString("username")).execute();
 
-                    }else {
+                    } else {
                         hideLoading();
                         Toast toast = Toast.makeText(getApplicationContext(), "Login error!", Toast.LENGTH_LONG);
                         toast.show();
@@ -545,7 +552,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                                 }
                             }
                         }
-                    }else {
+                    } else {
                         hideLoading();
                         Toast toast = Toast.makeText(getApplicationContext(), "Login error!", Toast.LENGTH_LONG);
                         toast.show();
@@ -580,6 +587,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             @Override
             public void onSuccess(LoginResponse response) {
                 hideLoading();
+                PreferenceHelper.getInstance().setIsLogIn(true);
                 PreferenceHelper.getInstance().setUser(response);
                 PreferenceHelper.getInstance().setFcmTokenUpdated(false);
 
@@ -622,6 +630,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             public void onSuccess(LoginResponse response) {
                 hideLoading();
                 showToast(response.getMessage());
+                PreferenceHelper.getInstance().setIsLogIn(true);
                 PreferenceHelper.getInstance().setUser(response);
                 PreferenceHelper.getInstance().setFcmTokenUpdated(false);
                 Intent intent = new Intent(LoginActivity.this, TermOfServicesActivity.class);

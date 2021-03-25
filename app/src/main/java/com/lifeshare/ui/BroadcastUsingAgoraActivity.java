@@ -597,13 +597,15 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
     private void removePublisherFromFirebase() {
         removeValueEventListener();
         rlViewers.setVisibility(View.GONE);
-        DatabaseReference databaseReference = LifeShare.getFirebaseReference().child(Const.TABLE_PUBLISHER).child(PreferenceHelper.getInstance().getUser().getUserId());
-        databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
+        if(PreferenceHelper.getInstance().getUser() != null){
+            DatabaseReference databaseReference = LifeShare.getFirebaseReference().child(Const.TABLE_PUBLISHER).child(PreferenceHelper.getInstance().getUser().getUserId());
+            databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
 
-            }
-        });
+                }
+            });
+        }
 
     }
 

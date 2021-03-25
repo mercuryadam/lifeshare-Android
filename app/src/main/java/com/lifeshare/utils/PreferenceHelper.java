@@ -22,6 +22,7 @@ public class PreferenceHelper {
     private final String PREFERENCE_FILE = "LifeShare_pref";
     private final String IS_FIRST_TIME = "IS_FIRST_TIME";
     private final String IS_ACCEPT_TERM_OF_SERVICE = "IS_ACCEPT_TERM_OF_SERVICE";
+    private final String IS_LOGGED_IN = "IS_LOGGED_IN";
     private final String USER_DATA = "USER_DATA";
     private final String NOTIFICATION_INTENT = "NOTIFICATION_INTENT";
     private final String SESSION_DATA = "SESSION_DATA";
@@ -66,6 +67,15 @@ public class PreferenceHelper {
         save();
     }
 
+    public boolean getIsLogIn() {
+        return mPrefs.getBoolean(IS_LOGGED_IN, false);
+    }
+
+    public void setIsLogIn(boolean b) {
+        mEdit.putBoolean(IS_LOGGED_IN, b);
+        save();
+    }
+
     public LoginResponse getUser() {
         String userData = mPrefs.getString(USER_DATA, "");
         if (!TextUtils.isEmpty(userData)) {
@@ -76,6 +86,7 @@ public class PreferenceHelper {
     }
 
     public void setUser(LoginResponse user) {
+
         if (user == null) {
             mEdit.putString(USER_DATA, "");
             save();

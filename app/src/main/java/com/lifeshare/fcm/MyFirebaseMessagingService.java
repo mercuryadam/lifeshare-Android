@@ -37,7 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.v(TAG, "onNewToken: " + s);
         PreferenceHelper.getInstance().setFcmToken(s);
         PreferenceHelper.getInstance().setFcmTokenUpdated(true);
-        if (PreferenceHelper.getInstance().getUser() != null) {
+        if (PreferenceHelper.getInstance().getIsLogIn()) {
             LifeShare.getInstance().updateFcmTokenToServer();
         }
     }// {"from_id":4,"opentokDetail":"[]","to_id":5,"type":"STREAM_STARTED","message":"Keval Garala is broadcasting now"}
@@ -51,7 +51,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         try {
             JSONObject jsonObjectMsg = new JSONObject(json);
-            if (PreferenceHelper.getInstance().getUser() != null) {
+            if (PreferenceHelper.getInstance().getIsLogIn()) {
                 String strNotificationObject = jsonObjectMsg.getJSONObject("data").toString();
                 setNotificationIntentAndView(strNotificationObject);
             }

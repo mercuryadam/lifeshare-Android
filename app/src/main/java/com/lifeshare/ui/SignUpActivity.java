@@ -195,6 +195,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             public void onSuccess(LoginResponse response) {
                 hideLoading();
                 showToast(response.getMessage());
+                PreferenceHelper.getInstance().setIsLogIn(true);
                 PreferenceHelper.getInstance().setUser(response);
                 PreferenceHelper.getInstance().setFcmTokenUpdated(false);
                 Intent intent = new Intent(SignUpActivity.this, TermOfServicesActivity.class);

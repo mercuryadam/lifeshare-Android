@@ -1,14 +1,18 @@
 package com.lifeshare.utils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import com.lifeshare.R;
 
@@ -17,16 +21,18 @@ public class AuthenticationDialog extends Dialog {
     private final String redirect_url;
     private final String request_url;
     private AuthenticationListener listener;
+    private final Activity activity;
 
-    public AuthenticationDialog(@NonNull Context context, AuthenticationListener listener) {
+    public AuthenticationDialog(@NonNull Context context, Activity activity, AuthenticationListener listener) {
         super(context);
         this.listener = listener;
+        this.activity = activity;
         this.redirect_url = context.getResources().getString(R.string.redirect_url);
         this.request_url = context.getResources().getString(R.string.base_url) +
                 "oauth/authorize/?client_id=" +
                 context.getResources().getString(R.string.client_id) +
                 "&redirect_uri=" + redirect_url +
-                "&response_type=code&display=touch&scope=user_profile,user_media";
+                "&response_type=code&display=touch&scope=user_profile";
     }
 
     @Override
@@ -35,6 +41,18 @@ public class AuthenticationDialog extends Dialog {
         this.setContentView(R.layout.auth_dialog);
 
         WebView webView = findViewById(R.id.webView);
+
+        try {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+            webView.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(request_url);
         webView.setWebViewClient(new WebViewClient() {

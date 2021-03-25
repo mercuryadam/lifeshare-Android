@@ -41,7 +41,8 @@ public class SplashActivity extends BaseActivity {
 
     private void moveToNextScreen() {
 //        new InitTrueTimeAsyncTask().execute();
-        if (PreferenceHelper.getInstance().getUser() == null) {
+        if (!PreferenceHelper.getInstance().getIsLogIn()) {
+            PreferenceHelper.getInstance().setUser(null);
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
         } else {
             if (PreferenceHelper.getInstance().getIsAcceptTermOfService()) {

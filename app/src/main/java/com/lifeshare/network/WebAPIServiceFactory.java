@@ -64,9 +64,10 @@ public class WebAPIServiceFactory {
                                                      requestBuilder.addHeader("content-Type", "application/json");
                                                      requestBuilder.method(original.method(), original.body());
 
-                                                     if (PreferenceHelper.getInstance().getUser() != null) {
-                                                         requestBuilder.addHeader("Authorization", "Bearer " + PreferenceHelper.getInstance().getUser().getToken());
-                                                     }
+                                                     if (PreferenceHelper.getInstance().getIsLogIn())
+                                                         if (PreferenceHelper.getInstance().getUser() != null) {
+                                                             requestBuilder.addHeader("Authorization", "Bearer " + PreferenceHelper.getInstance().getUser().getToken());
+                                                         }
 
                                                      Response response = chain.proceed(requestBuilder.build());
 
@@ -86,7 +87,7 @@ public class WebAPIServiceFactory {
                 String rawJson = responseBody.string();
                 try {
                     if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                        if (PreferenceHelper.getInstance().getUser() != null) {
+                        if (PreferenceHelper.getInstance().getIsLogIn()) {
                             LifeShare.getInstance().logout();
                         }
                     }
