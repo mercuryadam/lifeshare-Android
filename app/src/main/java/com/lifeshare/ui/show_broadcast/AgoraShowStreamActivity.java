@@ -179,7 +179,7 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
 
         if (currentVisibleStram != null) {
             onLiveSharingScreenClicked(true, currentVisibleStram.getChannelName());
-            messageFragment.setCurrentStream(currentVisibleStram.getUserId(), currentVisibleStram.getId(), currentVisibleStram.getsId(), false);
+            messageFragment.setCurrentStream(currentVisibleStram.getUserId(), currentVisibleStram.getOpentokId(), currentVisibleStram.getToken(), false);
             tvToolbarTitle.setText(currentVisibleStram.getChannelName());
 
             Glide.with(LifeShare.getInstance())
@@ -394,7 +394,6 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
                             @Override
                             public void run() {
                                 Log.d(LOG_TAG, "onWarn " + warn);
-                                showToast(getString(R.string.err_while_joining));
                             }
                         });
                     }
@@ -405,7 +404,6 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
                             @Override
                             public void run() {
                                 Log.d(LOG_TAG, "onError " + err);
-                                showToast(getString(R.string.err_while_joining));
                             }
                         });
 

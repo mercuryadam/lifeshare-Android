@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class StreamUserListResponse implements Parcelable {
     private String id;
+    private String opentokId;
     private String token;
     private String sId;
     private String userId;
@@ -28,6 +29,7 @@ public class StreamUserListResponse implements Parcelable {
 
     protected StreamUserListResponse(Parcel in) {
         id = in.readString();
+        opentokId = in.readString();
         token = in.readString();
         sId = in.readString();
         userId = in.readString();
@@ -47,6 +49,7 @@ public class StreamUserListResponse implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
+        dest.writeString(opentokId);
         dest.writeString(token);
         dest.writeString(sId);
         dest.writeString(userId);
@@ -80,6 +83,14 @@ public class StreamUserListResponse implements Parcelable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getOpentokId() {
+        return opentokId;
+    }
+
+    public void setOpentokId(String opentokId) {
+        this.opentokId = opentokId;
     }
 
     public String getToken() {
@@ -138,3 +149,17 @@ public class StreamUserListResponse implements Parcelable {
         this.lastName = lastName;
     }
 }
+
+//result = {StreamUserListResponse@17274}
+// avatar = "http://3.136.176.13/public/qa/public/uploads/users/4749181646acbea87962762b78f2d4da."
+// channelName = "sydney_61_devd2"
+// firstName = "Divyesh"
+// id = null
+// lastName = "D"
+// roomName = null
+// sId = null
+// token = "2032311023"
+// userId = "128"
+// userName = "devd2"
+// shadow$_klass_ = {Class@12204} "class com.lifeshare.network.response.StreamUserListResponse"
+// shadow$_monitor_ = 0
