@@ -377,9 +377,8 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
 
                             @Override
                             public void run() {
-                                Random random = new Random();
                                 isBroadcasting = true;
-                                agoraCreate(channel, PreferenceHelper.getInstance().getUser().getUsername() + "_" + String.format(Locale.getDefault(), "%04d", random.nextInt(100000)), isSaveBroadcast, selectedUsers, String.valueOf(uid).replace("-", ""));
+                                agoraCreate(channel, isSaveBroadcast, selectedUsers, String.valueOf(uid).replace("-", ""));
                             }
                         });
                     }
@@ -1311,14 +1310,14 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
         });
     }
 
-    private void agoraCreate(String channelName, String roomName, boolean isSaveBroadcast, String users, String randomNumber) {
+    private void agoraCreate(String channelName, boolean isSaveBroadcast, String users, String randomNumber) {
 
         if (!checkInternetConnection()) {
             return;
         }
         AgoraCreateRequest request = new AgoraCreateRequest();
         request.setChannelName(channelName);
-        request.setRoomName(roomName);
+        request.setRoomName(channelName);
         request.setSessionId(randomNumber);
         request.setToken(randomNumber);
         request.setRoomSId(randomNumber);
@@ -1377,8 +1376,9 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
         if (join) {
             initModules();
             mScreenCapture.start();
+            Random random = new Random();
             mRtcEngine.joinChannel(null,
-                    Pattern.compile("[^a-zA-Z0-9_]+").matcher(PreferenceHelper.getInstance().getUser().getChannelName().replace(" ", "")).replaceAll(""),
+                    PreferenceHelper.getInstance().getUser().getUsername() + "_" + String.format(Locale.getDefault(), "%04d", random.nextInt(100000)),
                     "", 0);
         } else {
             if (opnTokID != null) {
