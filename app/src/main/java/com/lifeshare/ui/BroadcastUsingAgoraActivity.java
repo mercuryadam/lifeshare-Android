@@ -93,6 +93,8 @@ import com.lifeshare.utils.ScreenCapturerManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -375,9 +377,9 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
 
                             @Override
                             public void run() {
+                                Random random = new Random();
                                 isBroadcasting = true;
-
-                                agoraCreate(channel, isSaveBroadcast, selectedUsers, String.valueOf(uid).replace("-", ""));
+                                agoraCreate(channel, PreferenceHelper.getInstance().getUser().getUsername() + "_" + String.format(Locale.getDefault(), "%04d", random.nextInt(100000)), isSaveBroadcast, selectedUsers, String.valueOf(uid).replace("-", ""));
                             }
                         });
                     }
@@ -597,7 +599,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
     private void removePublisherFromFirebase() {
         removeValueEventListener();
         rlViewers.setVisibility(View.GONE);
-        if(PreferenceHelper.getInstance().getUser() != null){
+        if (PreferenceHelper.getInstance().getUser() != null) {
             DatabaseReference databaseReference = LifeShare.getFirebaseReference().child(Const.TABLE_PUBLISHER).child(PreferenceHelper.getInstance().getUser().getUserId());
             databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -1309,14 +1311,14 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
         });
     }
 
-    private void agoraCreate(String channelName, boolean isSaveBroadcast, String users, String randomNumber) {
+    private void agoraCreate(String channelName, String roomName, boolean isSaveBroadcast, String users, String randomNumber) {
 
         if (!checkInternetConnection()) {
             return;
         }
         AgoraCreateRequest request = new AgoraCreateRequest();
         request.setChannelName(channelName);
-        request.setRoomName(channelName);
+        request.setRoomName(roomName);
         request.setSessionId(randomNumber);
         request.setToken(randomNumber);
         request.setRoomSId(randomNumber);
