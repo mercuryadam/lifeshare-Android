@@ -95,7 +95,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.agora.rtc.Constants;
@@ -192,6 +191,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
     };
     private String[] permissions_audio = new String[]{Manifest.permission.RECORD_AUDIO};
     private Boolean isBroadcasting = false;
+    private Boolean showErrorDialog = false;
     private TwilioStreamUserListAdapter adapter;
     private FrameLayout container;
     private FloatingActionButton fabMessage;
@@ -377,6 +377,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
 
                             @Override
                             public void run() {
+                                showErrorDialog = true;
                                 isBroadcasting = true;
                                 agoraCreate(channel, isSaveBroadcast, selectedUsers, String.valueOf(uid).replace("-", ""));
                             }
@@ -389,16 +390,32 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
 
                         Log.d(LOG_TAG, "onWarning " + warn);
 
-                        showToast(getString(R.string.err_while_joining));
                         runOnUiThread(new Runnable() {
-
                             @Override
                             public void run() {
                                 hideLoading();
-                                container.setVisibility(View.GONE);
-                                fabMessage.hide();
-                                removePublisherFromFirebase();
+                                String errMessage = "";
 
+                                if (showErrorDialog)
+                                    if (warn == 1025 || warn == 1019 || warn == 1033 || warn == 1324 || warn == 1031) {
+                                        if (warn == 1025) {
+                                            errMessage = getResources().getString(R.string.recording_is_interrupted);
+                                        } else if (warn == 1019) {
+                                            errMessage = getResources().getString(R.string.mic_not_avail);
+                                        } else if (warn == 1033) {
+                                            errMessage = getResources().getString(R.string.recording_device_in_use);
+                                        } else if (warn == 1324) {
+                                            errMessage = getResources().getString(R.string.recording_is_released_improperly);
+                                        } else if (warn == 1031) {
+                                            errMessage = getResources().getString(R.string.recording_is_released_improperly);
+                                        }
+                                        showErrorDialog = false;
+                                        otherDialog(BroadcastUsingAgoraActivity.this, errMessage, getResources().getString(R.string.okay), "", new DismissListenerWithStatus() {
+                                            @Override
+                                            public void onDismissed(String message) {
+                                            }
+                                        });
+                                    }
                             }
                         });
 
@@ -407,11 +424,12 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
                     @Override
                     public void onError(int err) {
                         Log.d(LOG_TAG, "onError " + err);
-                        showToast(getString(R.string.err_while_joining));
+
                         runOnUiThread(new Runnable() {
 
                             @Override
                             public void run() {
+                                showToast(getString(R.string.err_while_joining));
                                 hideLoading();
                                 container.setVisibility(View.GONE);
                                 fabMessage.hide();

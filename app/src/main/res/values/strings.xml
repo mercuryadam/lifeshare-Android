@@ -177,6 +177,12 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="login_with">Login With:</string>
     <string name="submit">Submit</string>
     <string name="err_while_joining">Error while joining</string>
+    <string name="okay">OK</string>
+    <string name="mic_not_avail">Issue with microphone! Check whether it is already in use. Restart the device.</string>
+    <string name="recording_device_in_use">The recording device is already in use.</string>
+    <string name="recording_is_released_improperly">The recording device is released improperly. Restart the device.</string>
+    <string name="recording_is_interrupted">The recording is interrupted by system events (such as a phone call).</string>
+    <string name="recording_volume_too_low">The recording volume is too low. Check whether the user\'s microphone is muted or whether the user has enabled microphone augmentation.</string>
 
 
 </resources>
