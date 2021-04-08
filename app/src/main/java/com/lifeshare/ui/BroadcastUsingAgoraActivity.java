@@ -1396,7 +1396,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
             mScreenCapture.start();
             Random random = new Random();
             mRtcEngine.joinChannel(null,
-                    PreferenceHelper.getInstance().getUser().getUsername() + "_" + String.format(Locale.getDefault(), "%04d", random.nextInt(100000)),
+                    PreferenceHelper.getInstance().getUser().getUsername() + "_" + String.format(Locale.getDefault(), "%05d", random.nextInt(100000)),
                     "", 0);
         } else {
             if (opnTokID != null) {
