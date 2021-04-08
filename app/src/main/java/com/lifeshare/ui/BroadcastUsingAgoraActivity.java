@@ -163,6 +163,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
             ArrayList<ViewerUser> viewerUsersList = new ArrayList<>();
             Log.v(TAG, "onDataChange: ");
             for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
                 ViewerUser response = postSnapshot.getValue(ViewerUser.class);
                 if (response.getUserId() != null && !response.getUserId().equalsIgnoreCase(PreferenceHelper.getInstance().getUser().getUserId())) {
 //                    Log.v(TAG, "onDataChange: " + ((TrueTime.now().getTime()) - Long.parseLong(response.getLastViewTime())));
