@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/size_8dp"
-    android:background="@color/light_primary_color_new"
+    android:background="@color/white"
     android:orientation="vertical"
     android:paddingTop="@dimen/size_12dp">
 
@@ -68,19 +68,29 @@
 
         <CheckBox
             android:id="@+id/cb_select"
-            android:layout_width="@dimen/size_50dp"
-            android:layout_height="@dimen/size_50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_checkbox"
             android:layout_alignParentRight="true"
+            android:button="@null"
+            android:text="@string/add"
+            android:textColor="@drawable/selectable_color"
+            android:layout_marginTop="@dimen/size_24dp"
+            android:textSize="@dimen/size_16sp"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/size_12dp"
+            android:paddingHorizontal="@dimen/size_20dp"
             android:layout_centerInParent="true"
-            android:padding="@dimen/size_8dp" />
+            android:paddingVertical="@dimen/size_4dp"/>
+
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_4dp"
+        android:layout_height="@dimen/size_1dp"
         android:layout_gravity="bottom"
         android:layout_marginLeft="@dimen/size_12dp"
         android:layout_marginTop="@dimen/size_8dp"
         android:layout_marginRight="@dimen/size_12dp"
-        android:background="@color/color_turtle_green" />
+        android:background="@color/pinkish_grey" />
 </LinearLayout>

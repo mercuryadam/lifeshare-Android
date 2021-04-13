@@ -4,27 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".ui.save_broadcast.ShowPreviousBroadcastAndChatActivity">
 
     <LinearLayout
         android:id="@+id/ll_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:orientation="horizontal"
-        android:visibility="gone"
-        android:padding="@dimen/size_12dp">
+        android:visibility="visible"
+        android:layout_marginHorizontal="@dimen/size_20dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ic_back"
-            android:layout_width="@dimen/size_40dp"
-            android:layout_height="@dimen/size_40dp"
-            android:padding="@dimen/size_6dp"
-            android:tint="@color/colorPrimary"
-            android:src="@drawable/ic_back" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_back_icon" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvToolbarTitle"
-            style="@style/TextRegular.Black.size16"
+            style="@style/TextMedium.Black.size18"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -36,8 +36,10 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_share_video"
-            android:layout_width="@dimen/size_40dp"
-            android:layout_height="@dimen/size_40dp"
+            android:layout_width="@dimen/size_30dp"
+            android:layout_height="@dimen/size_30dp"
+            android:tint="@color/primary_green"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/ic_share" />
     </LinearLayout>
 

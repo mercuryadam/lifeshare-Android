@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_10dp"
             android:layout_weight="1"
-            android:background="@drawable/message_background_other"
             android:orientation="vertical"
             android:paddingLeft="@dimen/size_12dp"
             android:paddingTop="@dimen/size_4dp"
@@ -34,7 +33,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_username_other"
-                style="@style/TextMedium.White.size14"
+                style="@style/TextMedium.Black.size14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/size_6dp"
@@ -44,7 +43,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_message_other"
-                style="@style/TextRegular.White.size12"
+                style="@style/TextRegular.Black.size12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/size_6dp"
@@ -70,7 +69,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_10dp"
             android:layout_weight="1"
-            android:background="@drawable/message_background_self"
             android:orientation="vertical"
             android:paddingTop="@dimen/size_4dp"
             android:paddingRight="@dimen/size_12dp"
@@ -78,7 +76,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_username_self"
-                style="@style/TextMedium.White.size14"
+                style="@style/TextMedium.Black.size14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -89,7 +87,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_message_self"
-                style="@style/TextRegular.White.size12"
+                style="@style/TextRegular.Black.size12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/size_20dp"

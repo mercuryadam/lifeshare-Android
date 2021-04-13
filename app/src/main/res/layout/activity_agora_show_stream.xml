@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_primary_color_new"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
     tools:context=".ui.show_broadcast.AgoraShowStreamActivity">
 
@@ -16,14 +16,15 @@
 
         <ImageView
             android:id="@+id/ic_back"
-            android:layout_width="@dimen/size_40dp"
-            android:layout_height="@dimen/size_40dp"
-            android:padding="@dimen/size_6dp"
-            android:src="@drawable/ic_back" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/size_6dp"
+            android:src="@drawable/ic_back_icon" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvToolbarTitle"
-            style="@style/TextRegular.Black.size16"
+            style="@style/TextMedium.Black.size18"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -40,21 +41,11 @@
             android:src="@drawable/user_placeholder" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:layout_below="@+id/ll_toolbar"
-        android:layout_marginLeft="@dimen/size_20dp"
-        android:layout_marginTop="@dimen/size_4dp"
-        android:layout_marginRight="@dimen/size_20dp"
-        android:background="@color/gray" />
-
     <com.lifeshare.customview.recyclerview.FilterRecyclerView
         android:id="@+id/rv_viewer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/line" />
+        android:layout_below="@+id/ll_toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"

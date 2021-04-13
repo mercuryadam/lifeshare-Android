@@ -1,6 +1,5 @@
 package com.lifeshare.ui.profile;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +18,7 @@ import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.lifeshare.R;
+import com.lifeshare.customview.CustomProgressDialog;
 import com.lifeshare.imagepicker.ImagePickerFragment;
 import com.lifeshare.model.ChannelArchive;
 import com.lifeshare.network.RemoteCallback;
@@ -34,9 +34,15 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
     private AppCompatTextView tvLink;
     private Button btnAddChannelArchive;
     private String imagePath;
+    private CustomProgressDialog mProgressDialog;
+    private MyDialogCloseListener listener;
 
-    static AddChannelArchiveDialogFragment newInstance() {
-        AddChannelArchiveDialogFragment f = new AddChannelArchiveDialogFragment();
+    AddChannelArchiveDialogFragment(MyDialogCloseListener listener) {
+        this.listener = listener;
+    }
+
+    public static AddChannelArchiveDialogFragment newInstance(MyDialogCloseListener listener) {
+        AddChannelArchiveDialogFragment f = new AddChannelArchiveDialogFragment(listener);
 
         // Supply num input as an argument.
        /* Bundle args = new Bundle();
@@ -134,13 +140,13 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
     private void createChannelArchive(String title, String link, String path) {
         btnAddChannelArchive.setEnabled(false);
         ChannelArchive channelArchive = new ChannelArchive(title, link, path);
-        ((ViewProfileActivity) getActivity()).showLoading();
+        showLoading();
 
         WebAPIManager.getInstance().createChannelArchive(channelArchive, new RemoteCallback<CommonResponse>() {
             @Override
             public void onSuccess(CommonResponse response) {
                 Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
-                ((ViewProfileActivity) getActivity()).hideLoading();
+                hideLoading();
                 btnAddChannelArchive.setEnabled(true);
                 dismissAllowingStateLoss();
             }
@@ -148,7 +154,7 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
             @Override
             public void onEmptyResponse(String message) {
                 btnAddChannelArchive.setEnabled(true);
-                ((ViewProfileActivity) getActivity()).hideLoading();
+                hideLoading();
                 Toast.makeText(getActivity(), getString(R.string.failed_to_create), Toast.LENGTH_SHORT).show();
                 dismissAllowingStateLoss();
             }
@@ -166,8 +172,28 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        Activity activity = getActivity();
-        if(activity instanceof MyDialogCloseListener)
-            ((MyDialogCloseListener)activity).handleDialogClose(dialog);
+        listener.handleDialogClose(dialog);
     }
+
+    public void showLoading() {
+        try {
+            hideLoading();
+            mProgressDialog = new CustomProgressDialog(requireContext(), R.style.progress_dialog_text_style);
+            mProgressDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public void hideLoading() {
+        try {
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
 }

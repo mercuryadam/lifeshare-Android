@@ -7,9 +7,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -33,6 +33,9 @@ public class MyInvitationListActivity extends BaseActivity implements BaseRecycl
     private FilterRecyclerView recyclerView;
     private AppCompatTextView tvNoData;
     private MyInvitationListAdapter adapter;
+    private RelativeLayout appBar;
+    private AppCompatTextView tvToolbarTitle;
+
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -49,13 +52,10 @@ public class MyInvitationListActivity extends BaseActivity implements BaseRecycl
     }
 
     private void initView() {
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.invitations);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        appBar = (RelativeLayout) findViewById(R.id.appbar_new);
+        tvToolbarTitle = (AppCompatTextView) appBar.findViewById(R.id.tvToolbarTitle);
+        tvToolbarTitle.setVisibility(View.VISIBLE);
+        tvToolbarTitle.setText(R.string.pending_requests);
 
         recyclerView = (FilterRecyclerView) findViewById(R.id.recyclerView);
         tvNoData = (AppCompatTextView) findViewById(R.id.tv_no_data);

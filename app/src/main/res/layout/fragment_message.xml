@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_primary_color_new"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.show_broadcast.MessageFragment">
 
@@ -23,6 +23,7 @@
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:alpha="0.3"
+        android:visibility="gone"
         android:src="@drawable/app_logo" />
 
     <com.lifeshare.customview.recyclerview.FilterRecyclerView
@@ -61,41 +62,52 @@
             android:layout_marginBottom="@dimen/size_16dp"
             android:layout_weight="1"
             android:elevation="@dimen/size_12dp"
-            app:cardCornerRadius="@dimen/size_30dp">
+            android:backgroundTint="@color/blue_gray"
+            app:cardCornerRadius="@dimen/size_24dp">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/et_message"
-                style="@style/edittext_message_style"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_30dp"
-                android:layout_marginTop="@dimen/size_4dp"
-                android:layout_marginRight="@dimen/size_30dp"
-                android:layout_marginBottom="@dimen/size_4dp"
-                android:gravity="left|top"
-                android:hint="Type your comment"
-                android:inputType="textMultiLine"
-                android:maxLines="4"
-                android:padding="@dimen/size_12dp" />
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_message"
+                    style="@style/edittext_message_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/size_30dp"
+                    android:layout_marginTop="@dimen/size_4dp"
+                    android:layout_marginRight="@dimen/size_30dp"
+                    android:layout_marginBottom="@dimen/size_4dp"
+                    android:gravity="left|top"
+                    android:hint="@string/comment"
+                    android:inputType="textMultiLine"
+                    android:maxLines="4"
+                    android:background="@color/blue_gray"
+                    android:padding="@dimen/size_12dp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/primary_green"
+                    app:cardCornerRadius="@dimen/size_24dp">
+
+                    <ImageView
+                        android:id="@+id/iv_send_message"
+                        android:layout_width="@dimen/size_80dp"
+                        android:layout_height="@dimen/size_50dp"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/size_12dp"
+                        android:src="@drawable/message_icon" />
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="@dimen/size_12dp"
-            android:layout_marginBottom="@dimen/size_8dp"
-            app:cardCornerRadius="@dimen/size_30dp">
 
-            <ImageView
-                android:id="@+id/iv_send_message"
-                android:layout_width="@dimen/size_50dp"
-                android:layout_height="@dimen/size_50dp"
-                android:layout_gravity="center"
-                android:padding="@dimen/size_12dp"
-                android:src="@drawable/ic_mail" />
-
-        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 </RelativeLayout>

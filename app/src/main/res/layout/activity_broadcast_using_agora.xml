@@ -4,14 +4,14 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_primary_color_new"
+    android:background="@color/white"
     tools:context=".ui.BroadcastUsingAgoraActivity">
 
     <RelativeLayout
         android:id="@+id/rl_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_primary_color_new">
+        android:background="@color/white">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_toolbar_title"
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_toolbar"
-        android:background="@color/light_primary_color_new"
+        android:background="@color/white"
         android:visibility="gone">
 
         <LinearLayout
@@ -117,7 +117,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/ll_friends_broadcast"
         android:layout_below="@+id/line2"
-        android:background="@color/light_primary_color_new">
+        android:background="@color/white">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -227,7 +227,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/light_primary_color_new"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -33,6 +34,7 @@ public class SelectConnectionsActivity extends BaseActivity implements View.OnCl
     private FilterRecyclerView recyclerView;
     private AppCompatTextView tvNoData;
     private FloatingActionButton fabAdd;
+    private AppCompatImageView ivBack;
     private SelectConnectionListAdapter adapter;
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -85,6 +87,7 @@ public class SelectConnectionsActivity extends BaseActivity implements View.OnCl
         recyclerView = (FilterRecyclerView) findViewById(R.id.recyclerView);
         tvNoData = (AppCompatTextView) findViewById(R.id.tv_no_data);
         fabAdd = (FloatingActionButton) findViewById(R.id.fabAdd);
+        ivBack = (AppCompatImageView) findViewById(R.id.ivBack);
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -93,6 +96,7 @@ public class SelectConnectionsActivity extends BaseActivity implements View.OnCl
         recyclerView.setAdapter(adapter);
 
         fabAdd.setOnClickListener(this);
+        ivBack.setOnClickListener(this);
 
         tvSelectToggle = findViewById(R.id.tv_selectAll);
         tvSelectToggle.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +160,9 @@ public class SelectConnectionsActivity extends BaseActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ivBack:
+                onBackPressed();
+                break;
             case R.id.fabAdd:
 
                 if (adapter.getCheckedItems().size() == 0) {

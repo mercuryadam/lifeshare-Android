@@ -10,7 +10,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -31,7 +31,7 @@ import com.lifeshare.network.request.ContactInvitationViaMobileRequest;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
-import com.lifeshare.ui.BroadcastUsingAgoraActivity;
+import com.lifeshare.ui.DashboardActivity;
 import com.lifeshare.utils.Const;
 
 import java.util.ArrayList;
@@ -45,13 +45,15 @@ public class InviteViaMobileActivity extends BaseActivity implements View.OnClic
     private FilterRecyclerView recyclerView;
     private AppCompatTextView tvNoData;
     private InviteViaMobileListAdapter adapter;
-    private TextView tvSelectToggle;
+    private AppCompatTextView tvSelectToggle;
     private String[] permissions_audio = new String[]{Manifest.permission.READ_CONTACTS};
     private AppCompatButton btnInvite;
     private AppCompatButton btnSkip;
     private boolean isFromTermAndCondition = false;
     CountryResponse selectedCountry;
     ArrayList<CountryResponse> countryList = new ArrayList<CountryResponse>();
+    private AppCompatTextView tvToolbarTitle, tvBack;
+    private RelativeLayout rlToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,10 @@ public class InviteViaMobileActivity extends BaseActivity implements View.OnClic
         initView();
         if (getIntent() != null && getIntent().hasExtra(Const.IS_FROM) && getIntent().getStringExtra(Const.IS_FROM).equals(Const.TERM_AND_CONDITION_SCREEN)) {
             isFromTermAndCondition = true;
-            btnSkip.setVisibility(View.VISIBLE);
+            tvBack.setText(R.string.skip);
         } else {
             isFromTermAndCondition = false;
-            btnSkip.setVisibility(View.GONE);
+            tvBack.setText(R.string.cancel);
         }
         checkReadContactPermission();
         getCountryList();
@@ -75,6 +77,20 @@ public class InviteViaMobileActivity extends BaseActivity implements View.OnClic
     }
 
     private void initView() {
+
+
+        rlToolbar = (RelativeLayout) findViewById(R.id.appbar_new);
+        tvToolbarTitle = (AppCompatTextView) rlToolbar.findViewById(R.id.tvToolbarTitle);
+        tvBack = (AppCompatTextView) rlToolbar.findViewById(R.id.tvBack);
+        tvSelectToggle = (AppCompatTextView) rlToolbar.findViewById(R.id.tvDone);
+        tvToolbarTitle.setVisibility(View.VISIBLE);
+        tvBack.setVisibility(View.VISIBLE);
+        tvSelectToggle.setVisibility(View.VISIBLE);
+        tvToolbarTitle.setText(R.string.add_friends);
+        tvSelectToggle.setText(R.string.select_all);
+        tvBack.setOnClickListener(this);
+        tvSelectToggle.setOnClickListener(this);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -92,7 +108,6 @@ public class InviteViaMobileActivity extends BaseActivity implements View.OnClic
         recyclerView.setEmptyMsgHolder(tvNoData);
         recyclerView.setAdapter(adapter);
 
-        tvSelectToggle = findViewById(R.id.tv_selectAll);
         tvSelectToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,10 +121,8 @@ public class InviteViaMobileActivity extends BaseActivity implements View.OnClic
             }
         });
         btnInvite = (AppCompatButton) findViewById(R.id.btn_invite);
-        btnSkip = (AppCompatButton) findViewById(R.id.btn_skip);
 
         btnInvite.setOnClickListener(this);
-        btnSkip.setOnClickListener(this);
     }
 
     private boolean isExist(ArrayList<ContactListModel> arrayList, String email) {
@@ -130,9 +143,13 @@ public class InviteViaMobileActivity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_skip:
-                startActivity(new Intent(InviteViaMobileActivity.this, BroadcastUsingAgoraActivity.class));
-                finish();
+            case R.id.tvBack:
+                if (isFromTermAndCondition) {
+                    startActivity(new Intent(InviteViaMobileActivity.this, DashboardActivity.class));
+                    finish();
+                } else {
+                    onBackPressed();
+                }
                 break;
             case R.id.btn_invite:
 
@@ -181,7 +198,7 @@ public class InviteViaMobileActivity extends BaseActivity implements View.OnClic
                 hideLoading();
                 showToast(response.getMessage());
                 if (isFromTermAndCondition) {
-                    startActivity(new Intent(InviteViaMobileActivity.this, BroadcastUsingAgoraActivity.class));
+                    startActivity(new Intent(InviteViaMobileActivity.this, DashboardActivity.class));
                     finish();
                 } else {
                     finish();

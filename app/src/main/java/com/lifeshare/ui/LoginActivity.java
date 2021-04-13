@@ -11,7 +11,6 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -89,9 +88,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_login_new);
 
@@ -295,7 +291,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
                 if (PreferenceHelper.getInstance().getIsAcceptTermOfService()) {
-                    startActivity(new Intent(LoginActivity.this, BroadcastUsingAgoraActivity.class));
+                    startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                     finish();
                 } else {
                     startActivity(new Intent(LoginActivity.this, TermOfServicesActivity.class));
@@ -423,7 +419,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.has("user_id")) {
                         new RequestInstagramUserNameAPI(jsonObject.getString("user_id"), jsonObject.getString("access_token")).execute();
-                    }else {
+                    } else {
                         hideLoading();
                         Toast toast = Toast.makeText(getApplicationContext(), "Login error!", Toast.LENGTH_LONG);
                         toast.show();
@@ -593,7 +589,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
                 if (PreferenceHelper.getInstance().getIsAcceptTermOfService()) {
-                    startActivity(new Intent(LoginActivity.this, BroadcastUsingAgoraActivity.class));
+                    startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                     finish();
                 } else {
                     startActivity(new Intent(LoginActivity.this, TermOfServicesActivity.class));
@@ -691,8 +687,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         SignUp(etChannel.getText().toString().trim(), loginType, socialMediaID, email, fName, lName);
                     }
                 }
-
-
 
 
             }

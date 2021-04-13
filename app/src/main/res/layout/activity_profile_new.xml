@@ -3,20 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_primary_color_new"
+    android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ui.my_connection.MyConnectionListActivity">
+    tools:context=".ui.ProfileActivity">
 
-    <ImageView
-        android:layout_width="@dimen/size_250dp"
-        android:layout_height="@dimen/size_250dp"
-        android:layout_centerInParent="true"
-        android:alpha="0.3"
-        android:src="@drawable/app_logo" />
+    <include layout="@layout/app_toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appbar_new">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,28 +22,22 @@
             android:orientation="vertical"
             android:padding="@dimen/size_20dp">
 
-            <FrameLayout
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
                 android:layout_width="@dimen/size_100dp"
                 android:layout_height="@dimen/size_100dp"
-                android:layout_gravity="center">
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/user_placeholder" />
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_profile"
-                    android:layout_width="@dimen/size_100dp"
-                    android:layout_height="@dimen/size_100dp"
-                    android:alpha="0.5"
-                    android:src="@drawable/user_placeholder" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextRegular.Black.size14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/size_8dp"
-                    android:gravity="center"
-                    android:text="@string/change_profile_n_picture"
-                    android:textStyle="bold" />
-            </FrameLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_8dp"
+                android:gravity="center"
+                android:text="@string/change_profile_n_picture"
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
@@ -57,6 +47,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/size_16dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="Static Name"
                 android:textStyle="bold" />
 
@@ -67,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/size_8dp"
+                android:visibility="gone"
                 android:gravity="center"
                 android:text="Static Channel Name" />
 
@@ -76,9 +68,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_20sp"
                 android:layout_marginBottom="@dimen/size_8dp"
+                android:layout_marginStart="@dimen/size_8dp"
                 android:ellipsize="end"
-                android:paddingLeft="@dimen/size_16dp"
-                android:paddingRight="@dimen/size_12dp"
                 android:singleLine="true"
                 android:text="@string/first_name"
                 android:textStyle="bold" />
@@ -88,10 +79,6 @@
                 style="@style/edittext_style_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_8dp"
-                android:layout_marginRight="@dimen/size_8dp"
-                android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="@dimen/size_16dp"
                 android:gravity="center|left"
                 android:hint="@string/enter_your_name"
                 android:inputType="text"
@@ -104,8 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_12dp"
                 android:ellipsize="end"
-                android:paddingLeft="@dimen/size_16dp"
-                android:paddingRight="@dimen/size_12dp"
+                android:layout_marginStart="@dimen/size_8dp"
                 android:singleLine="true"
                 android:text="@string/last_name"
                 android:textStyle="bold" />
@@ -115,11 +101,7 @@
                 style="@style/edittext_style_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_8dp"
-                android:layout_marginRight="@dimen/size_8dp"
-                android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="@dimen/size_16dp"
                 android:gravity="center|left"
                 android:hint="@string/enter_your_last_name"
                 android:inputType="text"
@@ -132,8 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_12dp"
                 android:ellipsize="end"
-                android:paddingLeft="@dimen/size_16dp"
-                android:paddingRight="@dimen/size_12dp"
+                android:layout_marginStart="@dimen/size_8dp"
                 android:singleLine="true"
                 android:text="@string/channel_name"
                 android:textStyle="bold" />
@@ -143,11 +124,7 @@
                 style="@style/edittext_style_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_8dp"
-                android:layout_marginRight="@dimen/size_8dp"
-                android:drawableStart="@drawable/ic_channal"
-                android:drawablePadding="@dimen/size_16dp"
                 android:gravity="center|left"
                 android:hint="@string/enter_user_name"
                 android:inputType="text"
@@ -160,8 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_12dp"
                 android:ellipsize="end"
-                android:paddingLeft="@dimen/size_16dp"
-                android:paddingRight="@dimen/size_12dp"
+                android:layout_marginStart="@dimen/size_8dp"
                 android:singleLine="true"
                 android:text="@string/email"
                 android:textStyle="bold" />
@@ -171,11 +147,7 @@
                 style="@style/edittext_style_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_8dp"
-                android:layout_marginRight="@dimen/size_8dp"
-                android:drawableStart="@drawable/ic_email"
-                android:drawablePadding="@dimen/size_16dp"
                 android:gravity="center|left"
                 android:hint="@string/enter_your_email"
                 android:inputType="textEmailAddress"
@@ -186,7 +158,7 @@
                 style="@style/TextRegular.Black.size14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_12dp"
+                android:layout_marginStart="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_20dp"
                 android:text="@string/Phone_number"
                 android:textStyle="bold" />
@@ -196,11 +168,7 @@
                 style="@style/edittext_style_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_8dp"
-                android:layout_marginRight="@dimen/size_8dp"
-                android:drawableStart="@drawable/ic_call"
-                android:drawablePadding="@dimen/size_16dp"
                 android:gravity="center|left"
                 android:hint="@string/phone_number"
                 android:inputType="number"
@@ -212,7 +180,7 @@
                 style="@style/TextRegular.Black.size14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_12dp"
+                android:layout_marginStart="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_20dp"
                 android:text="@string/address"
                 android:textStyle="bold" />
@@ -222,11 +190,8 @@
                 style="@style/edittext_style_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_8dp"
-                android:layout_marginRight="@dimen/size_8dp"
                 android:cursorVisible="false"
-                android:drawableStart="@drawable/ic_address"
                 android:drawableEnd="@drawable/ic_arrow_drop_down"
                 android:drawablePadding="@dimen/size_16dp"
                 android:enabled="true"
@@ -241,11 +206,8 @@
                 style="@style/edittext_style_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_8dp"
-                android:layout_marginRight="@dimen/size_8dp"
                 android:cursorVisible="false"
-                android:drawableStart="@drawable/ic_address"
                 android:drawableEnd="@drawable/ic_arrow_drop_down"
                 android:drawablePadding="@dimen/size_16dp"
                 android:enabled="true"
@@ -260,11 +222,8 @@
                 style="@style/edittext_style_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_8dp"
-                android:layout_marginRight="@dimen/size_8dp"
                 android:cursorVisible="false"
-                android:drawableStart="@drawable/ic_address"
                 android:drawableEnd="@drawable/ic_arrow_drop_down"
                 android:drawablePadding="@dimen/size_16dp"
                 android:enabled="true"
@@ -281,8 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_12dp"
                 android:ellipsize="end"
-                android:paddingLeft="@dimen/size_16dp"
-                android:paddingRight="@dimen/size_12dp"
+                android:layout_marginStart="@dimen/size_8dp"
                 android:singleLine="true"
                 android:text="@string/short_discription"
                 android:textStyle="bold" />
@@ -292,12 +250,9 @@
                 style="@style/edittext_style_new"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_8dp"
-                android:layout_marginRight="@dimen/size_8dp"
                 android:layout_marginBottom="@dimen/size_8dp"
-                android:drawableStart="@drawable/ic_password"
-                android:drawablePadding="@dimen/size_16dp"
+                android:gravity="start"
                 android:hint="@string/enter_short_description_of_channel"
                 android:inputType="textMultiLine"
                 android:maxLines="8"
@@ -310,9 +265,7 @@
                 style="@style/button_style_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_8dp"
                 android:layout_marginTop="@dimen/size_40dp"
-                android:layout_marginRight="@dimen/size_8dp"
                 android:layout_marginBottom="@dimen/size_8dp"
                 android:singleLine="true"
                 android:text="@string/change_password"
@@ -329,6 +282,7 @@
                 android:layout_marginBottom="@dimen/size_8dp"
                 android:singleLine="true"
                 android:text="@string/cancel"
+                android:visibility="gone"
                 android:textAllCaps="false" />
 
 
@@ -343,6 +297,7 @@
                 android:layout_marginBottom="@dimen/size_8dp"
                 android:singleLine="true"
                 android:text="@string/save"
+                android:visibility="gone"
                 android:textAllCaps="false" />
 
 

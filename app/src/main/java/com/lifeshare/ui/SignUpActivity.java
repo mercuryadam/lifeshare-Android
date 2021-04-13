@@ -10,11 +10,11 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -36,6 +36,8 @@ import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SignUpActivity extends BaseActivity implements View.OnClickListener, ImagePickerFragment.ImagePickerListener {
 
@@ -61,7 +63,9 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     private AppCompatEditText etPhoneNumber;
     private AppCompatEditText etState;
     private AppCompatEditText etCity;
-    private ImageView ivProfile;
+    private AppCompatTextView tvBack;
+    private RelativeLayout appBar;
+    private CircleImageView ivProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +111,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 stateList.addAll(response);
             }
 
+
             @Override
             public void onEmptyResponse(String message) {
                 hideLoading();
@@ -126,6 +131,9 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initView() {
+        appBar = (RelativeLayout) findViewById(R.id.appbar_new);
+        tvBack = (AppCompatTextView) appBar.findViewById(R.id.tvBack);
+        tvBack.setVisibility(View.VISIBLE);
         etFirstName = (AppCompatEditText) findViewById(R.id.et_first_name);
         etLastName = (AppCompatEditText) findViewById(R.id.et_last_name);
         etUsername = (AppCompatEditText) findViewById(R.id.et_username);
@@ -134,6 +142,15 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         etConfirmPassword = (AppCompatEditText) findViewById(R.id.et_confirm_password);
         btnSignUp = (AppCompatButton) findViewById(R.id.btn_sign_up);
 
+     /*   Spannable spannable = new SpannableString(getString(R.string.tnc));
+        spannable.setSpan(
+                new ForegroundColorSpan(getResources().getColor(R.color.primary_green)), getString(R.string.tnc).indexOf("Privacy Policy"), getString(R.string.tnc).indexOf("Privacy Policy") + "Privacy Policy".length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannable.setSpan(
+                new ForegroundColorSpan(getResources().getColor(R.color.primary_green)), getString(R.string.tnc).indexOf("Terms of Service"), getString(R.string.tnc).indexOf("Terms of Service") + "Terms of Service".length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
+
+        tvBack.setOnClickListener(this);
         btnSignUp.setOnClickListener(this);
         ivProfile = findViewById(R.id.iv_profile);
         ivProfile.setOnClickListener(this);
@@ -296,6 +313,9 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             case R.id.et_city:
                 hideKeyboard(SignUpActivity.this);
                 openCityBottomSheet();
+                break;
+            case R.id.tvBack:
+                onBackPressed();
                 break;
             case R.id.iv_profile:
                 ImagePickerFragment

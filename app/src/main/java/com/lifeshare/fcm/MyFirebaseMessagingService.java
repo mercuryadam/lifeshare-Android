@@ -3,7 +3,6 @@ package com.lifeshare.fcm;
 
 import android.app.TaskStackBuilder;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -14,8 +13,7 @@ import com.google.gson.Gson;
 import com.lifeshare.LifeShare;
 import com.lifeshare.R;
 import com.lifeshare.network.response.StreamUserListResponse;
-import com.lifeshare.ui.BroadcastUsingAgoraActivity;
-import com.lifeshare.ui.invitation.MyInvitationListActivity;
+import com.lifeshare.ui.DashboardActivity;
 import com.lifeshare.ui.show_broadcast.AgoraShowStreamActivity;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
@@ -84,17 +82,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                     break;
                 case Const.NEW_INVITATION:
-                    Intent mainIntent = new Intent(this, BroadcastUsingAgoraActivity.class);
-                    mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-                    stackBuilder.addParentStack(BroadcastUsingAgoraActivity
-                            .class);
-                    stackBuilder.addNextIntent(mainIntent);
-                    intent = new Intent(getApplicationContext(), MyInvitationListActivity.class);
-                    stackBuilder.addNextIntent(intent);
-
-
-                    NotificationUtil util = new NotificationUtil(getApplicationContext(), Const.NEW_INVITATION, getString(R.string.app_name), message, stackBuilder, new Random().nextInt());
+                    intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(Const.FROM_NOTIFICATION, true);
+                    NotificationUtil util = new NotificationUtil(getApplicationContext(), Const.NEW_INVITATION, getString(R.string.app_name), message, intent, new Random().nextInt());
 
                     util.show();
 
@@ -113,10 +104,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             StreamUserListResponse streamObject = new Gson().fromJson(opentokDetail, StreamUserListResponse.class);
 
-            Intent mainIntent = new Intent(this, BroadcastUsingAgoraActivity.class);
+            Intent mainIntent = new Intent(this, DashboardActivity.class);
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-            stackBuilder.addParentStack(BroadcastUsingAgoraActivity.class);
+            stackBuilder.addParentStack(DashboardActivity.class);
             stackBuilder.addNextIntent(mainIntent);
             Intent intent = new Intent(getApplicationContext(), AgoraShowStreamActivity.class);
 

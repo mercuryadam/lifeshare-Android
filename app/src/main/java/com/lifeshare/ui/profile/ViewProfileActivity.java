@@ -7,12 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -63,15 +64,15 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     List<SkuDetails> skuDetails = new ArrayList<>();
     BillingClient billingClient;
     private LinearLayout llMain;
-    private CircleImageView ivProfile;
-    private AppCompatTextView tvName;
-    private AppCompatTextView tvChannelNameOne;
+    private RelativeLayout appBar;
+    private CircleImageView ivAdd, ivProfile;
     private AppCompatTextView tvChannelName;
     private AppCompatTextView tvEmail;
     private AppCompatTextView tvShortDescription;
-    private AppCompatButton btnEdit;
+    private AppCompatImageView ivBack;
+    private AppCompatTextView btnEdit, tvToolbarTitle;
     private AppCompatTextView tvNameOne;
-    private AppCompatTextView tvCityName;
+    private AppCompatTextView tvCityName, tvAddress;
     private AppCompatTextView tvStateName;
     private AppCompatTextView tvCountryName;
     private AppCompatTextView tvPhoneNumber;
@@ -80,7 +81,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private FilterRecyclerView rvChannelArchive;
     private ChannelArchiveAdapter channelArchiveAdapter;
     private ArrayList<ChannelArchiveResponse> channelArchiveList = new ArrayList<>();
-    private ImageView addArchivesFromDialog;
     private String userId = "";
     private AppCompatTextView tvTotalViewer;
     private boolean isSubscriptionActive = false;
@@ -160,6 +160,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         if (getIntent() != null && getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
             if (bundle.getString(Const.PROFILE).equalsIgnoreCase(Const.MY_PROFILE)) {
+                ivBack.setVisibility(View.GONE);
                 btnEdit.setVisibility(View.VISIBLE);
                 llEmailPhoneCity.setVisibility(View.VISIBLE);
                 llCATitle.setVisibility(View.VISIBLE);
@@ -170,9 +171,10 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
             } else {
 
+                ivBack.setVisibility(View.VISIBLE);
                 btnEdit.setVisibility(View.GONE);
                 llEmailPhoneCity.setVisibility(View.GONE);
-                addArchivesFromDialog.setVisibility(View.GONE);
+                ivAdd.setVisibility(View.GONE);
                 MyConnectionListResponse data = (MyConnectionListResponse) bundle.getParcelable(Const.USER_DATA);
                 btnSubscribe.setVisibility(View.GONE);
                 userId = data.getUserId();
@@ -190,6 +192,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void getOtherProfileData() {
+        showLoading();
         UserProfileRequest request = new UserProfileRequest();
         request.setUserId(userId);
         WebAPIManager.getInstance().getUserProfile(request, new RemoteCallback<LoginResponse>() {
@@ -197,6 +200,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             public void onSuccess(LoginResponse response) {
                 setOtherUserData(response);
                 getListChannelArchive();
+                hideLoading();
             }
         });
 
@@ -204,10 +208,9 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void setOtherUserData(LoginResponse user) {
         userId = user.getUserId();
-        tvName.setText(user.getFirstName() + " " + user.getLastName());
         tvNameOne.setText(user.getFirstName() + " " + user.getLastName());
         tvChannelName.setText(user.getUsername());
-        tvChannelNameOne.setText(user.getUsername());
+        tvToolbarTitle.setText("@" + user.getUsername());
         tvTotalViewer.setText(user.getViewerCount());
         tvEmail.setText(user.getEmail());
         tvShortDescription.setText(user.getDescription());
@@ -220,6 +223,14 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         if (user.getCity() != null && user.getCity().getName() != null) {
             tvCityName.setText(user.getCity().getName());
         }
+        if (user.getCountry() != null && user.getCountry().getName() != null) {
+            if (user.getState() != null && user.getState().getName() != null) {
+                if (user.getCity() != null && user.getCity().getName() != null) {
+                    tvAddress.setText(user.getCity().getName() + ", " + user.getState().getName() + ", " + user.getCountry().getName());
+                }
+            }
+        }
+
         if (user.getMobile() != null) {
             tvPhoneNumber.setText(user.getMobile());
         }
@@ -235,10 +246,9 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private void setData() {
         LoginResponse user = PreferenceHelper.getInstance().getUser();
         userId = PreferenceHelper.getInstance().getUser().getUserId();
-        tvName.setText(user.getFirstName() + " " + user.getLastName());
         tvNameOne.setText(user.getFirstName() + " " + user.getLastName());
         tvChannelName.setText(user.getUsername());
-        tvChannelNameOne.setText(user.getUsername());
+        tvToolbarTitle.setText("@" + user.getUsername());
         tvEmail.setText(user.getEmail());
         tvShortDescription.setText(user.getDescription());
         if (user.getCountry() != null && user.getCountry().getName() != null) {
@@ -249,6 +259,14 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         }
         if (user.getCity() != null && user.getCity().getName() != null) {
             tvCityName.setText(user.getCity().getName());
+        }
+
+        if (user.getCountry() != null && user.getCountry().getName() != null) {
+            if (user.getState() != null && user.getState().getName() != null) {
+                if (user.getCity() != null && user.getCity().getName() != null) {
+                    tvAddress.setText(user.getCity().getName() + "," + user.getState().getName() + "," + user.getCountry().getName());
+                }
+            }
         }
         if (user.getMobile() != null) {
             tvPhoneNumber.setText(user.getMobile());
@@ -262,18 +280,26 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView() {
+        appBar = (RelativeLayout) findViewById(R.id.appbar_new);
+        ivAdd = (CircleImageView) appBar.findViewById(R.id.ivAdd);
+        tvToolbarTitle = (AppCompatTextView) appBar.findViewById(R.id.tvToolbarTitle);
+        ivAdd.setVisibility(View.VISIBLE);
+        tvToolbarTitle.setVisibility(View.VISIBLE);
+        ivAdd.setOnClickListener(this);
+
         llMain = (LinearLayout) findViewById(R.id.ll_main);
         ivProfile = (CircleImageView) findViewById(R.id.iv_profile);
-        tvName = (AppCompatTextView) findViewById(R.id.tv_name);
-        tvChannelNameOne = (AppCompatTextView) findViewById(R.id.tv_channel_name_one);
         tvChannelName = (AppCompatTextView) findViewById(R.id.tv_channel_name);
         tvEmail = (AppCompatTextView) findViewById(R.id.tv_email);
         tvShortDescription = (AppCompatTextView) findViewById(R.id.tv_short_description);
-        btnEdit = (AppCompatButton) findViewById(R.id.btn_edit);
-
+        btnEdit = (AppCompatTextView) appBar.findViewById(R.id.tvBack);
+        ivBack = (AppCompatImageView) appBar.findViewById(R.id.ivBack);
+        btnEdit.setText(R.string.edit);
 
         btnEdit.setOnClickListener(this);
+        ivBack.setOnClickListener(this);
         tvNameOne = (AppCompatTextView) findViewById(R.id.tv_name_one);
+        tvAddress = (AppCompatTextView) findViewById(R.id.tvAddress);
         tvCityName = (AppCompatTextView) findViewById(R.id.tv_city_name);
         tvStateName = (AppCompatTextView) findViewById(R.id.tv_state_name);
         tvCountryName = (AppCompatTextView) findViewById(R.id.tv_country_name);
@@ -284,14 +310,13 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         llCATitle = findViewById(R.id.llCATitle);
         llCATitle.setOnClickListener(this);
         rvChannelArchive = findViewById(R.id.rvChannelArchive);
-        addArchivesFromDialog = findViewById(R.id.addArchivesFromDialog);
-        addArchivesFromDialog.setOnClickListener(this);
+
 
         tvTotalViewer = (AppCompatTextView) findViewById(R.id.tv_total_viewer);
     }
 
     private void setRecyclerView() {
-        rvChannelArchive.setLayoutManager(new GridLayoutManager(this, 3));
+        rvChannelArchive.setLayoutManager(new GridLayoutManager(this, 1));
         rvChannelArchive.setNestedScrollingEnabled(false);
         channelArchiveAdapter = new ChannelArchiveAdapter(userId, new BaseRecyclerListener<ChannelArchiveResponse>() {
             @Override
@@ -350,7 +375,10 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_edit:
+            case R.id.ivBack:
+                onBackPressed();
+                break;
+            case R.id.tvBack:
 
                 Intent intent = new Intent(ViewProfileActivity.this, ProfileActivity.class);
                 Bundle bundle = new Bundle();
@@ -360,10 +388,10 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 break;
 
             case R.id.llCATitle:
-            case R.id.addArchivesFromDialog:
+            case R.id.ivAdd:
                 if (PreferenceHelper.getInstance().getUser().getUserId().equals(userId)) {
                     // Create and show the dialog.
-                    DialogFragment newFragment = AddChannelArchiveDialogFragment.newInstance();
+                    DialogFragment newFragment = AddChannelArchiveDialogFragment.newInstance(this);
                     newFragment.show(getSupportFragmentManager(), "dialog");
                 }
 
@@ -420,8 +448,8 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(CheckSubscriptionResponse response) {
-                hideLoading();
                 manageViewForSubscription(response.getStatus());
+                hideLoading();
                 getOtherProfileData();
             }
 
@@ -447,8 +475,8 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             btnSubscribe.setText(R.string.subscribe);
             btnSubscribe.setEnabled(true);
         }
-        if (userId.equals(PreferenceHelper.getInstance().getUser().getUserId())) {
-            btnSubscribe.setVisibility(View.VISIBLE);
+        if (!userId.equals(PreferenceHelper.getInstance().getUser().getUserId())) {
+            btnSubscribe.setVisibility(View.GONE);
         } else {
             if (isSubscriptionActive) {
                 btnSubscribe.setVisibility(View.GONE);

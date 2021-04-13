@@ -57,6 +57,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="username">UserName</string>
+    <string name="username_small">Username</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="please_select_profile_picture">Please select profile picture</string>
     <string name="please_enter_first_name">Please enter first name</string>
@@ -111,6 +112,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="short_description">Short Description</string>
     <string name="need_an_account">Need an account?</string>
     <string name="forget_your_password">Forgot Your Password?</string>
+    <string name="forgot_password_without">Forgot Password</string>
     <string name="upload_profile_picture">Upload Profile Picture</string>
     <string name="enter_your_channel_name">Enter your channel name</string>
     <string name="enter_your_email">Enter your email</string>
@@ -124,11 +126,13 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="create_account">Create Account</string>
     <string name="change_password">Change password</string>
     <string name="my_connections">My Connections</string>
+    <string name="total_viewers">Total Viewers</string>
     <string name="about_lifeshare">About LifeShare</string>
     <string name="home">Home</string>
     <string name="my_profile">My Profile</string>
     <string name="my_invites">My Invites</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="edit">Edit</string>
     <string name="friend_s_live_broadcast">Friends\' Live Broadcasts</string>
     <string name="start_broadcast">Start Broadcasting</string>
     <string name="stop_broadcast">Stop Broadcasting</string>
@@ -152,6 +156,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="please_enter_old_password">Please enter old password</string>
     <string name="please_enter_new_password">Please enter new password</string>
     <string name="channel_archives">Channel Archives</string>
+    <string name="posts">Posts</string>
     <string name="link">Link</string>
     <string name="picture">Picture</string>
     <string name="share_with_connection">Share with connections</string>
@@ -168,13 +173,15 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="already_subscribed">Already Subscribed</string>
     <string name="verified_sucessfully">Verified successfully</string>
     <string name="invite_contacts">Invite Contacts</string>
+    <string name="add_friends">Add Friends</string>
     <string name="invite">Invite</string>
     <string name="skip">Skip</string>
     <string name="please_select_any_contact">Please select any contact</string>
     <string name="streamed_details">Streamed Details</string>
     <string name="share_video">Share video</string>
     <string name="share_video_message">I\'m using this app to broadcast my stream! Join me using the LifeShare app.\n\n</string>
-    <string name="login_with">Login With:</string>
+    <string name="login_with">SIGN IN WITH</string>
+    <string name="sign_up_with">SIGN UP WITH</string>
     <string name="submit">Submit</string>
     <string name="err_while_joining">Error while joining</string>
     <string name="okay">OK</string>
@@ -183,6 +190,23 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="recording_is_released_improperly">The recording device is released improperly. Restart the device.</string>
     <string name="recording_is_interrupted">The recording is interrupted by system events (such as a phone call).</string>
     <string name="recording_volume_too_low">The recording volume is too low. Check whether the user\'s microphone is muted or whether the user has enabled microphone augmentation.</string>
+    <string name="share_and_explore_life_moments_with_live">Share and explore live moments with live broadcasting.</string>
+    <string name="enter_email_associated">Enter your email address associated with your account we will send you a link to reset your password.</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="location">Location</string>
+    <string name="add_your_bio">Add a bio to your profile</string>
+    <string name="done">Done</string>
+    <string name="tnc">By tapping Create Account, you acknowledge that you have read Privacy Policy and agree to the Terms of Service.</string>
+    <string name="pending_requests">Pending Requests</string>
+    <string name="title_activity_dashboard">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_requests">Requests</string>
+    <string name="title_me">Me</string>
+    <string name="title_connection">Connections</string>
+    <string name="remove">Remove</string>
+    <string name="add">Add</string>
+    <string name="comment">Comment</string>
+    <string name="share">Share</string>
 
 
 </resources>

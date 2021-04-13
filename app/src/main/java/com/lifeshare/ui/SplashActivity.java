@@ -47,7 +47,7 @@ public class SplashActivity extends BaseActivity {
         } else {
             if (PreferenceHelper.getInstance().getIsAcceptTermOfService()) {
                 deleteStreamingIfAvailable();
-                startActivity(new Intent(SplashActivity.this, BroadcastUsingAgoraActivity.class));
+                startActivity(new Intent(SplashActivity.this, DashboardActivity.class));
             } else {
                 startActivity(new Intent(SplashActivity.this, TermOfServicesActivity.class));
             }

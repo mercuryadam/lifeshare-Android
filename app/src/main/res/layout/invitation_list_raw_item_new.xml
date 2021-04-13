@@ -4,14 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/size_12dp"
-    android:layout_marginTop="@dimen/size_16dp"
+    android:layout_marginTop="@dimen/size_8dp"
     android:layout_marginRight="@dimen/size_12dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/invities_background"
         android:orientation="horizontal"
         android:padding="@dimen/size_8dp">
 
@@ -38,7 +37,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
-                style="@style/TextRegular.White.size16"
+                style="@style/TextMedium.Black.size16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -47,7 +46,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_email"
-                style="@style/TextRegular.White.size14"
+                style="@style/TextRegular.Black.size14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_4dp"
@@ -57,7 +56,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_contact"
-                style="@style/TextRegular.White.size14"
+                style="@style/TextRegular.Black.size14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_4dp"
@@ -77,7 +76,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_accept"
-                style="@style/TextRegular.White.size16"
+                style="@style/TextRegular.Black.size16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/size_4dp"
@@ -99,8 +98,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_4dp"
-        android:layout_marginTop="@dimen/size_16dp"
-        android:background="@color/color_turtle_green" />
+        android:layout_height="@dimen/size_1dp"
+        android:layout_marginTop="@dimen/size_8dp"
+        android:background="@color/pinkish_grey" />
 
 </LinearLayout>

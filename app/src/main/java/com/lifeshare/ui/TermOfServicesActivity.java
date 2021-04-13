@@ -10,7 +10,6 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.lifeshare.BaseActivity;
 import com.lifeshare.R;
-import com.lifeshare.ui.inviteFriends.ContactListActivity;
 import com.lifeshare.ui.inviteFriends.InviteViaMobileActivity;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;

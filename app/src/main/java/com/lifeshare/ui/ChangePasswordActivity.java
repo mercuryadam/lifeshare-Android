@@ -3,10 +3,12 @@ package com.lifeshare.ui;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.lifeshare.BaseActivity;
 import com.lifeshare.R;
@@ -22,6 +24,8 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
     private AppCompatEditText etNewPassword;
     private AppCompatEditText etConfirmPassword;
     private AppCompatButton btnChangePass;
+    private AppCompatTextView tvToolbarTitle, tvBack;
+    private RelativeLayout rlToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,15 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
     }
 
     private void initView() {
+
+        rlToolbar = (RelativeLayout) findViewById(R.id.appbar_new);
+        tvToolbarTitle = (AppCompatTextView) rlToolbar.findViewById(R.id.tvToolbarTitle);
+        tvBack = (AppCompatTextView) rlToolbar.findViewById(R.id.tvBack);
+        tvToolbarTitle.setVisibility(View.VISIBLE);
+        tvBack.setVisibility(View.VISIBLE);
+        tvBack.setOnClickListener(this);
+        tvToolbarTitle.setText(R.string.change_password);
+
         etOldPassword = (AppCompatEditText) findViewById(R.id.et_old_password);
         etNewPassword = (AppCompatEditText) findViewById(R.id.et_new_password);
         etConfirmPassword = (AppCompatEditText) findViewById(R.id.et_confirm_password);
@@ -42,6 +55,9 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tvBack:
+                onBackPressed();
+                break;
             case R.id.btn_change_pass:
                 if (isValid()) {
                     resetPassword();

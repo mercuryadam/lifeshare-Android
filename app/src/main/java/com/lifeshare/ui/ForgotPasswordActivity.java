@@ -3,10 +3,13 @@ package com.lifeshare.ui;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.lifeshare.BaseActivity;
 import com.lifeshare.BuildConfig;
@@ -22,6 +25,8 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
 
     private AppCompatEditText etEmail;
     private AppCompatButton btnReset;
+    private AppCompatImageView ivBack;
+    private RelativeLayout appBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +39,11 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     private void initView() {
         etEmail = (AppCompatEditText) findViewById(R.id.et_email);
         btnReset = (AppCompatButton) findViewById(R.id.btn_reset);
+        appBar = (RelativeLayout) findViewById(R.id.appbar_new);
+        ivBack = (AppCompatImageView) appBar.findViewById(R.id.ivBack);
+        ivBack.setVisibility(View.VISIBLE);
         btnReset.setOnClickListener(this);
+        ivBack.setOnClickListener(this);
 
         if (!BuildConfig.BUILD_TYPE.equalsIgnoreCase("release")) {
             etEmail.setText("chirag.patel@9spl.com");
@@ -44,6 +53,9 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ivBack:
+                onBackPressed();
+                break;
             case R.id.btn_reset:
                 if (isValid()) {
                     resetPassword();

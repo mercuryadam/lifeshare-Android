@@ -18,6 +18,8 @@ import com.lifeshare.network.response.MyConnectionListResponse;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MyConnectionListAdapter extends FilterableAdapter<MyConnectionListResponse, BaseRecyclerListener<MyConnectionListResponse>> {
 
     BaseRecyclerListener<MyConnectionListResponse> listener;
@@ -63,16 +65,16 @@ public class MyConnectionListAdapter extends FilterableAdapter<MyConnectionListR
         AppCompatTextView tvName;
         AppCompatTextView tvEmail;
         AppCompatTextView tvUsername;
-        ImageView ivDelete;
-        ImageView ivProfile;
+        AppCompatTextView ivDelete;
+        CircleImageView ivProfile;
 
         public MyConnectionViewHolder(View itemView) {
             super(itemView);
             tvName = (AppCompatTextView) itemView.findViewById(R.id.tv_name);
             tvEmail = (AppCompatTextView) itemView.findViewById(R.id.tv_email);
             tvUsername = (AppCompatTextView) itemView.findViewById(R.id.tv_contact);
-            ivDelete = (ImageView) itemView.findViewById(R.id.iv_delete);
-            ivProfile = (ImageView) itemView.findViewById(R.id.iv_profile);
+            ivDelete = (AppCompatTextView) itemView.findViewById(R.id.iv_delete);
+            ivProfile = (CircleImageView) itemView.findViewById(R.id.iv_profile);
         }
     }
 }

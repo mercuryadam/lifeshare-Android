@@ -3,29 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_primary_color_new"
-    tools:context=".ui.my_connection.MyConnectionListActivity">
+    android:background="@color/white"
+    tools:context=".ui.my_connection.AddMyConnectionListActivity">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvTitle"
-        style="@style/TextRegular.Gray.size18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/size_20dp"
-        android:layout_marginTop="@dimen/size_20dp"
-        android:layout_marginBottom="@dimen/size_8dp"
-        android:text="@string/search_connection" />
+    <include layout="@layout/app_toolbar"/>
 
     <com.lifeshare.customview.recyclerview.CustomSearchView
         android:id="@+id/searchView"
         style="@style/Search_Style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitle"
+        android:layout_below="@+id/appbar_new"
         android:layout_marginLeft="@dimen/size_20dp"
         android:layout_marginTop="@dimen/size_8dp"
         android:layout_marginRight="@dimen/size_20dp"
         android:layout_marginBottom="@dimen/size_8dp"
+        android:background="@drawable/button_background_gray"
+        android:queryBackground="@color/pinkish_grey"
         android:queryHint="@string/search" />
 
     <RelativeLayout

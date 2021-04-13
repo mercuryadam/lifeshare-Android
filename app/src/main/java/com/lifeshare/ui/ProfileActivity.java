@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -53,12 +54,11 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     private AppCompatEditText etUsername;
     private AppCompatEditText etEmail;
     private AppCompatEditText etShortDiscription;
-    private AppCompatButton btnUpdate;
     private String imagePath = "";
-    private AppCompatTextView tvName;
+    private AppCompatTextView tvName, tvToolbarTitle, tvBack, tvDone;
+    private RelativeLayout rlToolbar;
     private AppCompatTextView tvChannelName;
     private AppCompatButton btnChangePass;
-    private AppCompatButton btnCancel;
     private AppCompatEditText etPhoneNumber;
     private AppCompatEditText etCountry;
     private AppCompatEditText etState;
@@ -87,7 +87,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
 
     private void setOtherUserData(MyConnectionListResponse data) {
 //        getSupportActionBar().setTitle(data.getFirstName() + " " + data.getLastName());
-        btnUpdate.setVisibility(View.GONE);
+        tvDone.setVisibility(View.GONE);
         etFirstName.setText(data.getFirstName());
         etLastName.setText(data.getLastName());
         etEmail.setText(data.getEmail());
@@ -147,6 +147,16 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initView() {
+
+        rlToolbar = (RelativeLayout) findViewById(R.id.appbar_new);
+        tvToolbarTitle = (AppCompatTextView) rlToolbar.findViewById(R.id.tvToolbarTitle);
+        tvBack = (AppCompatTextView) rlToolbar.findViewById(R.id.tvBack);
+        tvDone = (AppCompatTextView) rlToolbar.findViewById(R.id.tvDone);
+        tvToolbarTitle.setVisibility(View.VISIBLE);
+        tvBack.setVisibility(View.VISIBLE);
+        tvDone.setVisibility(View.VISIBLE);
+        tvToolbarTitle.setText(R.string.edit_profile);
+
         appBar = findViewById(R.id.appBar);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -160,19 +170,14 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         etUsername = findViewById(R.id.et_username);
         etEmail = findViewById(R.id.et_email);
         etShortDiscription = findViewById(R.id.et_short_discription);
-        btnUpdate = findViewById(R.id.btn_update);
-        btnUpdate.setOnClickListener(this);
+        tvDone.setOnClickListener(this);
         ivProfile.setOnClickListener(this);
         tvName = (AppCompatTextView) findViewById(R.id.tv_name);
         tvChannelName = (AppCompatTextView) findViewById(R.id.tv_channel_name);
         btnChangePass = (AppCompatButton) findViewById(R.id.btn_change_pass);
-        btnCancel = (AppCompatButton) findViewById(R.id.btn_cancel);
 
         btnChangePass.setOnClickListener(this);
-        btnCancel.setOnClickListener(this);
-
-        btnCancel.setOnClickListener(this);
-        btnChangePass.setOnClickListener(this);
+        tvBack.setOnClickListener(this);
 
         etPhoneNumber = (AppCompatEditText) findViewById(R.id.et_phone_number);
         etCountry = (AppCompatEditText) findViewById(R.id.et_country);
@@ -189,12 +194,12 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_update:
+            case R.id.tvDone:
                 if (isValid()) {
                     updateProfile();
                 }
                 break;
-            case R.id.btn_cancel:
+            case R.id.tvBack:
                 onBackPressed();
                 break;
             case R.id.btn_change_pass:

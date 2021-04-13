@@ -3,17 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_primary_color_new"
+    android:background="@color/white"
     tools:context="com.lifeshare.ui.TermOfServicesActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
-        style="@style/TextRegular.Gray.size18"
+        style="@style/TextMedium.Black.size18"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/size_12dp"
-        android:layout_marginTop="@dimen/size_20dp"
-        android:layout_marginBottom="@dimen/size_8dp"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:text="@string/term_of_services" />
 
     <ScrollView
@@ -26,7 +25,8 @@
             style="@style/TextRegular.Black.size16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/size_16dp"
+            android:paddingHorizontal="@dimen/size_16dp"
+            android:paddingBottom="@dimen/size_16dp"
             android:text="@string/term_of_services_text" />
     </ScrollView>
 

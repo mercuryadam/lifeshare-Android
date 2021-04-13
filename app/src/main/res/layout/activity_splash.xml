@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_primary_color_new"
-    tools:context="com.lifeshare.ui.SplashActivity">
+    android:background="@color/white"
+    tools:context=".ui.SplashActivity">
 
     <ImageView
         android:layout_width="@dimen/size_150dp"

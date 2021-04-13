@@ -2,6 +2,7 @@ package com.lifeshare.ui.my_connection;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -30,6 +31,8 @@ public class AddMyConnectionListActivity extends BaseActivity implements BaseRec
     private AddMyConnectionListAdapter adapter;
     private String searchtext = "";
     private CustomSearchView searchView;
+    private RelativeLayout appBar;
+    private AppCompatTextView tvToolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +43,10 @@ public class AddMyConnectionListActivity extends BaseActivity implements BaseRec
 
     private void initView() {
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.search_connection);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        appBar = (RelativeLayout) findViewById(R.id.appbar_new);
+        tvToolbarTitle = (AppCompatTextView) appBar.findViewById(R.id.tvToolbarTitle);
+        tvToolbarTitle.setVisibility(View.VISIBLE);
+        tvToolbarTitle.setText(R.string.search_connection);
 
         recyclerView = (FilterRecyclerView) findViewById(R.id.recyclerView);
         tvNoData = (AppCompatTextView) findViewById(R.id.tv_no_data);

@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.ui.ViewProfileFragment">
+
+    <include layout="@layout/app_toolbar"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appbar_new">
+
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="@dimen/size_100dp"
+                android:layout_height="@dimen/size_100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:src="@drawable/user_placeholder" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/size_16dp"
+                    android:layout_height="@dimen/size_16dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/eye_black"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_total_viewer"
+                    style="@style/TextMedium.Black.size22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_8dp"
+                    android:layout_gravity="center"
+                    tools:text="20.1 M" />
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextRegular.Gray.size12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_4dp"
+                android:text="@string/total_viewers" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/size_16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/TextMedium.Black.size16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp"
+                    android:visibility="gone"
+                    android:text="Your Name" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_name_one"
+                    style="@style/TextMedium.Black.size20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    tools:text="Chirag Patel" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/size_16dp"
+                        android:layout_height="@dimen/size_16dp"
+                        android:layout_marginTop="@dimen/size_4dp"
+                        android:src="@drawable/location_icon"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAddress"
+                        style="@style/TextRegular.Black.size18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_8dp"
+                        tools:text="Ahmedabad" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/size_16dp"
+                        android:layout_height="@dimen/size_16dp"
+                        android:layout_marginTop="@dimen/size_4dp"
+                        android:src="@drawable/bio_icon"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_short_description"
+                        style="@style/TextRegular.Black.size18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_8dp"
+                        tools:text="Ahmedabad" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextMedium.Black.size16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_16dp"
+                        android:text="@string/channel_name" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_channel_name"
+                        style="@style/TextMedium.Black.size22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_8dp"
+                        tools:text="Your Name" />
+
+                    <LinearLayout
+                        android:id="@+id/llEmailPhoneCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/TextMedium.Black.size16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_16dp"
+                            android:text="@string/email" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_email"
+                            style="@style/TextMedium.Black.size22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_8dp"
+                            tools:text="chirag.patel@9spl.com" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/TextMedium.Black.size16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_16dp"
+                            android:text="@string/phone_number" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_phone_number"
+                            style="@style/TextMedium.Black.size22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_8dp"
+                            tools:text="chirag.patel@9spl.com" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            style="@style/TextMedium.Black.size16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_16dp"
+                            android:text="@string/City" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_city_name"
+                            style="@style/TextMedium.Black.size22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_8dp"
+                            tools:text="Ahmedabad" />
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextMedium.Black.size16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_16dp"
+                        android:text="@string/State" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_state_name"
+                        style="@style/TextMedium.Black.size22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_8dp"
+                        tools:text="Gujrat" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextMedium.Black.size16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_16dp"
+                        android:text="@string/country" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_country_name"
+                        style="@style/TextMedium.Black.size22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_8dp"
+                        tools:text="India" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextMedium.Black.size16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_16dp"
+                        android:text="@string/short_description" />
+
+                    <!-- <androidx.appcompat.widget.AppCompatTextView
+                         android:id="@+id/tv_short_description"
+                         style="@style/TextMedium.Black.size22"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/size_8dp"
+                         tools:text="chirag.patel@9spl.com" />
+     -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextMedium.Black.size16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_16dp"
+                        android:text="@string/total_viewer" />
+
+                    <!-- <androidx.appcompat.widget.AppCompatTextView
+                         android:id="@+id/tv_total_viewer"
+                         style="@style/TextMedium.Black.size22"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/size_8dp"
+                         tools:text="chirag.patel@9spl.com" />-->
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSubscribe"
+                    style="@style/button_style_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/size_50dp"
+                    android:layout_marginTop="@dimen/size_30dp"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:paddingLeft="@dimen/size_30dp"
+                    android:paddingRight="@dimen/size_30dp"
+                    android:singleLine="true"
+                    android:text="@string/subscribe"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnLogout"
+                    style="@style/button_style_dark_radius_30"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/size_50dp"
+                    android:layout_marginTop="@dimen/size_8dp"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:paddingLeft="@dimen/size_30dp"
+                    android:paddingRight="@dimen/size_30dp"
+                    android:singleLine="true"
+                    android:textAllCaps="false"
+                    android:text="@string/logout"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/llCATitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_20dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextMedium.Black.size16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="@dimen/size_22sp"
+                        android:text="@string/posts" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/addArchivesFromDialog"
+                        android:layout_width="@dimen/size_30dp"
+                        android:layout_height="@dimen/size_30dp"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone"
+                        android:layout_marginStart="@dimen/size_8dp"
+                        android:src="@drawable/ic_plus" />
+
+                </LinearLayout>
+
+                <com.lifeshare.customview.recyclerview.FilterRecyclerView
+                    android:id="@+id/rvChannelArchive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_16dp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

@@ -79,9 +79,9 @@
             android:layout_marginTop="@dimen/size_20dp"
             android:layout_marginRight="@dimen/size_8dp"
             android:layout_marginBottom="@dimen/size_8dp"
-            android:singleLine="true"
             android:text="@string/share_with_connection"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:singleLine="true"/>
 
 
     </LinearLayout>

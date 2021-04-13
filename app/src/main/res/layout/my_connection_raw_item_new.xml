@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/size_8dp"
-    android:background="@color/light_primary_color_new"
     android:orientation="vertical"
-    android:paddingTop="@dimen/size_12dp">
+    android:paddingTop="@dimen/size_8dp">
 
     <RelativeLayout
         android:id="@+id/rv"
@@ -60,15 +59,17 @@
 
         </LinearLayout>
 
-        <ImageView
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/iv_delete"
-            android:layout_width="@dimen/size_50dp"
-            android:layout_height="@dimen/size_50dp"
-            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            style="@style/TextRegular.Black.size16"
             android:layout_marginTop="@dimen/size_24dp"
-            android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/size_8dp"
-            android:src="@drawable/ic_delete_green" />
+            android:text="@string/remove"/>
+
     </RelativeLayout>
 
     <View
@@ -78,5 +79,6 @@
         android:layout_marginLeft="@dimen/size_12dp"
         android:layout_marginTop="@dimen/size_8dp"
         android:layout_marginRight="@dimen/size_12dp"
+        android:visibility="gone"
         android:background="@color/color_turtle_green" />
 </LinearLayout>

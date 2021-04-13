@@ -25,6 +25,9 @@
     <color name="logout_button_color">#6ec7e4</color>
     <color name="forgot_password">#5475F1</color>
     <color name="red_block_user">#B14E4E</color>
+    <color name="secondary_green">#166880</color>
+    <color name="primary_green">#6cc54b</color>
+    <color name="blue_gray">#f4f7f9</color>
 
 
     <color name="selector_normal">#00000000</color>
