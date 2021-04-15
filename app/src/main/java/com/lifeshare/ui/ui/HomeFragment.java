@@ -246,21 +246,21 @@ public class HomeFragment extends BaseFragment
             screenCapturerManager.unbindService();
         }
 
-        if (bubblesManager != null)
-            bubblesManager.recycle();
-
         super.onDestroyView();
     }
 
     public void disconnectSessionAndManageState() {
         llCountViewer.setVisibility(View.GONE);
         isBroadcasting = false;
-        changeBroadcastButtonView();
+        showErrorDialog = false;
 
-        bubbleText.setText(getResources().getString(R.string.off));
-        bubbleLayout.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.gray_circle_bg));
-        bubbleLayout.setEnabled(false);
-        startTimer();
+        if (isAdded()) {
+            changeBroadcastButtonView();
+            bubbleText.setText(getResources().getString(R.string.off));
+            bubbleLayout.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.gray_circle_bg));
+            bubbleLayout.setEnabled(false);
+            startTimer();
+        }
         removePublisherFromFirebase();
     }
 
@@ -313,7 +313,7 @@ public class HomeFragment extends BaseFragment
                 }
             }
         } else {
-            if (!requireActivity().isDestroyed()) {
+            if (isAdded()) {
                 Log.v(TAG, "onResume:2 ");
                 if (!isBubbleViewVisible) {
                     bubblesManager = new BubblesManager.Builder(requireContext()).setTrashLayout(R.layout.bubble_trash)
@@ -410,7 +410,7 @@ public class HomeFragment extends BaseFragment
                             public void run() {
                                 showErrorDialog = true;
                                 isBroadcasting = true;
-                                agoraCreate(channel, true, selectedUsers, String.valueOf(uid).replace("-", ""));
+                                agoraCreate(channel, isSaveBroadcast, selectedUsers, String.valueOf(uid).replace("-", ""));
                             }
                         });
                     }
@@ -834,7 +834,7 @@ public class HomeFragment extends BaseFragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
+        Log.v(TAG, "onCreateView:1 ");
         return rootView;
     }
 

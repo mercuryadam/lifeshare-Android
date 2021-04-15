@@ -1,8 +1,11 @@
 package com.lifeshare.ui.ui;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
@@ -127,6 +131,13 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
 
     };
 
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getListChannelArchive();
+        }
+    };
+
     private void updatePurchaseToServer(Purchase purchase) {
 
         SaveSubscriptionRequest request = new SaveSubscriptionRequest();
@@ -189,6 +200,17 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
 
     }
 
+ /*   @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+        } else {
+            Log.v(TAG, "onResume 123456: " + isVisibleToUser);
+        }
+    }*/
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_view_profile, container, false);
@@ -225,6 +247,14 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
+
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(broadcastReceiver, new IntentFilter(Const.UPDATE_CHANNEL_ARCHIVE));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver);
     }
 
     private void getOtherProfileData() {
@@ -554,7 +584,7 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
         }
         if (!userId.equals(PreferenceHelper.getInstance().getUser().getUserId())) {
             btnSubscribe.setVisibility(View.GONE);
-        }  else {
+        } else {
             if (isSubscriptionActive) {
                 btnSubscribe.setVisibility(View.GONE);
             } else {

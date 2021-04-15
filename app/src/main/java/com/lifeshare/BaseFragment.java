@@ -43,14 +43,14 @@ public class BaseFragment extends Fragment implements BaseRemoteCallback {
 
     public void showToast(String message) {
         if (!TextUtils.isEmpty(message)) {
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
         }
     }
 
     public void showLoading(String message) {
         try {
             hideLoading();
-            mProgressDialog = new CustomProgressDialog(getContext(), R.style.progress_dialog_text_style, message);
+            mProgressDialog = new CustomProgressDialog(requireContext(), R.style.progress_dialog_text_style, message);
             mProgressDialog.show();
         } catch (Exception e) {
             e.printStackTrace();

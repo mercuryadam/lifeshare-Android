@@ -14,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
@@ -82,6 +84,7 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
     private FilterRecyclerView rvViewer;
     private FrameLayout container;
     private FloatingActionButton fabMessage;
+    private AppCompatImageView ivVolume;
     private ImageView icBack;
     private AppCompatTextView tvToolbarTitle;
     private CircleImageView ivProfile;
@@ -148,9 +151,11 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
 
         container.setVisibility(View.GONE);
         icBack = (ImageView) findViewById(R.id.ic_back);
+        ivVolume = (AppCompatImageView) findViewById(R.id.ivVolume);
         tvToolbarTitle = (AppCompatTextView) findViewById(R.id.tvToolbarTitle);
         ivProfile = (CircleImageView) findViewById(R.id.ivProfile);
         icBack.setOnClickListener(this);
+        ivVolume.setOnClickListener(this);
 
     }
 
@@ -351,6 +356,9 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.ivVolume:
+                changeClientRole();
+                break;
             case R.id.fabMessage:
                 if (container.getVisibility() == View.VISIBLE) {
                     container.setVisibility(View.GONE);
@@ -364,6 +372,19 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
         }
     }
 
+
+    private void changeClientRole() {
+        ClientRoleOptions clientRoleOptions = new ClientRoleOptions();
+        clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
+
+        if (ivVolume.getDrawable().getConstantState() == ContextCompat.getDrawable(this, R.drawable.ic_mute).getConstantState()) {
+            mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
+            ivVolume.setImageResource(R.drawable.ic_unmute);
+        } else {
+            mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_AUDIENCE, clientRoleOptions);
+            ivVolume.setImageResource(R.drawable.ic_mute);
+        }
+    }
 
     private void initModules() {
         if (mRtcEngine == null) {

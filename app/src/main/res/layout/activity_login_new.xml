@@ -46,17 +46,6 @@
             android:padding="@dimen/size_14dp"
             android:singleLine="true" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_forgot_password"
-            style="@style/TextMedium.SecondaryGreen.size18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="@dimen/size_8dp"
-            android:layout_marginTop="@dimen/size_4dp"
-            android:layout_marginRight="@dimen/size_8dp"
-            android:padding="@dimen/size_16dp"
-            android:text="@string/forgot_password" />
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -80,6 +69,19 @@
             android:singleLine="true"
             android:text="@string/sign_up"
             android:textAllCaps="false" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_forgot_password"
+            style="@style/TextMedium.SecondaryGreen.size18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/size_8dp"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:layout_marginRight="@dimen/size_8dp"
+            android:padding="@dimen/size_16dp"
+            android:text="@string/forgot_password" />
+
 
     </LinearLayout>
 
@@ -118,7 +120,8 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
+                    android:padding="@dimen/size_14dp"
+                    android:background="@drawable/bg_social_media"
                     android:src="@drawable/icon_facebook" />
             </FrameLayout>
 
@@ -136,7 +139,8 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
+                    android:padding="@dimen/size_14dp"
+                    android:background="@drawable/bg_social_media"
                     android:src="@drawable/icon_google" />
             </FrameLayout>
 
@@ -144,7 +148,8 @@
                 android:id="@+id/insta_login_button"
                 android:layout_width="@dimen/size_50dp"
                 android:layout_height="@dimen/size_50dp"
-                android:background="@color/white"
+                android:padding="@dimen/size_14dp"
+                android:background="@drawable/bg_social_media"
                 android:src="@drawable/icon_instagram" />
 
         </LinearLayout>

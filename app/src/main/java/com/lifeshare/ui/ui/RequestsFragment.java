@@ -152,6 +152,7 @@ public class RequestsFragment extends BaseFragment implements BaseRecyclerListen
                 hideLoading();
                 showToast(response.getMessage());
                 adapter.removeItemAt(position);
+                LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(new Intent(Const.INVITATION_ACCEPT_ACTION));
             }
         });
     }
