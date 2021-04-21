@@ -151,6 +151,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         rlToolbar = (RelativeLayout) findViewById(R.id.appbar_new);
         tvToolbarTitle = (AppCompatTextView) rlToolbar.findViewById(R.id.tvToolbarTitle);
         tvBack = (AppCompatTextView) rlToolbar.findViewById(R.id.tvBack);
+        tvBack.setTextAppearance(this, R.style.TextRegular_colorBlack_size18);
         tvDone = (AppCompatTextView) rlToolbar.findViewById(R.id.tvDone);
         tvToolbarTitle.setVisibility(View.VISIBLE);
         tvBack.setVisibility(View.VISIBLE);

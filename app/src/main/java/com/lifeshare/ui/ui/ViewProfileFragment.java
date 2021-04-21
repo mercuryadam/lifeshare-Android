@@ -357,6 +357,7 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
         tvEmail = (AppCompatTextView) rootView.findViewById(R.id.tv_email);
         tvShortDescription = (AppCompatTextView) rootView.findViewById(R.id.tv_short_description);
         btnEdit = (AppCompatTextView) appBar.findViewById(R.id.tvBack);
+        btnEdit.setTextAppearance(requireContext(), R.style.TextRegular_colorBlack_size18);
         btnEdit.setText(R.string.edit);
 
         btnEdit.setOnClickListener(this);

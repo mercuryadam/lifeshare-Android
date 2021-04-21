@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="AppThemeReceiver" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -14,7 +14,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
@@ -66,6 +66,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TextRegular.SecondaryGreen">
+        <item name="android:textColor">@color/secondary_green</item>
+    </style>
+
     <style name="TextBold.Black">
         <item name="android:textColor">@color/black</item>
     </style>
@@ -110,6 +114,14 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
+    <style name="TextRegular.SecondaryGreen.size16">
+        <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextRegular.SecondaryGreen.size14">
+        <item name="android:textSize">@dimen/size_14sp</item>
+    </style>
+
     <style name="TextRegular.Black.size16">
         <item name="android:textSize">@dimen/size_16sp</item>
     </style>
@@ -127,6 +139,14 @@
 
     <style name="TextRegular.Gray.size18">
         <item name="android:textSize">@dimen/size_18sp</item>
+    </style>
+
+    <style name="TextRegular.SecondaryGreen.size18">
+        <item name="android:textSize">@dimen/size_18sp</item>
+    </style>
+
+    <style name="TextMedium.SecondaryGreen.size20">
+        <item name="android:textSize">@dimen/size_20sp</item>
     </style>
 
     <style name="TextMedium.SecondaryGreen.size16">
@@ -205,6 +225,10 @@
         <item name="android:textSize">@dimen/size_18sp</item>
     </style>
 
+    <style name="TextMedium.SecondaryGreen.size22">
+        <item name="android:textSize">@dimen/size_22sp</item>
+    </style>
+
     <style name="TextMedium.Black.size22">
         <item name="android:textSize">@dimen/size_22sp</item>
     </style>
@@ -227,6 +251,27 @@
 
     <style name="TextRegular.PrimaryGreen.size16">
         <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextRegular_primaryGreen_size18">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/primary_green</item>
+        <item name="android:textSize">@dimen/size_18sp</item>
+    </style>
+
+    <style name="TextRegular_colorGray_size18">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">@dimen/size_18sp</item>
+    </style>
+
+    <style name="TextRegular_colorBlack_size18">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/size_18sp</item>
     </style>
 
     <style name="TextRegular.PrimaryGreen.size18">
@@ -292,7 +337,7 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="edittext_style_new" parent="TextRegular.Black.size16">
+    <style name="edittext_style_new" parent="TextRegular.SecondaryGreen.size16">
         <item name="android:background">@drawable/button_background_blue_gray</item>
         <item name="android:gravity">center|left</item>
     </style>

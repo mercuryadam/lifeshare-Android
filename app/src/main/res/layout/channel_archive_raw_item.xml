@@ -34,7 +34,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvChannelName"
-            style="@style/TextRegular.Gray.size16"
+            style="@style/TextRegular.Black.size16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_2dp"
@@ -47,8 +47,8 @@
 
         <ImageView
             android:id="@+id/ivDeleteArchive"
-            android:layout_width="@dimen/size_20dp"
-            android:layout_height="@dimen/size_20dp"
+            android:layout_width="@dimen/size_30dp"
+            android:layout_height="@dimen/size_30dp"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/size_2dp"
             android:layout_marginEnd="@dimen/size_2dp"

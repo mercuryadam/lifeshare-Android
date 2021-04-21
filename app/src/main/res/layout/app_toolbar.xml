@@ -42,9 +42,8 @@
         android:layout_centerVertical="true"
         android:visibility="gone"
         android:layout_alignParentEnd="true"
-        app:civ_circle_background_color="@color/primary_green"
         android:layout_marginTop="@dimen/size_20dp"
-        android:src="@drawable/ic_add_white" />
+        android:src="@drawable/add_archive" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDone"

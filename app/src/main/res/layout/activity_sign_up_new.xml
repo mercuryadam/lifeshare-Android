@@ -132,7 +132,7 @@
 
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextRegular.Black.size14"
+                    style="@style/TextRegular.Gray.size14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_4dp"
@@ -189,7 +189,7 @@
                     android:singleLine="true" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextRegular.Black.size14"
+                    style="@style/TextRegular.Gray.size14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_4dp"

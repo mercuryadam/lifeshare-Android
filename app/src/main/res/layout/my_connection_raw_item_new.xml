@@ -30,7 +30,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
-                style="@style/TextRegular.Black.size16"
+                style="@style/TextRegular.SecondaryGreen.size16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -55,6 +55,7 @@
                 android:layout_marginTop="@dimen/size_6dp"
                 android:ellipsize="end"
                 android:singleLine="true"
+                android:visibility="gone"
                 tools:text="992446385" />
 
         </LinearLayout>
@@ -65,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            style="@style/TextRegular.Black.size16"
+            style="@style/TextRegular.SecondaryGreen.size16"
             android:layout_marginTop="@dimen/size_24dp"
             android:padding="@dimen/size_8dp"
             android:text="@string/remove"/>

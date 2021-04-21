@@ -47,6 +47,7 @@
         android:layout_above="@+id/ll_buttons"
         android:layout_below="@+id/appbar_new"
         android:clipToPadding="false"
+        android:layout_marginHorizontal="@dimen/size_16dp"
         android:paddingBottom="@dimen/size_50dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -70,10 +71,9 @@
             style="@style/button_style_dark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/size_8dp"
             android:layout_marginTop="@dimen/size_8dp"
-            android:layout_marginRight="@dimen/size_8dp"
             android:layout_marginBottom="@dimen/size_8dp"
+            android:layout_marginHorizontal="@dimen/size_16dp"
             android:layout_weight="1"
             android:singleLine="true"
             android:text="@string/invite"

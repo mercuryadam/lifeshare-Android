@@ -44,7 +44,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_total_viewer"
-                    style="@style/TextMedium.Black.size22"
+                    style="@style/TextMedium.SecondaryGreen.size22"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/size_8dp"
@@ -78,7 +78,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_name_one"
-                    style="@style/TextMedium.Black.size20"
+                    style="@style/TextMedium.SecondaryGreen.size20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_8dp"
@@ -98,7 +98,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvAddress"
-                        style="@style/TextRegular.Black.size18"
+                        style="@style/TextRegular.SecondaryGreen.size18"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/size_8dp"
@@ -120,7 +120,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_short_description"
-                        style="@style/TextRegular.Black.size18"
+                        style="@style/TextRegular.SecondaryGreen.size18"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/size_8dp"
@@ -275,8 +275,6 @@
                     android:layout_marginHorizontal="@dimen/size_50dp"
                     android:layout_marginTop="@dimen/size_30dp"
                     android:layout_marginBottom="@dimen/size_10dp"
-                    android:paddingLeft="@dimen/size_30dp"
-                    android:paddingRight="@dimen/size_30dp"
                     android:singleLine="true"
                     android:text="@string/subscribe"
                     android:textStyle="bold" />
@@ -323,15 +321,13 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogout"
-        style="@style/button_style_dark_radius_30"
+        style="@style/button_style_dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginHorizontal="@dimen/size_50dp"
+        android:layout_marginHorizontal="@dimen/size_66dp"
         android:layout_marginTop="@dimen/size_8dp"
         android:layout_marginBottom="@dimen/size_10dp"
-        android:paddingLeft="@dimen/size_30dp"
-        android:paddingRight="@dimen/size_30dp"
         android:singleLine="true"
         android:textAllCaps="false"
         android:layout_alignParentBottom="true"

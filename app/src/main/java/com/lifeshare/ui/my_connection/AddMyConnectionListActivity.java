@@ -24,7 +24,7 @@ import com.lifeshare.network.response.SearchUserResponse;
 
 import java.util.ArrayList;
 
-public class AddMyConnectionListActivity extends BaseActivity implements BaseRecyclerListener<SearchUserResponse> {
+public class AddMyConnectionListActivity extends BaseActivity implements BaseRecyclerListener<SearchUserResponse>, View.OnClickListener {
 
     private FilterRecyclerView recyclerView;
     private AppCompatTextView tvNoData;
@@ -32,7 +32,7 @@ public class AddMyConnectionListActivity extends BaseActivity implements BaseRec
     private String searchtext = "";
     private CustomSearchView searchView;
     private RelativeLayout appBar;
-    private AppCompatTextView tvToolbarTitle;
+    private AppCompatTextView tvToolbarTitle,tvBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,10 @@ public class AddMyConnectionListActivity extends BaseActivity implements BaseRec
 
         appBar = (RelativeLayout) findViewById(R.id.appbar_new);
         tvToolbarTitle = (AppCompatTextView) appBar.findViewById(R.id.tvToolbarTitle);
+        tvBack = (AppCompatTextView) appBar.findViewById(R.id.tvBack);
         tvToolbarTitle.setVisibility(View.VISIBLE);
+        tvBack.setVisibility(View.VISIBLE);
+        tvBack.setOnClickListener(this);
         tvToolbarTitle.setText(R.string.search_connection);
 
         recyclerView = (FilterRecyclerView) findViewById(R.id.recyclerView);
@@ -188,5 +191,12 @@ public class AddMyConnectionListActivity extends BaseActivity implements BaseRec
                 showToast(response.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.tvBack){
+            onBackPressed();
+        }
     }
 }

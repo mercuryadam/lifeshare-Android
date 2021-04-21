@@ -83,6 +83,7 @@ public class InviteViaMobileActivity extends BaseActivity implements View.OnClic
         tvToolbarTitle = (AppCompatTextView) rlToolbar.findViewById(R.id.tvToolbarTitle);
         tvBack = (AppCompatTextView) rlToolbar.findViewById(R.id.tvBack);
         tvSelectToggle = (AppCompatTextView) rlToolbar.findViewById(R.id.tvDone);
+        tvSelectToggle.setTextAppearance(this,R.style.TextRegular_colorGray_size18);
         tvToolbarTitle.setVisibility(View.VISIBLE);
         tvBack.setVisibility(View.VISIBLE);
         tvSelectToggle.setVisibility(View.VISIBLE);

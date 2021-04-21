@@ -294,6 +294,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         tvShortDescription = (AppCompatTextView) findViewById(R.id.tv_short_description);
         btnEdit = (AppCompatTextView) appBar.findViewById(R.id.tvBack);
         ivBack = (AppCompatImageView) appBar.findViewById(R.id.ivBack);
+        btnEdit.setTextAppearance(this, R.style.TextRegular_colorBlack_size18);
         btnEdit.setText(R.string.edit);
 
         btnEdit.setOnClickListener(this);

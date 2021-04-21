@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -33,7 +34,7 @@ public class SelectConnectionsActivity extends BaseActivity implements View.OnCl
 
     private FilterRecyclerView recyclerView;
     private AppCompatTextView tvNoData;
-    private FloatingActionButton fabAdd;
+    private AppCompatButton fabAdd;
     private AppCompatImageView ivBack;
     private SelectConnectionListAdapter adapter;
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -86,7 +87,7 @@ public class SelectConnectionsActivity extends BaseActivity implements View.OnCl
 
         recyclerView = (FilterRecyclerView) findViewById(R.id.recyclerView);
         tvNoData = (AppCompatTextView) findViewById(R.id.tv_no_data);
-        fabAdd = (FloatingActionButton) findViewById(R.id.fabAdd);
+        fabAdd = (AppCompatButton) findViewById(R.id.fabAdd);
         ivBack = (AppCompatImageView) findViewById(R.id.ivBack);
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

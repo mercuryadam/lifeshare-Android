@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/size_8dp"
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingTop="@dimen/size_12dp">
@@ -11,19 +10,19 @@
     <RelativeLayout
         android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/size_12dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/cb_select"
             android:orientation="vertical"
-            android:padding="@dimen/size_16dp">
+            android:layout_marginEnd="@dimen/size_12dp"
+            android:layout_marginBottom="@dimen/size_12dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
-                style="@style/TextRegular.Black.size16"
+                style="@style/TextRegular.SecondaryGreen.size16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -75,10 +74,8 @@
             android:button="@null"
             android:text="@string/add"
             android:textColor="@drawable/selectable_color"
-            android:layout_marginTop="@dimen/size_24dp"
             android:textSize="@dimen/size_16sp"
             android:gravity="center"
-            android:layout_marginEnd="@dimen/size_12dp"
             android:paddingHorizontal="@dimen/size_20dp"
             android:layout_centerInParent="true"
             android:paddingVertical="@dimen/size_4dp"/>
@@ -89,8 +86,5 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_1dp"
         android:layout_gravity="bottom"
-        android:layout_marginLeft="@dimen/size_12dp"
-        android:layout_marginTop="@dimen/size_8dp"
-        android:layout_marginRight="@dimen/size_12dp"
         android:background="@color/pinkish_grey" />
 </LinearLayout>

@@ -31,7 +31,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
-                style="@style/TextRegular.Black.size16"
+                style="@style/TextRegular.SecondaryGreen.size16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_6dp"
                 android:ellipsize="end"
+                android:visibility="gone"
                 android:singleLine="true"
                 tools:text="992446385" />
 
@@ -68,14 +69,14 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_send_request"
-                style="@style/TextRegular.PrimaryColor.size16"
+                style="@style/TextRegular.SecondaryGreen.size16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/size_10dp"
-                android:text="@string/send_request" />
+                android:text="@string/add" />
 
 
             <androidx.appcompat.widget.AppCompatTextView

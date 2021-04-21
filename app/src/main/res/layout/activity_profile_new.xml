@@ -30,8 +30,8 @@
                 android:src="@drawable/user_placeholder" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextRegular.Black.size14"
-                android:layout_width="wrap_content"
+                style="@style/TextRegular.SecondaryGreen.size14"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/size_8dp"
@@ -63,7 +63,7 @@
                 android:text="Static Channel Name" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextRegular.Black.size14"
+                style="@style/TextRegular.Gray.size14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_20sp"
@@ -86,7 +86,7 @@
                 android:singleLine="true" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextRegular.Black.size14"
+                style="@style/TextRegular.Gray.size14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_12dp"
@@ -109,7 +109,7 @@
                 android:singleLine="true" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextRegular.Black.size14"
+                style="@style/TextRegular.Gray.size14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_12dp"
@@ -132,7 +132,7 @@
                 android:singleLine="true" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextRegular.Black.size14"
+                style="@style/TextRegular.Gray.size14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_12dp"
@@ -155,7 +155,7 @@
                 android:singleLine="true" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextRegular.Black.size14"
+                style="@style/TextRegular.Gray.size14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_8dp"
@@ -177,7 +177,7 @@
                 android:singleLine="true" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextRegular.Black.size14"
+                style="@style/TextRegular.Gray.size14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_8dp"
@@ -235,7 +235,7 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextRegular.Black.size14"
+                style="@style/TextRegular.Gray.size14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_12dp"

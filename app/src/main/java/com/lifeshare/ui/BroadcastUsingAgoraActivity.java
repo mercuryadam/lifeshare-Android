@@ -380,7 +380,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
                             public void run() {
                                 showErrorDialog = true;
                                 isBroadcasting = true;
-                                agoraCreate(channel, true, selectedUsers, String.valueOf(uid).replace("-", ""));
+                                agoraCreate(channel, isSaveBroadcast, selectedUsers, String.valueOf(uid).replace("-", ""));
                             }
                         });
                     }
