@@ -46,6 +46,8 @@ public class Const {
     public static final int VIEW_TYPE_DATA = 1; // in millisecond
     public static final int VIEW_TYPE_PROGRESS = 0; // in millisecond
     public static final String UPDATE_CHANNEL_ARCHIVE = "UPDATE_CHANNEL_ARCHIVE";
+    public static final String PHOTO = "Photo";
+    public static final String LINK = "Link";
 
 
     public static Const INSTANCE;

@@ -8,14 +8,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.lifeshare.BaseFragment;
 import com.lifeshare.R;
 import com.lifeshare.customview.recyclerview.BaseRecyclerListener;
@@ -25,23 +22,17 @@ import com.lifeshare.network.WebAPIManager;
 import com.lifeshare.network.request.DeleteConnectionRequest;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.MyConnectionListResponse;
-import com.lifeshare.ui.my_connection.AddMyConnectionListActivity;
 import com.lifeshare.ui.my_connection.MyConnectionListAdapter;
 import com.lifeshare.ui.profile.ViewProfileActivity;
 import com.lifeshare.utils.Const;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class ConnectionFragment extends BaseFragment implements View.OnClickListener, BaseRecyclerListener<MyConnectionListResponse> {
+public class ConnectionFragment extends BaseFragment implements BaseRecyclerListener<MyConnectionListResponse> {
 
     private FilterRecyclerView recyclerView;
     private AppCompatTextView tvNoData;
     private MyConnectionListAdapter adapter;
-    private CircleImageView ivAdd;
-    private RelativeLayout appBar;
-    private AppCompatTextView tvToolbarTitle;
 
     private View rootView;
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -62,14 +53,6 @@ public class ConnectionFragment extends BaseFragment implements View.OnClickList
     }
 
     private void initView() {
-
-        appBar = (RelativeLayout) rootView.findViewById(R.id.appbar_new);
-        ivAdd = (CircleImageView) appBar.findViewById(R.id.ivAdd);
-        tvToolbarTitle = (AppCompatTextView) appBar.findViewById(R.id.tvToolbarTitle);
-        ivAdd.setVisibility(View.VISIBLE);
-        tvToolbarTitle.setText(R.string.my_connection);
-        tvToolbarTitle.setVisibility(View.VISIBLE);
-        ivAdd.setOnClickListener(this);
 
         recyclerView = (FilterRecyclerView) rootView.findViewById(R.id.recyclerView);
         tvNoData = (AppCompatTextView) rootView.findViewById(R.id.tv_no_data);
@@ -106,17 +89,10 @@ public class ConnectionFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ivAdd:
-                startActivity(new Intent(requireContext(), AddMyConnectionListActivity.class));
-                break;
-        }
-    }
-
-    @Override
     public void showEmptyDataView(int resId) {
-        recyclerView.showEmptyDataView(getString(R.string.no_connection_available));
+        if (isAdded()) {
+            recyclerView.showEmptyDataView(getString(R.string.no_connection_available));
+        }
     }
 
     @Override

@@ -6,13 +6,10 @@
     android:background="@color/white"
     tools:context=".ui.ui.RequestsFragment">
 
-    <include layout="@layout/app_toolbar"/>
-
     <com.lifeshare.customview.recyclerview.FilterRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appbar_new"
         android:clipToPadding="false"
         android:layout_marginTop="@dimen/size_8dp"
         android:paddingBottom="@dimen/size_50dp" />

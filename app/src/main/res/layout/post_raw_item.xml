@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_250dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/size_10dp"
+    android:layout_margin="@dimen/size_8dp"
+    app:contentPadding="@dimen/size_0dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBackGround"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_document" />
+
+    <RelativeLayout
+        android:id="@+id/rlFullRaw"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/size_4dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvChannelName"
+            style="@style/TextMedium.White.size16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:maxLines="4"
+            android:layout_above="@+id/tvTime"
+            tools:text="Chirag Patel" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTime"
+            style="@style/TextRegular.White.size12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10dp"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:layout_alignParentBottom="true"
+            tools:text="Chirag Patel" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

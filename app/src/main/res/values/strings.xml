@@ -69,6 +69,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="new_pass_not_match">New password and confirm password does not match</string>
     <string name="logout">Logout</string>
     <string name="my_connection">My Connections</string>
+    <string name="connection">Connections</string>
     <string name="search_connection">Search Connection</string>
     <string name="invitations">Pending Requests</string>
     <string name="no_data_available">No data available</string>
@@ -134,9 +135,11 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="edit_profile">Edit Profile</string>
     <string name="edit">Edit</string>
     <string name="friend_s_live_broadcast">Friends\' Live Broadcasts</string>
+    <string name="live_broadcast">Live Broadcasts</string>
     <string name="start_broadcast">Start Broadcasting</string>
     <string name="stop_broadcast">Stop Broadcasting</string>
     <string name="your_channel_viewer">Your Channel Viewers</string>
+    <string name="broadcast_viewer">Broadcast Viewers</string>
     <string name="please_accept_term_of_services">Please accept term of services</string>
     <string name="broadcasting">Broadcasting</string>
     <string name="new_password">New password</string>
@@ -200,13 +203,21 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="pending_requests">Pending Requests</string>
     <string name="title_activity_dashboard">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_requests">Requests</string>
+    <string name="title_requests">Broadcasts</string>
     <string name="title_me">Me</string>
     <string name="title_connection">Connections</string>
     <string name="remove">Remove</string>
     <string name="add">Add</string>
     <string name="comment">Comment</string>
     <string name="share">Share</string>
+    <string name="all">All</string>
+    <string name="pending">Pending</string>
+    <string name="upload_new">Upload New</string>
+    <string name="share_your_screen">Share Your Screen</string>
+    <string name="everything_on_your_screen">Everything on your screen including notification will be recorded. This lets everyone on your broadcast see your screen.</string>
+    <string name="viewer">Viewers</string>
+    <string name="live">Live</string>
+    <string name="live_chat">Live Chat</string>
 
 
 </resources>

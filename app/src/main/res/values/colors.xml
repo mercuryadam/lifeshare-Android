@@ -17,7 +17,7 @@
     <color name="color_turtle_green">#78b14e</color>
     <color name="lichen">#9ec598</color>
     <color name="red">#f5313e</color>
-    <color name="pinkish_grey">#bdbdbd</color>
+    <color name="pinkish_grey">#F4F4F4</color>
     <color name="dashboard_bg">#589a58</color>
     <color name="dashboard_button_bg">#579b5c</color>
     <color name="color_chat_message_bg_other">#accbbe</color>
@@ -28,6 +28,7 @@
     <color name="secondary_green">#0E3340</color>
     <color name="primary_green">#5DBC3B</color>
     <color name="blue_gray">#f4f7f9</color>
+    <color name="secondary_green_new">#367D92</color>
 
 
     <color name="selector_normal">#00000000</color>

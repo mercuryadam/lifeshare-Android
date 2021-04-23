@@ -9,210 +9,21 @@
 
     <include layout="@layout/app_toolbar"/>
 
-    <View
-        android:id="@+id/line1"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_1dp"
-        android:layout_below="@+id/appbar_new"
-        android:layout_marginLeft="@dimen/size_16dp"
-        android:layout_marginRight="@dimen/size_16dp"
-        android:background="@color/white" />
-
-    <RelativeLayout
-        android:id="@+id/rl_viewers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/line1"
-        android:background="@color/white"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:id="@+id/llCountViewer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/size_20dp"
-                android:layout_marginTop="@dimen/size_8dp"
-                android:src="@drawable/ic_eye" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvCountViewer"
-                style="@style/TextMedium.Black.size14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="0" />
-        </LinearLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/rl_viewers_inner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/size_16dp"
-            android:layout_toRightOf="@+id/llCountViewer">
-
-
-            <com.lifeshare.customview.recyclerview.FilterRecyclerView
-                android:id="@+id/rv_viewer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_no_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/size_20dp"
-                android:text="@string/no_viewers_available" />
-        </RelativeLayout>
-
-
-    </RelativeLayout>
-
-    <View
-        android:id="@+id/line2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_1dp"
-        android:layout_below="@+id/rl_viewers"
-        android:layout_marginLeft="@dimen/size_16dp"
-        android:layout_marginRight="@dimen/size_16dp"
-        android:background="@color/white" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/ll_friends_broadcast"
-        android:layout_below="@+id/line2"
-        android:background="@color/white">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-            <com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/adView"
-                android:layout_marginTop="@dimen/size_12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                ads:adSize="BANNER"
-                ads:adUnitId="@string/banner_adv_id">
-            </com.google.android.gms.ads.AdView>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/ll_card_main"
-                android:layout_marginLeft="@dimen/size_24dp"
-                android:layout_marginTop="@dimen/size_12dp"
-                android:layout_marginRight="@dimen/size_24dp"
-                android:layout_marginBottom="@dimen/size_12dp"
-                android:layout_below="@+id/adView"
-                android:background="@drawable/dashboard_background_dark"
-                android:padding="@dimen/size_16dp">
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/iv_profile"
-                            android:layout_width="@dimen/size_120dp"
-                            android:layout_height="@dimen/size_120dp"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/user_placeholder" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_name"
-                            style="@style/TextMedium.White.size18"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/size_24dp"
-                            android:gravity="center"
-                            android:text="Chirag Patel" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_channel_name"
-                            style="@style/TextRegular.White.size14"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/size_8dp"
-                            android:gravity="center"
-                            android:text="channal Name" />
-
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:layout_width="@dimen/size_100dp"
-                            android:layout_height="@dimen/size_100dp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="@dimen/size_14dp"
-                            android:src="@drawable/app_logo" />
-
-                        <RelativeLayout
-                            android:id="@+id/rl_broadcast"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/size_16dp"
-                            android:background="@drawable/dashboard_button_background_green"
-                            android:padding="@dimen/size_16dp">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tv_broadcast"
-                                style="@style/TextMedium.White.size20"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="Start Broadcast" />
-
-                            <ImageView
-                                android:id="@+id/iv_broadcast"
-                                android:layout_width="@dimen/size_24dp"
-                                android:layout_height="@dimen/size_24dp"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="@dimen/size_24dp"
-                                android:layout_toRightOf="@+id/tv_broadcast"
-                                android:padding="@dimen/size_4dp"
-                                android:src="@drawable/ic_play" />
-                        </RelativeLayout>
-                    </LinearLayout>
-                </ScrollView>
-            </RelativeLayout>
-        </RelativeLayout>
-    </RelativeLayout>
-
-
     <LinearLayout
         android:id="@+id/ll_friends_broadcast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/appbar_new"
         android:background="@color/white"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextRegular.Black.size16"
+            style="@style/TextMedium.SecondaryGreen.size18"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_16dp"
             android:layout_marginBottom="@dimen/size_16dp"
-            android:gravity="center"
-            android:text="@string/friend_s_live_broadcast" />
-
+            android:text="@string/live_broadcast" />
 
         <com.lifeshare.customview.recyclerview.FilterRecyclerView
             android:id="@+id/rv_friend_broadcast"
@@ -221,10 +32,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_no_friend_streaminig"
-            style="@style/TextRegular.Gray.size14"
+            style="@style/TextRegular.Black.size14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginHorizontal="@dimen/size_20dp"
             android:padding="@dimen/size_20dp"
             android:text="@string/no_live_streaming_message"
             android:visibility="gone" />
@@ -239,29 +51,45 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_chat_message"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rl_viewers"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone">
+        android:layout_below="@+id/ll_friends_broadcast"
+        android:background="@color/white">
 
-        <FrameLayout
-            android:id="@+id/container"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabMessage"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/size_8dp"
-            android:layout_marginBottom="@dimen/size_95dp"
-            android:src="@drawable/ic_message_white"
-            android:visibility="visible" />
+            android:layout_centerInParent="true">
 
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_marginTop="@dimen/size_12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/banner_adv_id">
+            </com.google.android.gms.ads.AdView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPost"
+                style="@style/TextMedium.SecondaryGreen.size18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/adView"
+                android:layout_marginTop="@dimen/size_12dp"
+                android:layout_marginHorizontal="@dimen/size_16dp"
+                android:text="@string/posts" />
+
+            <com.lifeshare.customview.recyclerview.FilterRecyclerView
+                android:id="@+id/rvPosts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tvPost"
+                android:layout_marginHorizontal="@dimen/size_8dp"
+                android:layout_marginTop="@dimen/size_12dp" />
+
+        </RelativeLayout>
     </RelativeLayout>
-
 </RelativeLayout>

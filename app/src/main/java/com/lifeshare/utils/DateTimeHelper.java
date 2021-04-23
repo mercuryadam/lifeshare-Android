@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class DateTimeHelper {
 
@@ -38,6 +39,42 @@ public class DateTimeHelper {
     private final static String DISPLAY_FORMAT_YEAR = "yyyy";
     private static final String TAG = "DateTimeHelper";
     private static DateTimeHelper instance;
+
+    private static final int SECOND_MILLIS = 1000;
+    private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+    private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+
+
+    public String getTimeAgo(String str) {
+
+        long time = getServerDateTimeToAppDateTimeInLong(str);
+        long now = getCurrentTimeStamp();
+        if (time < 1000000000000L) {
+            time *= 1000;
+        }
+        if (time > now || time <= 0) {
+            return null;
+        }
+
+        final long diff = now - time;
+
+        if (diff < MINUTE_MILLIS) {
+            return "just now";
+        } else if (diff < 2 * MINUTE_MILLIS) {
+            return "a minute ago";
+        } else if (diff < 50 * MINUTE_MILLIS) {
+            return diff / MINUTE_MILLIS + " minutes ago";
+        } else if (diff < 90 * MINUTE_MILLIS) {
+            return "an hour ago";
+        } else if (diff < 24 * HOUR_MILLIS) {
+            return diff / HOUR_MILLIS + " hours ago";
+        } else if (diff < 48 * HOUR_MILLIS) {
+            return "yesterday";
+        } else {
+            long diffInDays = TimeUnit.MILLISECONDS.toDays(diff);
+            return diffInDays + " days ago";
+        }
+    }
 
     public static DateTimeHelper getInstance() {
         if (instance == null) {

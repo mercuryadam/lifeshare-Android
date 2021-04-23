@@ -3,22 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/size_12dp"
-    android:layout_marginTop="@dimen/size_8dp"
-    android:layout_marginRight="@dimen/size_12dp"
+    android:layout_marginTop="@dimen/size_12dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/size_8dp">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/size_8dp">
+            android:layout_gravity="center_vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile"
@@ -31,13 +27,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/size_12dp"
+            android:layout_marginVertical="@dimen/size_12dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
-                style="@style/TextMedium.Black.size16"
+                style="@style/TextMedium.SecondaryGreen.size16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -46,7 +42,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_email"
-                style="@style/TextRegular.Black.size14"
+                style="@style/TextRegular.Gray.size14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_4dp"
@@ -70,19 +66,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/size_10dp"
-            android:layout_marginEnd="@dimen/size_8dp"
             android:orientation="vertical"
             android:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_accept"
-                style="@style/TextRegular.Black.size16"
+                style="@style/TextRegular.SecondaryGreen.size16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/size_4dp"
                 android:background="?attr/selectableItemBackground"
-                android:padding="@dimen/size_8dp"
+                android:paddingVertical="@dimen/size_8dp"
                 android:text="@string/conform" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -92,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="?attr/selectableItemBackground"
-                android:padding="@dimen/size_8dp"
+                android:paddingVertical="@dimen/size_8dp"
                 android:text="@string/deny" />
 
         </LinearLayout>
@@ -101,7 +94,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_1dp"
-        android:layout_marginTop="@dimen/size_8dp"
+        android:layout_marginTop="@dimen/size_12dp"
         android:background="@color/pinkish_grey" />
 
 </LinearLayout>

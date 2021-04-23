@@ -62,6 +62,10 @@
         <item name="android:textColor">@color/secondary_green</item>
     </style>
 
+    <style name="TextMedium.SecondaryGreenNew">
+        <item name="android:textColor">@color/secondary_green_new</item>
+    </style>
+
     <style name="TextRegular.Black">
         <item name="android:textColor">@color/black</item>
     </style>
@@ -117,7 +121,9 @@
     <style name="TextRegular.SecondaryGreen.size16">
         <item name="android:textSize">@dimen/size_16sp</item>
     </style>
-
+    <style name="TextRegular.SecondaryGreen.size12">
+        <item name="android:textSize">@dimen/size_12sp</item>
+    </style>
     <style name="TextRegular.SecondaryGreen.size14">
         <item name="android:textSize">@dimen/size_14sp</item>
     </style>
@@ -151,6 +157,10 @@
 
     <style name="TextMedium.SecondaryGreen.size16">
         <item name="android:textSize">@dimen/size_16sp</item>
+    </style>
+
+    <style name="TextMedium.SecondaryGreenNew.size18">
+        <item name="android:textSize">@dimen/size_18sp</item>
     </style>
 
     <style name="TextMedium.SecondaryGreen.size18">
@@ -378,6 +388,15 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -390,5 +409,27 @@
     <style name="WideDialog" parent="Base.Theme.AppCompat.Dialog">
         <item name="android:windowMinWidthMajor">90%</item>
         <item name="android:windowMinWidthMinor">90%</item>
+    </style>
+
+    <style name="TabStyleMatchSel">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:background">@drawable/shape_tab_white_sel</item>
+        <item name="android:textSize">@dimen/size_16sp</item>
+        <item name="android:padding">@dimen/size_8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="TabStyleMatchNotSel">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:background">@null</item>
+        <item name="android:textSize">@dimen/size_16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">@dimen/size_8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 </resources>

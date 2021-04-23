@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -36,6 +37,7 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.lifeshare.BaseFragment;
 import com.lifeshare.LifeShare;
 import com.lifeshare.R;
@@ -66,7 +68,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ViewProfileFragment extends BaseFragment implements View.OnClickListener, MyDialogCloseListener {
+public class ViewProfileFragment extends BaseFragment implements View.OnClickListener {
 
     private static final String TAG = "ViewProfileActivity";
     List<SkuDetails> skuDetails = new ArrayList<>();
@@ -453,8 +455,9 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
             case R.id.ivAdd:
                 if (PreferenceHelper.getInstance().getUser().getUserId().equals(userId)) {
                     // Create and show the dialog.
-                    DialogFragment newFragment = AddChannelArchiveDialogFragment.newInstance(this);
-                    newFragment.show(getChildFragmentManager(), "dialog");
+
+                    showBottomSheetDialog();
+
                 }
 
                 break;
@@ -621,10 +624,6 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
 
     }
 
-    @Override
-    public void handleDialogClose(DialogInterface dialog) {
-        getListChannelArchive();
-    }
 
     private void getAcknowdgement(Purchase purchase) {
         showLoading();
@@ -684,6 +683,61 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
                 // Google Play by calling the startConnection() method.
             }
         });
+    }
+
+    private void showBottomSheetDialog() {
+
+        View view = LayoutInflater.from(requireContext())
+                .inflate(R.layout.bottom_sheet_dialog_single_choice_new, null);
+        BottomSheetDialog dialogLayout =
+                new BottomSheetDialog(requireContext(), R.style.CustomBottomSheetDialogTheme);
+
+        dialogLayout.setContentView(view);
+        dialogLayout.setCancelable(false);
+        dialogLayout.setCanceledOnTouchOutside(false);
+        dialogLayout.show();
+
+
+        AppCompatTextView tvLink = dialogLayout.findViewById(R.id.tvLink);
+        AppCompatTextView tvPhoto = dialogLayout.findViewById(R.id.tvPhoto);
+        AppCompatImageView ivClose = dialogLayout.findViewById(R.id.iv_close);
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogLayout.dismiss();
+            }
+        });
+
+        tvLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogLayout.dismiss();
+                DialogFragment newFragment = AddChannelArchiveDialogFragment.newInstance(new MyDialogCloseListener() {
+                    @Override
+                    public void handleDialogClose(DialogInterface dialog) {
+                        getListChannelArchive();
+                    }
+                }, Const.LINK);
+                newFragment.show(getChildFragmentManager(), "dialog");
+            }
+        });
+
+        tvPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogLayout.dismiss();
+                DialogFragment newFragment = AddChannelArchiveDialogFragment.newInstance(new MyDialogCloseListener() {
+                    @Override
+                    public void handleDialogClose(DialogInterface dialog) {
+                        getListChannelArchive();
+                    }
+                }, Const.PHOTO);
+                newFragment.show(getChildFragmentManager(), "dialog");
+            }
+        });
+
+
     }
 
 

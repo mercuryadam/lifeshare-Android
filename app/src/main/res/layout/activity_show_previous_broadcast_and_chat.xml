@@ -70,7 +70,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/size_20dp"
-            android:src="@drawable/ic_message_white"
+            android:src="@drawable/send_msg"
             android:visibility="visible" />
 
     </RelativeLayout>

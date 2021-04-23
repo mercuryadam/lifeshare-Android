@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_connection"
-        android:name="com.lifeshare.ui.ui.ConnectionFragment"
+        android:name="com.lifeshare.ui.ui.AllPendingConnectionFragment"
         android:label="@string/title_connection"
         tools:layout="@layout/fragment_connection" />
 

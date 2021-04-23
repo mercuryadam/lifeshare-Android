@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".ui.ui.AllPendingConnectionFragment">
+
+    <include layout="@layout/app_toolbar"/>
+
+    <LinearLayout
+        android:id="@+id/viewPagerTab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_background_blue_gray_radius_24"
+        android:layout_below="@+id/appbar_new"
+        android:layout_marginVertical="@dimen/size_16dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAllConnection"
+            style="@style/TabStyleMatchSel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all"
+            android:minWidth="@dimen/size_80dp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPendingConnection"
+            style="@style/TabStyleMatchNotSel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pending"
+            android:layout_marginStart="@dimen/size_12dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <com.lifeshare.utils.CustomViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/viewPagerTab"
+        android:layout_marginHorizontal="@dimen/size_16dp"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

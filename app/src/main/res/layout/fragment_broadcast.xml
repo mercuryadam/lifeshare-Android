@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.ui.BroadcastFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/size_16dp"
+        android:paddingBottom="@dimen/size_8dp">
+
+    <LinearLayout
+        android:id="@+id/rl_viewers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvToolbarTitle"
+            style="@style/TextMedium.Black.size18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/size_12dp"
+            android:text="@string/broadcast_viewer" />
+
+        <LinearLayout
+            android:id="@+id/llCountViewer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_4dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="@dimen/size_20dp"
+                android:layout_height="@dimen/size_20dp"
+                android:src="@drawable/eye_black"
+                android:layout_marginEnd="@dimen/size_8dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCountViewer"
+                style="@style/TextMedium.Black.size14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="0" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextMedium.Black.size14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_4dp"
+                android:gravity="center"
+                android:text="@string/viewer" />
+        </LinearLayout>
+    </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_viewers_inner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_viewers"
+            android:layout_above="@id/llBottom">
+
+            <com.lifeshare.customview.recyclerview.FilterRecyclerView
+                android:id="@+id/rv_viewer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_no_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_20dp"
+                android:text="@string/no_viewers_available" />
+        </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="@dimen/size_60dp"
+            android:layout_height="@dimen/size_60dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/size_60dp"
+                android:layout_height="@dimen/size_60dp"
+                android:tint="@color/primary_green"
+                android:src="@drawable/green_circle_bg" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/size_40dp"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/share_screen" />
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextMedium.SecondaryGreen.size22"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:gravity="center"
+            android:text="@string/share_your_screen" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextRegular.Gray.size14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8dp"
+            android:gravity="center"
+            android:text="@string/everything_on_your_screen" />
+
+        <RelativeLayout
+            android:id="@+id/rl_broadcast"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:background="@drawable/dashboard_button_background_green">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_broadcast"
+                style="@style/TextMedium.White.size16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:text="@string/start_broadcast" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_chat_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_viewers"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/size_8dp"
+            android:layout_marginBottom="@dimen/size_95dp"
+            android:src="@drawable/send_msg"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+
+</FrameLayout>

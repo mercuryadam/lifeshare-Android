@@ -392,7 +392,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             case R.id.ivAdd:
                 if (PreferenceHelper.getInstance().getUser().getUserId().equals(userId)) {
                     // Create and show the dialog.
-                    DialogFragment newFragment = AddChannelArchiveDialogFragment.newInstance(this);
+                    DialogFragment newFragment = AddChannelArchiveDialogFragment.newInstance(this, Const.PHOTO);
                     newFragment.show(getSupportFragmentManager(), "dialog");
                 }
 

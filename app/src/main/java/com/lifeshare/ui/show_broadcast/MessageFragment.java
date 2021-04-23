@@ -15,12 +15,14 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -51,15 +53,32 @@ import java.util.HashMap;
 
 public class MessageFragment extends BaseFragment implements View.OnClickListener, BaseRecyclerListener<ChatMessage> {
 
+
+    private RelativeLayout appBar;
     private static final String TAG = "MessageFragment";
     DatabaseReference databaseReference;
     private FilterRecyclerView rvMessage;
+    private AppCompatImageView ivBack;
     private LinearLayout llMessage;
     private AppCompatButton btnSaveChat;
     private AppCompatEditText etMessage;
     private ImageView ivSendMessage;
     private ImageView ivFlag;
     private MessageListAdapterNew adapter;
+    private AppCompatTextView tvCountViewer;
+    DatabaseReference countViewerDatabaseReference;
+    ValueEventListener countViewerValueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            PreferenceHelper.getInstance().setCountOfViewer((int) dataSnapshot.getChildrenCount());
+            tvCountViewer.setText(String.valueOf(PreferenceHelper.getInstance().getCountOfViewer()));
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
     ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -130,6 +149,13 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void initView(View view) {
+        tvCountViewer = view.findViewById(R.id.tvCountViewer);
+        appBar = (RelativeLayout) view.findViewById(R.id.appbar_new);
+        ivBack = (AppCompatImageView) appBar.findViewById(R.id.ivBack);
+        ivBack.setVisibility(View.VISIBLE);
+        ivBack.setOnClickListener(this);
+
+
         rvMessage = view.findViewById(R.id.rv_message);
         llMessage = view.findViewById(R.id.ll_message);
         etMessage = view.findViewById(R.id.et_message);
@@ -170,7 +196,7 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                 .child(publisherUserId).child(Const.TABLE_CHAT_MESSAGE);
 
         databaseReference.addValueEventListener(valueEventListener);
-
+        getCountForViewers();
 
     }
 
@@ -183,6 +209,8 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                 break;
             case R.id.iv_flag:
                 openDialog();
+                break;
+            case R.id.ivBack:
                 break;
             case R.id.btn_save_chat:
                 saveChatHistory();
@@ -316,6 +344,15 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         });
     }
 
+    private void getCountForViewers() {
+        Log.v(TAG, "registerCountValueEventListener: ");
+        countViewerDatabaseReference = LifeShare.getFirebaseReference()
+                .child(Const.TABLE_PUBLISHER)
+                .child(PreferenceHelper.getInstance().getUser().getUserId())
+                .child(Const.TABLE_COUNT_VIEWER);
+        countViewerDatabaseReference.addValueEventListener(countViewerValueEventListener);
+    }
+
     public void setCurrentStream(String publisherId, String roomId, String roomSid, Boolean isSubActive) {
         publisherUserId = publisherId;
         this.roomId = roomId;
@@ -326,6 +363,9 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
         }
         if (databaseReference != null && valueEventListener != null) {
             databaseReference.removeEventListener(valueEventListener);
+        }
+        if (countViewerDatabaseReference != null && countViewerValueEventListener != null) {
+            countViewerDatabaseReference.removeEventListener(countViewerValueEventListener);
         }
         getData();
         Log.v(TAG, "setCurrentStream: " + isAdded());

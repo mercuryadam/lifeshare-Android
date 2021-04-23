@@ -11,7 +11,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lifeshare.R;
-import com.lifeshare.ui.ui.ConnectionFragment;
+import com.lifeshare.ui.ui.AllPendingConnectionFragment;
+import com.lifeshare.ui.ui.BroadcastFragment;
 import com.lifeshare.ui.ui.HomeFragment;
 import com.lifeshare.ui.ui.RequestsFragment;
 import com.lifeshare.ui.ui.ViewProfileFragment;
@@ -45,9 +46,9 @@ public class DashboardActivity extends AppCompatActivity {
 
     }*/
 
-    final Fragment fragment1 = new HomeFragment();
-    final Fragment fragment2 = new RequestsFragment();
-    final Fragment fragment3 = new ConnectionFragment();
+    Fragment fragment1 = new HomeFragment();
+    final Fragment fragment2 = new BroadcastFragment();
+    final Fragment fragment3 = new AllPendingConnectionFragment();
     Fragment fragment4 = new ViewProfileFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragment1;
@@ -82,7 +83,9 @@ public class DashboardActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    fm.beginTransaction().hide(active).show(fragment1).commit();
+                    fm.beginTransaction().remove(fragment1);
+                    fragment1 = new HomeFragment();
+                    fm.beginTransaction().hide(active).add(R.id.nav_host_fragment, fragment1, "1").commit();
                     active = fragment1;
                     return true;
                 case R.id.navigation_requests:

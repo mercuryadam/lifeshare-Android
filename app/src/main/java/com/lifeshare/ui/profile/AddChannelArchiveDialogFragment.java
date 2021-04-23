@@ -2,16 +2,19 @@ package com.lifeshare.ui.profile;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
 
@@ -24,6 +27,7 @@ import com.lifeshare.model.ChannelArchive;
 import com.lifeshare.network.RemoteCallback;
 import com.lifeshare.network.WebAPIManager;
 import com.lifeshare.network.response.CommonResponse;
+import com.lifeshare.utils.Const;
 
 
 public class AddChannelArchiveDialogFragment extends DialogFragment implements View.OnClickListener, ImagePickerFragment.ImagePickerListener {
@@ -31,31 +35,34 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
     private static final int CAMERA_REQUEST_ID = 101;
     private ImageView ivAddImage;
     private EditText etAddTitle, etAddLink;
-    private AppCompatTextView tvLink;
-    private Button btnAddChannelArchive;
+    private AppCompatButton btnAddChannelArchive;
     private String imagePath;
     private CustomProgressDialog mProgressDialog;
     private MyDialogCloseListener listener;
+    private AppCompatTextView tvToolbarTitle, tvBack;
+    private RelativeLayout rlToolbar;
+    private String selectedArchiveType;
 
     AddChannelArchiveDialogFragment(MyDialogCloseListener listener) {
         this.listener = listener;
     }
 
-    public static AddChannelArchiveDialogFragment newInstance(MyDialogCloseListener listener) {
+    public static AddChannelArchiveDialogFragment newInstance(MyDialogCloseListener listener, String type) {
         AddChannelArchiveDialogFragment f = new AddChannelArchiveDialogFragment(listener);
 
-        // Supply num input as an argument.
-       /* Bundle args = new Bundle();
-        args.putInt("num", num);
+        Bundle args = new Bundle();
+        args.putString("TYPE", type);
         f.setArguments(args);
-*/
         return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_DeviceDefault_Dialog);
+        setStyle(DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        if (getArguments() != null) {
+            selectedArchiveType = getArguments().getString("TYPE");
+        }
     }
 
     @Override
@@ -68,21 +75,36 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        rlToolbar = (RelativeLayout) view.findViewById(R.id.appbar_new);
+        tvToolbarTitle = (AppCompatTextView) rlToolbar.findViewById(R.id.tvToolbarTitle);
+        tvBack = (AppCompatTextView) rlToolbar.findViewById(R.id.tvBack);
+        tvToolbarTitle.setVisibility(View.VISIBLE);
+        tvBack.setVisibility(View.VISIBLE);
+        tvToolbarTitle.setText(selectedArchiveType);
+        tvBack.setOnClickListener(this);
+
 
         etAddTitle = (EditText) view.findViewById(R.id.etAddTitle);
         etAddLink = (EditText) view.findViewById(R.id.etAddLink);
-        tvLink = (AppCompatTextView) view.findViewById(R.id.tvLink);
         ivAddImage = view.findViewById(R.id.ivAddImage);
         btnAddChannelArchive = view.findViewById(R.id.btnAddChannelArchive);
 
-        tvLink.setOnClickListener(this);
         ivAddImage.setOnClickListener(this);
         btnAddChannelArchive.setOnClickListener(this);
+
+        if (selectedArchiveType.equals(Const.PHOTO)) {
+            etAddLink.setVisibility(View.GONE);
+        } else {
+            etAddLink.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tvBack:
+                dismissAllowingStateLoss();
+                break;
             case R.id.ivAddImage:
                 ImagePickerFragment
                         .newInstance(CAMERA_REQUEST_ID, "LifeShare").show(getChildFragmentManager());
@@ -91,10 +113,6 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
                 if (isValid()) {
                     createChannelArchive(etAddTitle.getText().toString(), etAddLink.getText().toString(), imagePath);
                 }
-                break;
-            case R.id.tvLink:
-                etAddTitle.setVisibility(View.VISIBLE);
-                etAddLink.setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
@@ -120,16 +138,19 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
     }
 
     private boolean isValid() {
-/*
+
+        if (selectedArchiveType.equals(Const.LINK)) {
+            if (TextUtils.isEmpty(etAddLink.getText().toString().trim())) {
+                Toast.makeText(getActivity(), getString(R.string.please_add_link), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+
         if (TextUtils.isEmpty(etAddTitle.getText().toString().trim())) {
             Toast.makeText(getActivity(), getString(R.string.please_add_title), Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (TextUtils.isEmpty(etAddLink.getText().toString().trim())) {
-            Toast.makeText(getActivity(), getString(R.string.please_add_link), Toast.LENGTH_SHORT).show();
-            return false;
-        }
-*/
+
         if (imagePath == null) {
             Toast.makeText(getActivity(), getString(R.string.please_add_image), Toast.LENGTH_SHORT).show();
             return false;

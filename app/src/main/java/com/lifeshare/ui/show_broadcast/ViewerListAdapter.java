@@ -38,7 +38,8 @@ public class ViewerListAdapter extends FilterableAdapter<ViewerUser, BaseRecycle
                 .apply(new RequestOptions().error(R.drawable.user_placeholder).placeholder(R.drawable.user_placeholder))
                 .into(viewHolder.profileImage);
 
-        viewHolder.tvName.setText(val.getUsername());
+        viewHolder.tvName.setText(val.getFirstName());
+        viewHolder.tvChannelName.setText(val.getUsername());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,13 +62,14 @@ public class ViewerListAdapter extends FilterableAdapter<ViewerUser, BaseRecycle
 
     public class MyConnectionViewHolder extends RecyclerView.ViewHolder {
         private CircleImageView profileImage;
-        private AppCompatTextView tvName;
+        private AppCompatTextView tvName,tvChannelName;
         private RelativeLayout rlMain;
 
         public MyConnectionViewHolder(View itemView) {
             super(itemView);
             profileImage = itemView.findViewById(R.id.profile_image);
             tvName = itemView.findViewById(R.id.tv_name);
+            tvChannelName = itemView.findViewById(R.id.tv_channel_name);
             rlMain = itemView.findViewById(R.id.rl_main);
         }
     }

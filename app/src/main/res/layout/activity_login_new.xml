@@ -47,7 +47,6 @@
             android:singleLine="true" />
 
 
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_login"
             style="@style/button_style_dark"
@@ -67,12 +66,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_8dp"
             android:singleLine="true"
+            android:backgroundTint="@color/secondary_green_new"
             android:text="@string/sign_up"
             android:textAllCaps="false" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_forgot_password"
-            style="@style/TextMedium.SecondaryGreen.size18"
+            style="@style/TextMedium.SecondaryGreenNew.size18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

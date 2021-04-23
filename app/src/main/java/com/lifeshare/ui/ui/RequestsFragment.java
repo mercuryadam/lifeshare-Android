@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -27,19 +26,16 @@ import com.lifeshare.network.request.RejectInvitationRequest;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.InvitationListResponse;
 import com.lifeshare.ui.invitation.MyInvitationListAdapter;
-import com.lifeshare.ui.inviteFriends.InviteViaMobileActivity;
 import com.lifeshare.utils.Const;
 
 import java.util.ArrayList;
 
-public class RequestsFragment extends BaseFragment implements BaseRecyclerListener<InvitationListResponse>, View.OnClickListener {
+public class RequestsFragment extends BaseFragment implements BaseRecyclerListener<InvitationListResponse> {
 
     private static final String TAG = "MyInvitationList";
     private FilterRecyclerView recyclerView;
     private AppCompatTextView tvNoData;
     private MyInvitationListAdapter adapter;
-    private RelativeLayout appBar;
-    private AppCompatTextView tvToolbarTitle, tvDone;
     View rootView;
 
 
@@ -59,14 +55,7 @@ public class RequestsFragment extends BaseFragment implements BaseRecyclerListen
 
 
     private void initView() {
-        appBar = (RelativeLayout) rootView.findViewById(R.id.appbar_new);
-        tvToolbarTitle = (AppCompatTextView) appBar.findViewById(R.id.tvToolbarTitle);
-        tvDone = (AppCompatTextView) appBar.findViewById(R.id.tvDone);
-        tvToolbarTitle.setVisibility(View.VISIBLE);
-        tvDone.setVisibility(View.VISIBLE);
-        tvToolbarTitle.setText(R.string.pending_requests);
-        tvDone.setText(R.string.invite);
-        tvDone.setOnClickListener(this);
+
 
         recyclerView = (FilterRecyclerView) rootView.findViewById(R.id.recyclerView);
         tvNoData = (AppCompatTextView) rootView.findViewById(R.id.tv_no_data);
@@ -185,17 +174,6 @@ public class RequestsFragment extends BaseFragment implements BaseRecyclerListen
                 adapter.removeItemAt(position);
             }
         });
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-
-            case R.id.tvDone:
-                startActivity(new Intent(requireContext(), InviteViaMobileActivity.class));
-                break;
-        }
     }
 }
 
