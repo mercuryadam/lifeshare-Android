@@ -179,6 +179,7 @@ public class BroadcastFragment extends BaseFragment
     private FrameLayout container;
     private FloatingActionButton fabMessage;
     private RelativeLayout rlBroadcast;
+    private LinearLayout llShareYourScreen;
     private AppCompatTextView tvBroadcast;
     private boolean isSubscriptionActive = false;
     private String selectedUsers;
@@ -232,6 +233,7 @@ public class BroadcastFragment extends BaseFragment
 
     private void changeBroadcastButtonView() {
         if (isBroadcasting) {
+            llShareYourScreen.setVisibility(View.GONE);
             tvBroadcast.setText(getResources().getString(R.string.stop_broadcast));
             final int sdk = Build.VERSION.SDK_INT;
             if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
@@ -240,6 +242,7 @@ public class BroadcastFragment extends BaseFragment
                 rlBroadcast.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_red));
             }
         } else {
+            llShareYourScreen.setVisibility(View.VISIBLE);
             tvBroadcast.setText(getResources().getString(R.string.start_broadcast));
             final int sdk = Build.VERSION.SDK_INT;
             if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
@@ -920,6 +923,7 @@ public class BroadcastFragment extends BaseFragment
         messageFragment = MessageFragment.newInstance();
         container.setVisibility(View.GONE);
         rlBroadcast = (RelativeLayout) rootView.findViewById(R.id.rl_broadcast);
+        llShareYourScreen = (LinearLayout) rootView.findViewById(R.id.llShareYourScreen);
         tvBroadcast = (AppCompatTextView) rootView.findViewById(R.id.tv_broadcast);
         changeBroadcastButtonView();
         rlBroadcast.setOnClickListener(this);

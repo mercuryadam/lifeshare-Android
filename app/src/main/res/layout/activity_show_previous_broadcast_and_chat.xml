@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".ui.save_broadcast.ShowPreviousBroadcastAndChatActivity">
@@ -71,6 +72,7 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/size_20dp"
             android:src="@drawable/send_msg"
+            app:backgroundTint="@color/gray"
             android:visibility="visible" />
 
     </RelativeLayout>

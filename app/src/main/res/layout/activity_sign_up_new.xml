@@ -131,21 +131,12 @@
                     android:singleLine="true" />
 
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextRegular.Gray.size14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_4dp"
-                    android:layout_marginTop="@dimen/size_20dp"
-                    android:text="@string/address"
-                    android:textStyle="bold" />
-
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/et_country"
                     style="@style/edittext_style_new"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_8dp"
+                    android:layout_marginTop="@dimen/size_16dp"
                     android:cursorVisible="false"
                     android:drawableEnd="@drawable/ic_arrow_drop_down"
                     android:drawablePadding="@dimen/size_16dp"
@@ -161,7 +152,7 @@
                     style="@style/edittext_style_new"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_8dp"
+                    android:layout_marginTop="@dimen/size_16dp"
                     android:cursorVisible="false"
                     android:drawableEnd="@drawable/ic_arrow_drop_down"
                     android:drawablePadding="@dimen/size_16dp"
@@ -177,7 +168,7 @@
                     style="@style/edittext_style_new"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_8dp"
+                    android:layout_marginTop="@dimen/size_16dp"
                     android:cursorVisible="false"
                     android:drawableEnd="@drawable/ic_arrow_drop_down"
                     android:drawablePadding="@dimen/size_16dp"
@@ -188,21 +179,12 @@
                     android:padding="@dimen/size_14dp"
                     android:singleLine="true" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextRegular.Gray.size14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/size_4dp"
-                    android:layout_marginTop="@dimen/size_20dp"
-                    android:text="@string/short_description"
-                    android:textStyle="bold" />
-
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/et_short_discription"
                     style="@style/edittext_style_new"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_8dp"
+                    android:layout_marginTop="@dimen/size_16dp"
                     android:drawablePadding="@dimen/size_16dp"
                     android:hint="@string/enter_short_description_of_channel"
                     android:inputType="textMultiLine"
@@ -212,6 +194,15 @@
                     android:padding="@dimen/size_14dp"
                     android:scrollbars="vertical" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTnC"
+                style="@style/TextRegular.Black.size14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_4dp"
+                android:layout_marginTop="@dimen/size_20dp"
+                android:textColorLink="@color/primary_green"
+                android:text="@string/short_description" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_sign_up"
