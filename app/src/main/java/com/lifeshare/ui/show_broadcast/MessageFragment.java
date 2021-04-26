@@ -150,12 +150,6 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
 
     private void initView(View view) {
         tvCountViewer = view.findViewById(R.id.tvCountViewer);
-        appBar = (RelativeLayout) view.findViewById(R.id.appbar_new);
-        ivBack = (AppCompatImageView) appBar.findViewById(R.id.ivBack);
-        ivBack.setVisibility(View.VISIBLE);
-        ivBack.setOnClickListener(this);
-
-
         rvMessage = view.findViewById(R.id.rv_message);
         llMessage = view.findViewById(R.id.ll_message);
         etMessage = view.findViewById(R.id.et_message);
@@ -209,8 +203,6 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                 break;
             case R.id.iv_flag:
                 openDialog();
-                break;
-            case R.id.ivBack:
                 break;
             case R.id.btn_save_chat:
                 saveChatHistory();

@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -29,8 +28,6 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -82,7 +79,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.agora.rtc.Constants;
 import io.agora.rtc.IRtcEngineEventHandler;
 import io.agora.rtc.RtcEngine;
@@ -135,6 +131,7 @@ public class BroadcastFragment extends BaseFragment
         }
     };
     private RelativeLayout rlChatView;
+    private FrameLayout activityMain;
     private InterstitialAd mInterstitialAd;
     private BubblesManager bubblesManager;
     private boolean isBubbleViewVisible;
@@ -486,7 +483,7 @@ public class BroadcastFragment extends BaseFragment
         if (!checkInternetConnection()) {
             return;
         }
-        showLoading(getString(R.string.waiting_for_connection_msg));
+        showLoading(requireActivity(), getString(R.string.waiting_for_connection_msg));
 
         if (selectedUsers != null) {
             onLiveSharingScreenClicked(true);
@@ -703,6 +700,8 @@ public class BroadcastFragment extends BaseFragment
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.activity_main:
+                break;
             case R.id.fabMessage:
                 if (container.getVisibility() == View.VISIBLE) {
                     container.setVisibility(View.GONE);
@@ -888,6 +887,8 @@ public class BroadcastFragment extends BaseFragment
     }
 
     private void initView() {
+        activityMain = (FrameLayout) rootView.findViewById(R.id.activity_main);
+        activityMain.setOnClickListener(this);
         rlChatView = (RelativeLayout) rootView.findViewById(R.id.rl_chat_message);
         rvViewer = rootView.findViewById(R.id.rv_viewer);
         llCountViewer = rootView.findViewById(R.id.llCountViewer);

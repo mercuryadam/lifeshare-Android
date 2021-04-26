@@ -47,10 +47,10 @@ public class BaseFragment extends Fragment implements BaseRemoteCallback {
         }
     }
 
-    public void showLoading(String message) {
+    public void showLoading(Context ctx, String message) {
         try {
             hideLoading();
-            mProgressDialog = new CustomProgressDialog(requireContext(), R.style.progress_dialog_text_style, message);
+            mProgressDialog = new CustomProgressDialog(ctx, R.style.progress_dialog_text_style, message);
             mProgressDialog.show();
         } catch (Exception e) {
             e.printStackTrace();

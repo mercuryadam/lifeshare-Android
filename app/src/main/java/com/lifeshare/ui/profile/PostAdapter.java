@@ -32,6 +32,9 @@ public class PostAdapter extends FilterableAdapter<ChannelArchiveResponse, BaseR
     public void onBindData(RecyclerView.ViewHolder holder, ChannelArchiveResponse val) {
         PostViewHolder viewHolder = (PostViewHolder) holder;
 
+        viewHolder.tvChannelName.setText(DateTimeHelper.getInstance().getDefaultDateTimeFromUtcDateTime(val.getTitle()));
+        viewHolder.tvTime.setText(DateTimeHelper.getInstance().getTimeAgo(val.getCreatedAt()));
+
         if (val.getType().equals("1")) {
             Glide.with(LifeShare.getInstance())
                     .load(val.getImage())
@@ -52,8 +55,6 @@ public class PostAdapter extends FilterableAdapter<ChannelArchiveResponse, BaseR
                         .into(viewHolder.ivBackGround);
 
             }
-            viewHolder.tvChannelName.setText(DateTimeHelper.getInstance().getDefaultDateTimeFromUtcDateTime(val.getTitle()));
-            viewHolder.tvTime.setText(DateTimeHelper.getInstance().getTimeAgo(val.getCreatedAt()));
         }
 
         viewHolder.tvChannelName.setOnClickListener(new View.OnClickListener() {

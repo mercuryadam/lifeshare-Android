@@ -14,7 +14,6 @@ import com.lifeshare.R;
 import com.lifeshare.ui.ui.AllPendingConnectionFragment;
 import com.lifeshare.ui.ui.BroadcastFragment;
 import com.lifeshare.ui.ui.HomeFragment;
-import com.lifeshare.ui.ui.RequestsFragment;
 import com.lifeshare.ui.ui.ViewProfileFragment;
 import com.lifeshare.utils.Const;
 
@@ -69,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         if (getIntent() != null && getIntent().getExtras() != null) {
             if (getIntent().getExtras().getBoolean(Const.FROM_NOTIFICATION, false)) {
-                navigation.setSelectedItemId(R.id.navigation_requests);
+                navigation.setSelectedItemId(R.id.navigation_connection);
             }
         }
 

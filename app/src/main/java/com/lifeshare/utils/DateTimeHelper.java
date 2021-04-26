@@ -47,16 +47,25 @@ public class DateTimeHelper {
 
     public String getTimeAgo(String str) {
 
-        long time = getServerDateTimeToAppDateTimeInLong(str);
-        long now = getCurrentTimeStamp();
-        if (time < 1000000000000L) {
-            time *= 1000;
+        SimpleDateFormat input = new SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.ENGLISH);
+        input.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Calendar calendar = Calendar.getInstance();
+        Date outputDate = (new Date(calendar.getTimeInMillis()));
+        String todayDate = input.format(outputDate);
+        long time = 0;
+        long now = 0;
+        try {
+            time = input.parse(str.trim()).getTime();
+            now = input.parse(todayDate.trim()).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+
         if (time > now || time <= 0) {
             return null;
         }
 
-        final long diff = now - time;
+        long diff = now - time;
 
         if (diff < MINUTE_MILLIS) {
             return "just now";
@@ -72,7 +81,13 @@ public class DateTimeHelper {
             return "yesterday";
         } else {
             long diffInDays = TimeUnit.MILLISECONDS.toDays(diff);
-            return diffInDays + " days ago";
+            if (diffInDays / 365 > 0) {
+                return diffInDays / 365 + " years ago";
+            } else if (diffInDays / 30 > 0) {
+                return diffInDays / 30 + " months ago";
+            } else {
+                return diffInDays + " days ago";
+            }
         }
     }
 
