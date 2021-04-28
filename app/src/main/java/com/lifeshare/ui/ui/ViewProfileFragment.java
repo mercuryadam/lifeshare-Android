@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,8 +69,11 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ViewProfileFragment extends BaseFragment implements View.OnClickListener {
 
+    private static final int EDIT_PROFILE = 922;
     private static final String TAG = "ViewProfileActivity";
     List<SkuDetails> skuDetails = new ArrayList<>();
     BillingClient billingClient;
@@ -440,6 +444,19 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case EDIT_PROFILE:
+                    getOtherProfileData();
+                    break;
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tvBack:
@@ -448,7 +465,7 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
                 Bundle bundle = new Bundle();
                 bundle.putString(Const.PROFILE, Const.MY_PROFILE);
                 intent.putExtras(bundle);
-                startActivity(intent);
+                startActivityForResult(intent,EDIT_PROFILE);
                 break;
 
             case R.id.llCATitle:

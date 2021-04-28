@@ -19,6 +19,8 @@ import com.lifeshare.utils.Const;
 
 public class DashboardActivity extends AppCompatActivity {
 
+    BottomNavigationView navigation;
+
    /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,7 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.nav_view);
+        navigation = (BottomNavigationView) findViewById(R.id.nav_view);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         fm.beginTransaction().add(R.id.nav_host_fragment, fragment4, "4").hide(fragment4).commit();
@@ -120,6 +122,10 @@ public class DashboardActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void viewProfile() {
+        navigation.setSelectedItemId(R.id.navigation_profile);
     }
 
 }

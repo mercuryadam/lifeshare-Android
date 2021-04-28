@@ -41,6 +41,7 @@ import com.lifeshare.network.request.GetArchiveListRequest;
 import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.StreamUserListResponse;
 import com.lifeshare.permission.RuntimeEasyPermission;
+import com.lifeshare.ui.DashboardActivity;
 import com.lifeshare.ui.ImageFullScreenDialogFragment;
 import com.lifeshare.ui.profile.PostAdapter;
 import com.lifeshare.ui.save_broadcast.ShowPreviousBroadcastAndChatActivity;
@@ -86,7 +87,10 @@ public class HomeFragment extends BaseFragment
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
+            case R.id.ivAdd:
+                DashboardActivity activity = (DashboardActivity) getActivity();
+                activity.viewProfile();
+                break;
         }
     }
 
@@ -157,6 +161,7 @@ public class HomeFragment extends BaseFragment
                 .load(PreferenceHelper.getInstance().getUser().getAvatar())
                 .apply(new RequestOptions().error(R.drawable.user_placeholder).placeholder(R.drawable.user_placeholder))
                 .into(ivAdd);
+        ivAdd.setOnClickListener(this);
         rvFriendBroadcast = (FilterRecyclerView) rootView.findViewById(R.id.rv_friend_broadcast);
         progressBarConnectionStreaming = (ProgressBar) rootView.findViewById(R.id.progress_connection_streaming);
 

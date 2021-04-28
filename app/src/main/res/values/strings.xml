@@ -86,7 +86,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="send_request_message">Are you sure you want to send request to %1$s?</string>
     <string name="send_request">Send Request</string>
     <string name="search_text_blank_message">Please enter search text</string>
-    <string name="no_live_streaming_message">There are no live streaming available in your connection.</string>
+    <string name="no_live_streaming_message">There are no live streaming available in your connections.</string>
     <string name="stream_drop_message">Streaming is no more</string>
     <string name="declined">Declined</string>
     <!--<string name="cancel">Cancel</string>-->
@@ -203,7 +203,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="pending_requests">Pending Requests</string>
     <string name="title_activity_dashboard">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_requests">Broadcasts</string>
+    <string name="title_requests">Broadcast</string>
     <string name="title_me">Me</string>
     <string name="title_connection">Connections</string>
     <string name="remove">Remove</string>

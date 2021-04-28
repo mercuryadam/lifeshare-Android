@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -146,15 +145,18 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
             }
         }
 
-        if (TextUtils.isEmpty(etAddTitle.getText().toString().trim())) {
+     /*   if (TextUtils.isEmpty(etAddTitle.getText().toString().trim())) {
             Toast.makeText(getActivity(), getString(R.string.please_add_title), Toast.LENGTH_SHORT).show();
             return false;
+        }*/
+
+        if (selectedArchiveType.equals(Const.PHOTO)) {
+            if (imagePath == null) {
+                Toast.makeText(getActivity(), getString(R.string.please_add_image), Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
 
-        if (imagePath == null) {
-            Toast.makeText(getActivity(), getString(R.string.please_add_image), Toast.LENGTH_SHORT).show();
-            return false;
-        }
         return true;
     }
 

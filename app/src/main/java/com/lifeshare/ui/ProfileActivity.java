@@ -260,6 +260,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onSuccess(LoginResponse response) {
                 hideLoading();
+                setResult(RESULT_OK);
                 PreferenceHelper.getInstance().setUser(response);
                 showToast(getString(R.string.profile_update_message));
             }
