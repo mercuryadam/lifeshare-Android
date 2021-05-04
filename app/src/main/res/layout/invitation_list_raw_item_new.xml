@@ -27,13 +27,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginVertical="@dimen/size_12dp"
+            android:layout_marginHorizontal="@dimen/size_12dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_name"
-                style="@style/TextMedium.SecondaryGreen.size16"
+                style="@style/TextRegular.SecondaryGreen.size16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"

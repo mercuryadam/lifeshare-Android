@@ -22,7 +22,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvChannelName"
-            style="@style/TextMedium.White.size16"
+            style="@style/TextMedium.White.size14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom"

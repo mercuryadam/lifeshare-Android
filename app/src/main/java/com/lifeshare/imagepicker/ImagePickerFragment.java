@@ -90,6 +90,12 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            permissions_storage = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+            permissions_camera = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA};
+        }
+
         if (getArguments() != null && getArguments().containsKey(KEY_PICKER_TYPE)) {
             if (getArguments().getInt(KEY_PICKER_TYPE) == 0) {
                 RuntimeEasyPermission.newInstance(permissions_camera,
@@ -167,46 +173,82 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
                     String realPathPhotoId = MediaHelper.getInstance()
                             .getRealPathFromURI(getContext(),
                                     data.getData());
-                    try {
-                        if (realPathPhotoId != null) {
-                            MediaHelper.getInstance().copyFile(realPathPhotoId
-                                    , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + selectedImageName);
 
-                            mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
-                                    , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + selectedImageName
-                                    , selectedImageName);
 
-                        } else {
-                            Toast.makeText(getContext(), R.string.err_image_not_exist_in_device, Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        try {
+                            if (realPathPhotoId != null) {
+                                MediaHelper.getInstance().copyFile(realPathPhotoId
+                                        , requireContext().getExternalFilesDir(null) + "/" + selectedImageName);
+
+                                mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
+                                        , requireContext().getExternalFilesDir(null) + "/" + selectedImageName
+                                        , selectedImageName);
+
+                            } else {
+                                Toast.makeText(getContext(), R.string.err_image_not_exist_in_device, Toast.LENGTH_SHORT).show();
+                            }
+                            closeImagePicker();
+
+                        } catch (IOException e) {
+                            closeImagePicker();
+                            e.printStackTrace();
                         }
-                        closeImagePicker();
+                    } else {
+                        try {
+                            if (realPathPhotoId != null) {
+                                MediaHelper.getInstance().copyFile(realPathPhotoId
+                                        , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + selectedImageName);
 
-                    } catch (IOException e) {
-                        closeImagePicker();
-                        e.printStackTrace();
+                                mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
+                                        , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + selectedImageName
+                                        , selectedImageName);
+
+                            } else {
+                                Toast.makeText(getContext(), R.string.err_image_not_exist_in_device, Toast.LENGTH_SHORT).show();
+                            }
+                            closeImagePicker();
+
+                        } catch (IOException e) {
+                            closeImagePicker();
+                            e.printStackTrace();
+                        }
                     }
-
                     break;
                 case ACTION_CAPTURE_IMAGE:
                     String captureImageName = "";
                     captureImageName = MediaHelper.getInstance()
                             .getImageCapturePath().substring(MediaHelper.getInstance()
                                     .getImageCapturePath().lastIndexOf("/") + 1);
-                    MediaHelper.getInstance().singleMediaScanner(getActivity());
+                    MediaHelper.getInstance().singleMediaScanner(requireActivity());
 
-                    try {
-                        MediaHelper.getInstance().copyFile(MediaHelper.getInstance()
-                                        .getImageCapturePath()
-                                , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + captureImageName);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        try {
+                            MediaHelper.getInstance().copyFile(MediaHelper.getInstance()
+                                            .getImageCapturePath()
+                                    , requireContext().getExternalFilesDir(null) + "/" + captureImageName);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
+                                , requireContext().getExternalFilesDir(null) + "/" + captureImageName
+                                , captureImageName);
+                    } else {
+                        try {
+                            MediaHelper.getInstance().copyFile(MediaHelper.getInstance()
+                                            .getImageCapturePath()
+                                    , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + captureImageName);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
+                                , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + captureImageName
+                                , captureImageName);
                     }
-
-
-                    mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
-                            , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + captureImageName
-                            , captureImageName);
                     closeImagePicker();
+                    break;
             }
         } else {
             closeImagePicker();
@@ -244,8 +286,14 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
 
     //capture image and save into default gallary path
     private void captureImage() {
+        File mediaStorageDir;
 
-        File mediaStorageDir = new File(ImageConst.getInstance().IMAGE_DIRECTORY_PATH);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            mediaStorageDir = new File(requireContext().getExternalFilesDir(null).toString());
+        } else {
+            mediaStorageDir = new File(ImageConst.getInstance().IMAGE_DIRECTORY_PATH);
+
+        }
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 MediaHelper.createMediaDirectory();

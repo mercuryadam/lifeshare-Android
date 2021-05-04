@@ -379,7 +379,6 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
         btnLogout.setOnClickListener(this);
         llEmailPhoneCity = rootView.findViewById(R.id.llEmailPhoneCity);
         llCATitle = rootView.findViewById(R.id.llCATitle);
-        llCATitle.setOnClickListener(this);
         rvChannelArchive = rootView.findViewById(R.id.rvChannelArchive);
 
 
@@ -468,7 +467,6 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
                 startActivityForResult(intent,EDIT_PROFILE);
                 break;
 
-            case R.id.llCATitle:
             case R.id.ivAdd:
                 if (PreferenceHelper.getInstance().getUser().getUserId().equals(userId)) {
                     // Create and show the dialog.

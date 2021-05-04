@@ -442,19 +442,6 @@ public class BroadcastFragment extends BaseFragment
                             @Override
                             public void run() {
                                 Log.i(LOG_TAG, "User offline, uid: " + (uid & 0xFFFFFFFFL));
-
-                                requireActivity().runOnUiThread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-
-                                        container.setVisibility(View.GONE);
-                                        fabMessage.hide();
-                                        removePublisherFromFirebase();
-
-                                    }
-                                });
-
                             }
                         });
                     }

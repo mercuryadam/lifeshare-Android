@@ -63,7 +63,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private static final String TAG = "ViewProfileActivity";
     List<SkuDetails> skuDetails = new ArrayList<>();
     BillingClient billingClient;
-    private LinearLayout llMain;
+    private LinearLayout llUnlock;
     private RelativeLayout appBar;
     private CircleImageView ivAdd, ivProfile;
     private AppCompatTextView tvChannelName;
@@ -164,8 +164,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 btnEdit.setVisibility(View.VISIBLE);
                 llEmailPhoneCity.setVisibility(View.VISIBLE);
                 llCATitle.setVisibility(View.VISIBLE);
-                rvChannelArchive.setVisibility(View.VISIBLE);
-                btnSubscribe.setVisibility(View.VISIBLE);
                 userId = PreferenceHelper.getInstance().getUser().getUserId();
                 checkSubscription();
 
@@ -176,7 +174,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 llEmailPhoneCity.setVisibility(View.GONE);
                 ivAdd.setVisibility(View.GONE);
                 MyConnectionListResponse data = (MyConnectionListResponse) bundle.getParcelable(Const.USER_DATA);
-                btnSubscribe.setVisibility(View.GONE);
                 userId = data.getUserId();
                 checkSubscription();
             }
@@ -287,7 +284,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         tvToolbarTitle.setVisibility(View.VISIBLE);
         ivAdd.setOnClickListener(this);
 
-        llMain = (LinearLayout) findViewById(R.id.ll_main);
+        llUnlock = (LinearLayout) findViewById(R.id.llUnlock);
         ivProfile = (CircleImageView) findViewById(R.id.iv_profile);
         tvChannelName = (AppCompatTextView) findViewById(R.id.tv_channel_name);
         tvEmail = (AppCompatTextView) findViewById(R.id.tv_email);
@@ -309,7 +306,6 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
         btnSubscribe.setOnClickListener(this);
         llEmailPhoneCity = findViewById(R.id.llEmailPhoneCity);
         llCATitle = findViewById(R.id.llCATitle);
-        llCATitle.setOnClickListener(this);
         rvChannelArchive = findViewById(R.id.rvChannelArchive);
 
 
@@ -387,9 +383,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
-
-            case R.id.llCATitle:
-            case R.id.ivAdd:
+                case R.id.ivAdd:
                 if (PreferenceHelper.getInstance().getUser().getUserId().equals(userId)) {
                     // Create and show the dialog.
                     DialogFragment newFragment = AddChannelArchiveDialogFragment.newInstance(this, Const.PHOTO);
@@ -418,8 +412,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void getListChannelArchive() {
-        if (!userId.equals(PreferenceHelper.getInstance().getUser().getUserId()) && !isSubscriptionActive) {
-            llCATitle.setVisibility(View.GONE);
+        if (!isSubscriptionActive) {
             return;
         }
 
@@ -458,9 +451,7 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             public void onEmptyResponse(String message) {
                 super.onEmptyResponse(message);
                 hideLoading();
-                btnSubscribe.setText(R.string.already_subscribed);
                 isSubscriptionActive = false;
-                btnSubscribe.setText(R.string.subscribe);
                 btnSubscribe.setEnabled(true);
             }
         });
@@ -469,22 +460,17 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
     private void manageViewForSubscription(String status) {
         if (status.equalsIgnoreCase("1")) {
             isSubscriptionActive = true;
-            btnSubscribe.setText(R.string.already_subscribed);
             btnSubscribe.setEnabled(false);
         } else {
             isSubscriptionActive = false;
-            btnSubscribe.setText(R.string.subscribe);
             btnSubscribe.setEnabled(true);
         }
-        if (!userId.equals(PreferenceHelper.getInstance().getUser().getUserId())) {
-            btnSubscribe.setVisibility(View.GONE);
+        if (isSubscriptionActive) {
+            llUnlock.setVisibility(View.GONE);
+            rvChannelArchive.setVisibility(View.VISIBLE);
         } else {
-            if (isSubscriptionActive) {
-                btnSubscribe.setVisibility(View.GONE);
-            } else {
-                btnSubscribe.setText(R.string.subscribe);
-                btnSubscribe.setVisibility(View.VISIBLE);
-            }
+            llUnlock.setVisibility(View.VISIBLE);
+            rvChannelArchive.setVisibility(View.GONE);
         }
     }
 
