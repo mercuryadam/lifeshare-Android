@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -119,6 +120,7 @@ public class MediaHelper {
             cursor.moveToFirst();
             return cursor.getString(column_index);
         } catch (Exception e) {
+            Log.v(TAG, e.getLocalizedMessage());
             e.printStackTrace();
             return "";
         } finally {

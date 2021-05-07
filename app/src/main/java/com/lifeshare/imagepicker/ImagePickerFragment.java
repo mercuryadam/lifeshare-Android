@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,16 +41,13 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
     private static final int ACTION_CHOOSE_IMAGE = 873;
     private static final int ACTION_CAPTURE_IMAGE = 922;
 
-    private static final int REQUEST_GALLARY_PERM = 998;
     private static final int REQUEST_CAPTURE_PERM = 736;
     private static final String KEY_PICKER_REQUEST_CODE = "picker_request_code";
     private static final String KEY_PICKER_TYPE = "picker_type";//0 - camera only, 1 - gallary only , 2 - both
     private static final String KEY_INITIAL_NAME = "intial_name";
     TextView tvGallery, tvCamera;
-    private String[] permissions_storage = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private String[] permissions_camera = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+
+    private final String[] permissions_camera = new String[]{Manifest.permission.CAMERA};
     private ImagePickerListener mListener;
 
     public ImagePickerFragment() {
@@ -90,22 +86,10 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            permissions_storage = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
-            permissions_camera = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.CAMERA};
-        }
-
         if (getArguments() != null && getArguments().containsKey(KEY_PICKER_TYPE)) {
             if (getArguments().getInt(KEY_PICKER_TYPE) == 0) {
                 RuntimeEasyPermission.newInstance(permissions_camera,
                         REQUEST_CAPTURE_PERM, "Allow camera permission")
-                        .show(getChildFragmentManager());
-                return null;
-            } else if (getArguments().getInt(KEY_PICKER_TYPE) == 1) {
-                RuntimeEasyPermission.newInstance(permissions_storage,
-                        REQUEST_GALLARY_PERM, "Allow storage permission")
                         .show(getChildFragmentManager());
                 return null;
             }
@@ -157,12 +141,6 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
         mListener = null;
     }
 
-    private void selectImage() {
-        MediaHelper.createMediaDirectory();
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, ACTION_CHOOSE_IMAGE);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -172,48 +150,25 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
                     String selectedImageName = MediaHelper.createMediaFileName(getArguments().getString(KEY_INITIAL_NAME, ""));
 
                     String realPathPhotoId = MediaHelper.getInstance()
-                            .getRealPathFromURI(getContext(),
-                                    data.getData());
+                            .getRealPathFromURI(requireContext(), data.getData());
 
+                    try {
+                        if (realPathPhotoId != null) {
+                            MediaHelper.getInstance().copyFile(realPathPhotoId
+                                    , requireContext().getExternalFilesDir(null) + "/" + selectedImageName);
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        try {
-                            if (realPathPhotoId != null) {
-                                MediaHelper.getInstance().copyFile(realPathPhotoId
-                                        , requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM) + "/" + selectedImageName);
+                            mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
+                                    , requireContext().getExternalFilesDir(null) + "/" + selectedImageName
+                                    , selectedImageName);
 
-                                mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
-                                        , requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM) + "/" + selectedImageName
-                                        , selectedImageName);
-
-                            } else {
-                                Toast.makeText(getContext(), R.string.err_image_not_exist_in_device, Toast.LENGTH_SHORT).show();
-                            }
-                            closeImagePicker();
-
-                        } catch (IOException e) {
-                            closeImagePicker();
-                            e.printStackTrace();
+                        } else {
+                            Toast.makeText(requireContext(), R.string.err_image_not_exist_in_device, Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        try {
-                            if (realPathPhotoId != null) {
-                                MediaHelper.getInstance().copyFile(realPathPhotoId
-                                        , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + selectedImageName);
+                        closeImagePicker();
 
-                                mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
-                                        , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + selectedImageName
-                                        , selectedImageName);
-
-                            } else {
-                                Toast.makeText(getContext(), R.string.err_image_not_exist_in_device, Toast.LENGTH_SHORT).show();
-                            }
-                            closeImagePicker();
-
-                        } catch (IOException e) {
-                            closeImagePicker();
-                            e.printStackTrace();
-                        }
+                    } catch (IOException e) {
+                        closeImagePicker();
+                        e.printStackTrace();
                     }
                     break;
                 case ACTION_CAPTURE_IMAGE:
@@ -223,31 +178,19 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
                                     .getImageCapturePath().lastIndexOf("/") + 1);
                     MediaHelper.getInstance().singleMediaScanner(requireActivity());
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        try {
-                            MediaHelper.getInstance().copyFile(MediaHelper.getInstance()
-                                            .getImageCapturePath()
-                                    , requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM) + "/" + captureImageName);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
-                                , requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM) + "/" + captureImageName
-                                , captureImageName);
-                    } else {
-                        try {
-                            MediaHelper.getInstance().copyFile(MediaHelper.getInstance()
-                                            .getImageCapturePath()
-                                    , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + captureImageName);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    try {
 
-
-                        mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
-                                , ImageConst.getInstance().IMAGE_DIRECTORY_PATH + "/" + captureImageName
-                                , captureImageName);
+                        MediaHelper.getInstance().copyFile(MediaHelper.getInstance()
+                                        .getImageCapturePath()
+                                , requireContext().getExternalFilesDir(null) + "/" + captureImageName);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+
+
+                    mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
+                            , requireContext().getExternalFilesDir(null) + "/" + captureImageName
+                            , captureImageName);
                     closeImagePicker();
                     break;
             }
@@ -265,56 +208,37 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_gallery:
-
-
-                RuntimeEasyPermission.newInstance(permissions_storage,
-                        REQUEST_GALLARY_PERM, "Allow storage permission")
-                        .show(getChildFragmentManager());
-
-
+                selectImageNew();
                 break;
             case R.id.tv_camera:
-
                 RuntimeEasyPermission.newInstance(permissions_camera,
                         REQUEST_CAPTURE_PERM, "Allow camera permission")
                         .show(getChildFragmentManager());
-
                 break;
             default:
                 break;
         }
     }
 
-    //capture image and save into default gallary path
-    private void captureImage() {
-        File mediaStorageDir;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            mediaStorageDir = new File(requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM).toString());
-        } else {
-            mediaStorageDir = new File(ImageConst.getInstance().IMAGE_DIRECTORY_PATH);
+    private void selectImageNew() {
+        MediaHelper.createMediaDirectory();
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, ACTION_CHOOSE_IMAGE);
+    }
 
-        }
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                MediaHelper.createMediaDirectory();
-            }
-        }
+    private void captureImageNew() {
         // Create a media file name
         String mImageName = MediaHelper.createMediaFileName(getArguments().getString(KEY_INITIAL_NAME, ""));
-
         File mediaFile;
-        String path = mediaStorageDir.getPath() + File.separator + mImageName;
-        mediaFile = new File(path);
-
+        mediaFile = new File(requireContext().getExternalFilesDir(null), mImageName);
         MediaHelper.getInstance()
                 .setImageCapturePath(mediaFile.getAbsolutePath());
-
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.putExtra(MediaStore.EXTRA_OUTPUT
-                    , FileProvider.getUriForFile(getActivity()
-                            , getActivity().getPackageName() + ".provider", mediaFile));
+                    , FileProvider.getUriForFile(requireContext()
+                            , requireContext().getPackageName() + ".provider", mediaFile));
         } else {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mediaFile));
         }
@@ -325,11 +249,8 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
     @Override
     public void onPermissionAllow(int permissionCode) {
         switch (permissionCode) {
-            case REQUEST_GALLARY_PERM:
-                selectImage();
-                break;
             case REQUEST_CAPTURE_PERM:
-                captureImage();
+                captureImageNew();
                 break;
 
         }
@@ -338,11 +259,6 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
     @Override
     public void onPermissionDeny(int permissionCode) {
         switch (permissionCode) {
-            case REQUEST_GALLARY_PERM:
-                Toast.makeText(getActivity(), R.string.msg_permission_denied, Toast.LENGTH_SHORT).show();
-                closeImagePicker();
-
-                break;
             case REQUEST_CAPTURE_PERM:
                 Toast.makeText(getActivity(), R.string.msg_permission_denied, Toast.LENGTH_SHORT).show();
                 closeImagePicker();
