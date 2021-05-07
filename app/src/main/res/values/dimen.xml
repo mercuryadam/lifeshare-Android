@@ -40,6 +40,7 @@
     <dimen name="size_300dp">350dp</dimen>
     <dimen name="size_200dp">200dp</dimen>
     <dimen name="size_230dp">230dp</dimen>
+    <dimen name="size_242dp">242dp</dimen>
     <dimen name="size_250dp">250dp</dimen>
 
 

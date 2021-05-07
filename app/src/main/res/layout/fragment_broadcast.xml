@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/size_4dp"
                 android:gravity="center"
-                android:text="@string/viewer" />
+                android:text="@string/live_viewer" />
         </LinearLayout>
     </LinearLayout>
 

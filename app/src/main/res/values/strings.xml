@@ -86,7 +86,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="send_request_message">Are you sure you want to send request to %1$s?</string>
     <string name="send_request">Send Request</string>
     <string name="search_text_blank_message">Please enter search text</string>
-    <string name="no_live_streaming_message">There are no live streaming available in your connections.</string>
+    <string name="no_live_streaming_message">There are no live broadcasts in your connections</string>
     <string name="stream_drop_message">Streaming is no more</string>
     <string name="declined">Declined</string>
     <!--<string name="cancel">Cancel</string>-->
@@ -127,7 +127,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="create_account">Create Account</string>
     <string name="change_password">Change password</string>
     <string name="my_connections">My Connections</string>
-    <string name="total_viewers">Total Viewers</string>
+    <string name="total_viewers">Total Viewers to Date: </string>
     <string name="about_lifeshare">About LifeShare</string>
     <string name="home">Home</string>
     <string name="my_profile">My Profile</string>
@@ -139,7 +139,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="start_broadcast">Start Broadcasting</string>
     <string name="stop_broadcast">Stop Broadcasting</string>
     <string name="your_channel_viewer">Your Channel Viewers</string>
-    <string name="broadcast_viewer">Broadcast Viewers</string>
+    <string name="broadcast_viewer">Broadcast Your Phone Live</string>
     <string name="please_accept_term_of_services">Please accept term of services</string>
     <string name="broadcasting">Broadcasting</string>
     <string name="new_password">New password</string>
@@ -204,8 +204,8 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="title_activity_dashboard">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_requests">Broadcast</string>
-    <string name="title_me">Me</string>
-    <string name="title_connection">Connections</string>
+    <string name="title_me">My Profile</string>
+    <string name="title_connection">Friends</string>
     <string name="remove">Remove</string>
     <string name="add">Add</string>
     <string name="comment">Comment</string>
@@ -215,6 +215,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="upload_new">Upload New</string>
     <string name="share_your_screen">Share Your Screen</string>
     <string name="everything_on_your_screen">Everything on your screen including notification will be recorded. This lets everyone on your broadcast see your screen.</string>
+    <string name="live_viewer">Live Viewers</string>
     <string name="viewer">Viewers</string>
     <string name="live">Live</string>
     <string name="live_chat">Live Chat</string>

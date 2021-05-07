@@ -337,10 +337,12 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void getCountForViewers() {
-        Log.v(TAG, "registerCountValueEventListener: ");
+        if (TextUtils.isEmpty(publisherUserId)) {
+            return;
+        }
         countViewerDatabaseReference = LifeShare.getFirebaseReference()
                 .child(Const.TABLE_PUBLISHER)
-                .child(PreferenceHelper.getInstance().getUser().getUserId())
+                .child(publisherUserId)
                 .child(Const.TABLE_COUNT_VIEWER);
         countViewerDatabaseReference.addValueEventListener(countViewerValueEventListener);
     }

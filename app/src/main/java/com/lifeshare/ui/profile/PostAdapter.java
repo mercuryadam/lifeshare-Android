@@ -3,6 +3,7 @@ package com.lifeshare.ui.profile;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -32,26 +33,39 @@ public class PostAdapter extends FilterableAdapter<ChannelArchiveResponse, BaseR
     public void onBindData(RecyclerView.ViewHolder holder, ChannelArchiveResponse val) {
         PostViewHolder viewHolder = (PostViewHolder) holder;
 
+        ViewTreeObserver viewTreeObserver = viewHolder.ivBackGround.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                viewHolder.ivBackGround.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                int width = viewHolder.ivBackGround.getMeasuredWidth();
+                int height = viewHolder.ivBackGround.getMeasuredHeight();
+                ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) viewHolder.ivBackGround.getLayoutParams();
+                params.height = height;
+                viewHolder.ivBackGround.setLayoutParams(params);
+            }
+        });
+
         viewHolder.tvChannelName.setText(DateTimeHelper.getInstance().getDefaultDateTimeFromUtcDateTime(val.getTitle()));
         viewHolder.tvTime.setText(DateTimeHelper.getInstance().getTimeAgo(val.getCreatedAt()));
 
         if (val.getType().equals("1")) {
             Glide.with(LifeShare.getInstance())
                     .load(val.getImage())
-                    .apply(new RequestOptions().error(R.drawable.ic_archive).placeholder(R.drawable.ic_archive).fitCenter())
+                    .apply(new RequestOptions().error(R.drawable.ic_archive).placeholder(R.drawable.ic_archive))
                     .into(viewHolder.ivBackGround);
             viewHolder.tvChannelName.setText(val.getTitle());
         } else {
             if (val.getVideo_url() != null && !val.getVideo_url().trim().isEmpty()) {
                 Glide.with(LifeShare.getInstance())
                         .load(val.getImage())
-                        .apply(new RequestOptions().error(R.drawable.ic_video_chat).placeholder(R.drawable.ic_video_chat).fitCenter())
+                        .apply(new RequestOptions().error(R.drawable.ic_video_chat).placeholder(R.drawable.ic_video_chat))
                         .into(viewHolder.ivBackGround);
 
             } else {
                 Glide.with(LifeShare.getInstance())
                         .load(val.getImage())
-                        .apply(new RequestOptions().error(R.drawable.ic_chat).placeholder(R.drawable.ic_chat).fitCenter())
+                        .apply(new RequestOptions().error(R.drawable.ic_chat).placeholder(R.drawable.ic_chat))
                         .into(viewHolder.ivBackGround);
 
             }
