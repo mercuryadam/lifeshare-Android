@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -179,10 +180,10 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
                         try {
                             if (realPathPhotoId != null) {
                                 MediaHelper.getInstance().copyFile(realPathPhotoId
-                                        , requireContext().getExternalFilesDir(null) + "/" + selectedImageName);
+                                        , requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM) + "/" + selectedImageName);
 
                                 mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
-                                        , requireContext().getExternalFilesDir(null) + "/" + selectedImageName
+                                        , requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM) + "/" + selectedImageName
                                         , selectedImageName);
 
                             } else {
@@ -226,12 +227,12 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
                         try {
                             MediaHelper.getInstance().copyFile(MediaHelper.getInstance()
                                             .getImageCapturePath()
-                                    , requireContext().getExternalFilesDir(null) + "/" + captureImageName);
+                                    , requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM) + "/" + captureImageName);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         mListener.onImageSelected(getArguments().getInt(KEY_PICKER_REQUEST_CODE, 0)
-                                , requireContext().getExternalFilesDir(null) + "/" + captureImageName
+                                , requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM) + "/" + captureImageName
                                 , captureImageName);
                     } else {
                         try {
@@ -289,7 +290,7 @@ public class ImagePickerFragment extends DialogFragment implements View.OnClickL
         File mediaStorageDir;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            mediaStorageDir = new File(requireContext().getExternalFilesDir(null).toString());
+            mediaStorageDir = new File(requireContext().getExternalFilesDir(Environment.DIRECTORY_DCIM).toString());
         } else {
             mediaStorageDir = new File(ImageConst.getInstance().IMAGE_DIRECTORY_PATH);
 
