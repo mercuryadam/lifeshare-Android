@@ -354,7 +354,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 onBackPressed();
                 break;
             case R.id.iv_profile:
-                ImagePickerFragment
+                new ImagePickerFragment()
                         .newInstance(CAMERA_REQUEST_ID, "LifeShare").show(getSupportFragmentManager());
 
                 break;

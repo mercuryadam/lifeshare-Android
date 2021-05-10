@@ -105,8 +105,7 @@ public class AddChannelArchiveDialogFragment extends DialogFragment implements V
                 dismissAllowingStateLoss();
                 break;
             case R.id.ivAddImage:
-                ImagePickerFragment
-                        .newInstance(CAMERA_REQUEST_ID, "LifeShare").show(getChildFragmentManager());
+                new ImagePickerFragment().newInstance(CAMERA_REQUEST_ID, "LifeShare").show(getChildFragmentManager());
                 break;
             case R.id.btnAddChannelArchive:
                 if (isValid()) {

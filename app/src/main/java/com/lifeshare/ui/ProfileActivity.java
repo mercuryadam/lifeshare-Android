@@ -207,7 +207,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                 startActivity(new Intent(ProfileActivity.this, ChangePasswordActivity.class));
                 break;
             case R.id.iv_profile:
-                ImagePickerFragment
+                new ImagePickerFragment()
                         .newInstance(CAMERA_REQUEST_ID, "LifeShare").show(getSupportFragmentManager());
 
                 break;

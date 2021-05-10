@@ -201,6 +201,7 @@ public class MediaHelper {
         return true;
     }
 
+
     public void singleMediaScanner(Activity activity) {
         File mediaFile = new File(getImageCapturePath());
         Uri uri = Uri.fromFile(mediaFile);
