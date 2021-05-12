@@ -102,24 +102,26 @@ class ImagePickerFragment : DialogFragment(), View.OnClickListener, RuntimeEasyP
                             val imgPath = data!!.data!!.path
                             val imgUri = data.data
                             realPathPhotoId = compressImageFile(imgPath!!, false, imgUri!!)
-                        }
-                    }
-                    hideLoading()
+                            val selectedImageName = MediaHelper.createMediaFileName(requireArguments().getString(KEY_INITIAL_NAME, ""))
 
-                    val selectedImageName = MediaHelper.createMediaFileName(requireArguments().getString(KEY_INITIAL_NAME, ""))
-
-                    try {
-                        if (realPathPhotoId != null) {
-                            MediaHelper.getInstance().copyFile(realPathPhotoId, requireContext().getExternalFilesDir(null).toString() + "/" + selectedImageName)
-                            mListener!!.onImageSelected(requireArguments().getInt(KEY_PICKER_REQUEST_CODE, 0), requireContext().getExternalFilesDir(null).toString() + "/" + selectedImageName, selectedImageName)
-                        } else {
-                            Toast.makeText(requireContext(), R.string.err_image_not_exist_in_device, Toast.LENGTH_SHORT).show()
+                            try {
+                                if (realPathPhotoId != null) {
+                                    MediaHelper.getInstance().copyFile(realPathPhotoId, requireContext().getExternalFilesDir(null).toString() + "/" + selectedImageName)
+                                    mListener!!.onImageSelected(requireArguments().getInt(KEY_PICKER_REQUEST_CODE, 0), requireContext().getExternalFilesDir(null).toString() + "/" + selectedImageName, selectedImageName)
+                                } else {
+                                    Toast.makeText(requireContext(), R.string.err_image_not_exist_in_device, Toast.LENGTH_SHORT).show()
+                                }
+                                closeImagePicker()
+                            } catch (e: IOException) {
+                                closeImagePicker()
+                                e.printStackTrace()
+                            }
                         }
-                        closeImagePicker()
-                    } catch (e: IOException) {
-                        closeImagePicker()
-                        e.printStackTrace()
+                        hideLoading()
+
                     }
+
+
                 }
                 ACTION_CAPTURE_IMAGE -> {
                     var captureImageName = ""
