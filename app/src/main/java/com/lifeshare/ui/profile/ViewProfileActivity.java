@@ -466,10 +466,10 @@ public class ViewProfileActivity extends BaseActivity implements View.OnClickLis
             btnSubscribe.setEnabled(true);
         }
         if (isSubscriptionActive) {
-            llUnlock.setVisibility(View.GONE);
+           // llUnlock.setVisibility(View.GONE);
             rvChannelArchive.setVisibility(View.VISIBLE);
         } else {
-            llUnlock.setVisibility(View.VISIBLE);
+            //llUnlock.setVisibility(View.VISIBLE);
             rvChannelArchive.setVisibility(View.GONE);
         }
     }

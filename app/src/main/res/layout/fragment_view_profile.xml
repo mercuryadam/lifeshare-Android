@@ -274,6 +274,7 @@
                     android:layout_marginTop="@dimen/size_30dp"
                     android:layout_marginBottom="@dimen/size_10dp"
                     android:singleLine="true"
+                    android:visibility="gone"
                     android:text="@string/subscribe"
                     android:textStyle="bold" />
 
