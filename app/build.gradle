@@ -21,7 +21,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         vectorDrawables.useSupportLibrary = true
-        versionCode 11
+        versionCode 12
         versionName "1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -51,7 +51,7 @@ android {
 
 
             resValue "string", "app_ad_id", "ca-app-pub-9815690731826051~5859510503"
-            resValue "string", "banner_adv_id", "ca-app-pub-9815690731826051/1466274154"
+            resValue "string", "banner_adv_id", "ca-app-pub-8203735219576649/7669298693"
             resValue "string", "interstial_adv_id", "ca-app-pub-8203735219576649/6653213735"
 
 

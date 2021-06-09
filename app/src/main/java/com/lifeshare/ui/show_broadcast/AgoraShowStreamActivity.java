@@ -58,6 +58,7 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
     private static final String TAG = "ShowStreamActivity";
     private static final String LOG_TAG = "AgoraScreenSharing";
     private RtcEngine mRtcEngine;
+    private int joinedUID = 0;
     private final VideoEncoderConfiguration mVEC = new VideoEncoderConfiguration(VideoEncoderConfiguration.VD_840x480,
             VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_24,
             VideoEncoderConfiguration.STANDARD_BITRATE,
@@ -397,7 +398,7 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
                             @Override
                             public void run() {
                                 Log.d(LOG_TAG, "onJoinChannelSuccess " + channel + " " + elapsed);
-                                Log.d(LOG_TAG, "CHANNEL UID " + channel + " " + uid);
+                                Log.d(LOG_TAG, "CHANNEL UID " + channel + " " + uid);//848532066
                                 addViewerToStream();
                                 updateCountForViewer();
 
@@ -443,7 +444,8 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Log.i("agora", "First remote video decoded, uid: " + (uid & 0xFFFFFFFFL));
+                                Log.d(LOG_TAG, "First remote video decoded, uid: " + uid);
+                                joinedUID = uid;
                                 setupVideoView(uid);
                             }
                         });
@@ -456,13 +458,29 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Log.i("agora", "User offline, uid: " + (uid & 0xFFFFFFFFL));
+                                Log.d(LOG_TAG, "User offline, uid: " + uid);
 
-                                if (container.getVisibility() == View.VISIBLE) {
-                                    container.setVisibility(View.GONE);
+                                if (joinedUID != 0) {
+                                    if (joinedUID == uid) {
+                                        if (container.getVisibility() == View.VISIBLE) {
+                                            container.setVisibility(View.GONE);
+                                        }
+                                        onLiveSharingScreenClicked(false, "");
+                                    }
                                 }
-                                onLiveSharingScreenClicked(false, "");
 
+
+                                //onJoinChannelSuccess kundan101_95678 858
+                                //CHANNEL UID kundan101_95678 1530740516
+                                //onWarn 1032
+                                //First remote video decoded, uid: -1946480708
+                                //User offline, uid: -742590126
+
+                                //onJoinChannelSuccess kundan101_27028 720
+                                //CHANNEL UID kundan101_27028 -1901407855
+                                //onWarn 1032
+                                //First remote video decoded, uid: 761256269
+                                //User offline, uid: 761256269
                             }
                         });
                     }
