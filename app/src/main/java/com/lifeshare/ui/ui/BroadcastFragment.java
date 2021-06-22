@@ -186,6 +186,7 @@ public class BroadcastFragment extends BaseFragment
     private String opnTokID = "";
     private boolean isSaveBroadcast = false;
 
+
   /*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -374,6 +375,21 @@ public class BroadcastFragment extends BaseFragment
                         });
                     }
 
+                    @Override
+                    public void onClientRoleChanged(int oldRole, int newRole) {
+                        super.onClientRoleChanged(oldRole, newRole);
+                        Log.d(LOG_TAG, "onClientRoleChanged: Old :" + oldRole + "- New : " + newRole);
+                    }
+
+                    @Override
+                    public void onUserJoined(int uid, int elapsed) {
+                        super.onUserJoined(uid, elapsed);
+                        Log.d(LOG_TAG, "onUserJoined: UID : " + uid + "Elapsed : " + elapsed);
+
+                        ClientRoleOptions clientRoleOptions = new ClientRoleOptions();
+                        clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
+                        mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
+                    }
 
                     @Override
                     public void onWarning(int warn) {
@@ -465,7 +481,7 @@ public class BroadcastFragment extends BaseFragment
 
             ClientRoleOptions clientRoleOptions = new ClientRoleOptions();
             clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
-            mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
+            mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
         }
     }
 
@@ -621,7 +637,7 @@ public class BroadcastFragment extends BaseFragment
             }
         });
         isBubbleViewVisible = true;
-        bubblesManager.addBubble(bubbleView, 60, 20);
+        bubblesManager.addBubble(bubbleView, 60, 60);
     }
 
     private void startTimer() {

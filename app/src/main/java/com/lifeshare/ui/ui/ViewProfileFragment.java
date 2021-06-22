@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -228,7 +227,7 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
             llEmailPhoneCity.setVisibility(View.VISIBLE);
             llCATitle.setVisibility(View.VISIBLE);
             rvChannelArchive.setVisibility(View.VISIBLE);
-            //btnSubscribe.setVisibility(View.VISIBLE);
+            btnSubscribe.setVisibility(View.VISIBLE);
             btnLogout.setVisibility(View.VISIBLE);
             userId = PreferenceHelper.getInstance().getUser().getUserId();
             checkSubscription();
@@ -236,7 +235,7 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
             btnEdit.setVisibility(View.GONE);
             llEmailPhoneCity.setVisibility(View.GONE);
             ivAdd.setVisibility(View.GONE);
-            //btnSubscribe.setVisibility(View.GONE);
+            btnSubscribe.setVisibility(View.GONE);
             btnLogout.setVisibility(View.GONE);
             userId = otherProfile.getUserId();
             checkSubscription();
@@ -601,13 +600,13 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
             btnSubscribe.setEnabled(true);
         }
         if (!userId.equals(PreferenceHelper.getInstance().getUser().getUserId())) {
-           // btnSubscribe.setVisibility(View.GONE);
+            btnSubscribe.setVisibility(View.GONE);
         } else {
             if (isSubscriptionActive) {
-                //btnSubscribe.setVisibility(View.GONE);
+                btnSubscribe.setVisibility(View.GONE);
             } else {
                 btnSubscribe.setText(R.string.subscribe);
-                //btnSubscribe.setVisibility(View.VISIBLE);
+                btnSubscribe.setVisibility(View.VISIBLE);
             }
         }
     }

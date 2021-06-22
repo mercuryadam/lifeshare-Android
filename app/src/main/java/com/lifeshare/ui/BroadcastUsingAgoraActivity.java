@@ -489,7 +489,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
 
             ClientRoleOptions clientRoleOptions = new ClientRoleOptions();
             clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
-            mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
+            mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
         }
     }
 
@@ -683,7 +683,7 @@ public class BroadcastUsingAgoraActivity extends BaseActivity
             }
         });
         isBubbleViewVisible = true;
-        bubblesManager.addBubble(bubbleView, 60, 20);
+        bubblesManager.addBubble(bubbleView, 60, 60);
     }
 
     private void startTimer() {

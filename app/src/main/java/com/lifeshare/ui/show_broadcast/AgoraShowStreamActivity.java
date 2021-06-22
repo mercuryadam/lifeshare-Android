@@ -379,7 +379,7 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
         clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
 
         if (ivVolume.getDrawable().getConstantState() == ContextCompat.getDrawable(this, R.drawable.ic_mute).getConstantState()) {
-            mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
+            mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
             ivVolume.setImageResource(R.drawable.ic_unmute);
         } else {
             mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_AUDIENCE, clientRoleOptions);
@@ -399,9 +399,13 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
                             public void run() {
                                 Log.d(LOG_TAG, "onJoinChannelSuccess " + channel + " " + elapsed);
                                 Log.d(LOG_TAG, "CHANNEL UID " + channel + " " + uid);//848532066
-                                addViewerToStream();
-                                updateCountForViewer();
+                                Log.d(LOG_TAG, "Publisher CHANNEL UID " + channel + " " + currentVisibleStram.getUserId());//848532066
 
+//                                boradcaster -
+//                                broadcaster = 123
+//                                audiance = 456
+//                                addViewerToStream();
+//                                updateCountForViewer();
                                 llStreamProgress.setVisibility(View.GONE);
                                 fabMessage.show();
                             }
@@ -463,8 +467,12 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
                                 if (joinedUID != 0) {
                                     if (joinedUID == uid) {
                                         if (container.getVisibility() == View.VISIBLE) {
+                                            Log.d(LOG_TAG, "User offline, Need to hide " + uid);
+
                                             container.setVisibility(View.GONE);
+
                                         }
+                                        ivVolume.setVisibility(View.INVISIBLE);
                                         onLiveSharingScreenClicked(false, "");
                                     }
                                 }
