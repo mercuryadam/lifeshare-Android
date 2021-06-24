@@ -404,8 +404,8 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
 //                                boradcaster -
 //                                broadcaster = 123
 //                                audiance = 456
-//                                addViewerToStream();
-//                                updateCountForViewer();
+                                addViewerToStream();
+                                updateCountForViewer();
                                 llStreamProgress.setVisibility(View.GONE);
                                 fabMessage.show();
                             }

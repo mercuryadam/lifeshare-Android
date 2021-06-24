@@ -250,7 +250,7 @@ public class HomeFragment extends BaseFragment
         tvNoFriendStreaminig.setVisibility(View.GONE);
         rvFriendBroadcast.setVisibility(View.GONE);
         getAgoraBroadcastList();
-        startGetStreamTimer();
+//        startGetStreamTimer();
     }
 
     private void startGetStreamTimer() {
