@@ -94,6 +94,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class BroadcastFragment extends BaseFragment
         implements EasyPermissions.PermissionCallbacks, View.OnClickListener, RuntimeEasyPermission.PermissionCallbacks {
 
+    private Boolean isBroadCastStoped = false;
     View rootView;
     private static final int MEDIA_PROJECTION_REQUEST_CODE = 1;
     private static final int VIEW_PROFILE_REQUEST_CODE = 188;
@@ -210,9 +211,9 @@ public class BroadcastFragment extends BaseFragment
         onLiveSharingScreenClicked(false);
         deInitModules();
 
-        if (Build.VERSION.SDK_INT >= 29) {
-            screenCapturerManager.unbindService();
-        }
+//        if (Build.VERSION.SDK_INT >= 29) {
+        screenCapturerManager.unbindService();
+//        }
 
         super.onDestroyView();
     }
@@ -363,7 +364,6 @@ public class BroadcastFragment extends BaseFragment
                         Log.d(LOG_TAG, "onJoinChannelSuccess " + channel + " " + elapsed);
                         Log.d(LOG_TAG, "CHANNEL UID " + channel + " " + uid);
 
-
                         requireActivity().runOnUiThread(new Runnable() {
 
                             @Override
@@ -386,9 +386,9 @@ public class BroadcastFragment extends BaseFragment
                         super.onUserJoined(uid, elapsed);
                         Log.d(LOG_TAG, "onUserJoined: UID : " + uid + "Elapsed : " + elapsed);
 
-                        ClientRoleOptions clientRoleOptions = new ClientRoleOptions();
-                        clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
-                        mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
+//                        ClientRoleOptions clientRoleOptions = new ClientRoleOptions();
+//                        clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
+//                        mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
                     }
 
                     @Override
@@ -475,9 +475,7 @@ public class BroadcastFragment extends BaseFragment
             } else {
                 throw new RuntimeException("Can not work on device do not supporting texture" + mRtcEngine.isTextureEncodeSupported());
             }
-
             mRtcEngine.setVideoEncoderConfiguration(mVEC);
-
             ClientRoleOptions clientRoleOptions = new ClientRoleOptions();
             clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
             mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_BROADCASTER, clientRoleOptions);
@@ -717,6 +715,7 @@ public class BroadcastFragment extends BaseFragment
             case R.id.rl_broadcast:
 
                 if (!isBroadcasting) {
+                    isBroadCastStoped = false;
                     checkAudioPermissionAndStartBroadCast();
                 } else {
                     stopBroadcast();
@@ -728,28 +727,32 @@ public class BroadcastFragment extends BaseFragment
 
     private void stopBroadcast() {
 
-        if (Build.VERSION.SDK_INT >= 29) {
+        if (!isBroadCastStoped) {
+            isBroadCastStoped = true;
+//            if (Build.VERSION.SDK_INT >= 29) {
             screenCapturerManager.endForeground();
+//            }
+
+            onLiveSharingScreenClicked(false);
+
+            playAudio(requireContext(), R.raw.dingdong);
+
+            Log.v(TAG, "onCheckedChanged: false ");
+            fabMessage.hide();
+            rlChatView.setVisibility(View.GONE);
+            container.setVisibility(View.GONE);
+            if (PreferenceHelper.getInstance().getCountOfViewer() > 0) {
+                updateCountForViewerToServer();
+            }
+
+
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            } else {
+                Log.v(TAG, "stopBroadcast: The interstitial wasn't loaded yet");
+            }
         }
 
-        onLiveSharingScreenClicked(false);
-
-        playAudio(requireContext(), R.raw.dingdong);
-
-        Log.v(TAG, "onCheckedChanged: false ");
-        fabMessage.hide();
-        rlChatView.setVisibility(View.GONE);
-        container.setVisibility(View.GONE);
-        if (PreferenceHelper.getInstance().getCountOfViewer() > 0) {
-            updateCountForViewerToServer();
-        }
-
-
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        } else {
-            Log.v(TAG, "stopBroadcast: The interstitial wasn't loaded yet");
-        }
     }
 
     @Override
@@ -902,9 +905,9 @@ public class BroadcastFragment extends BaseFragment
         llCountViewer = rootView.findViewById(R.id.llCountViewer);
         tvCountViewer = rootView.findViewById(R.id.tvCountViewer);
 
-        if (Build.VERSION.SDK_INT >= 29) {
-            screenCapturerManager = new ScreenCapturerManager(requireContext());
-        }
+//        if (Build.VERSION.SDK_INT >= 29) {
+        screenCapturerManager = new ScreenCapturerManager(requireContext());
+//        }
 
         rvViewer.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         viewerListAdapter = new ViewerListAdapter(new BaseRecyclerListener<ViewerUser>() {
@@ -965,9 +968,9 @@ public class BroadcastFragment extends BaseFragment
     }
 
     private void startBroadCast() {
-        if (Build.VERSION.SDK_INT >= 29) {
-            screenCapturerManager.startForeground();
-        }
+//        if (Build.VERSION.SDK_INT >= 29) {
+        screenCapturerManager.startForeground();
+//        }
         if (checkInternetConnection()) {
             createRoomAndGetId();
         } else {
