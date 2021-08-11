@@ -15,6 +15,7 @@ import com.lifeshare.ui.ui.AllPendingConnectionFragment;
 import com.lifeshare.ui.ui.BroadcastFragment;
 import com.lifeshare.ui.ui.HomeFragment;
 import com.lifeshare.ui.ui.ViewProfileFragment;
+import com.lifeshare.ui.ui.post.PostFragment;
 import com.lifeshare.utils.Const;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -51,32 +52,9 @@ public class DashboardActivity extends AppCompatActivity {
     final Fragment fragment2 = new BroadcastFragment();
     final Fragment fragment3 = new AllPendingConnectionFragment();
     Fragment fragment4 = new ViewProfileFragment();
+    final Fragment fragment5 = new PostFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragment1;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
-
-
-        navigation = (BottomNavigationView) findViewById(R.id.nav_view);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragment4, "4").hide(fragment4).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragment3, "3").hide(fragment3).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragment2, "2").hide(fragment2).commit();
-        fm.beginTransaction().add(R.id.nav_host_fragment, fragment1, "1").commit();
-
-        if (getIntent() != null && getIntent().getExtras() != null) {
-            if (getIntent().getExtras().getBoolean(Const.FROM_NOTIFICATION, false)) {
-                navigation.setSelectedItemId(R.id.navigation_connection);
-            }
-        }
-
-    }
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -88,6 +66,10 @@ public class DashboardActivity extends AppCompatActivity {
                     fragment1 = new HomeFragment();
                     fm.beginTransaction().hide(active).add(R.id.nav_host_fragment, fragment1, "1").commit();
                     active = fragment1;
+                    return true;
+                case R.id.navigation_post:
+                    fm.beginTransaction().hide(active).show(fragment5).commit();
+                    active = fragment5;
                     return true;
                 case R.id.navigation_requests:
                     fm.beginTransaction().hide(active).show(fragment2).commit();
@@ -109,6 +91,29 @@ public class DashboardActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dashboard);
+
+
+        navigation = (BottomNavigationView) findViewById(R.id.nav_view);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragment5, "5").hide(fragment5).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragment4, "4").hide(fragment4).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragment3, "3").hide(fragment3).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragment2, "2").hide(fragment2).commit();
+        fm.beginTransaction().add(R.id.nav_host_fragment, fragment1, "1").commit();
+
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            if (getIntent().getExtras().getBoolean(Const.FROM_NOTIFICATION, false)) {
+                navigation.setSelectedItemId(R.id.navigation_connection);
+            }
+        }
+
+    }
 
 
     @Override

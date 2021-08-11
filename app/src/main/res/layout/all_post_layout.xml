@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_242dp"
+    android:layout_margin="@dimen/size_8dp"
+    app:cardCornerRadius="@dimen/size_10dp"
+    app:contentPadding="@dimen/size_0dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivPostImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lichen"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_document" />
+
+    <RelativeLayout
+        android:id="@+id/rlFullRaw"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/size_4dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPostTitle"
+            style="@style/TextMedium.White.size14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tvPostTimeText"
+            android:gravity="bottom"
+            android:maxLines="4"
+            tools:text="text" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPostTimeText"
+            style="@style/TextRegular.White.size12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/size_8dp"
+            android:layout_marginBottom="@dimen/size_4dp"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            tools:text="time" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

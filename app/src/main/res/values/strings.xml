@@ -204,6 +204,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="title_activity_dashboard">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_requests">Broadcast</string>
+    <string name="post">Post</string>
     <string name="title_me">My Profile</string>
     <string name="title_connection">Friends</string>
     <string name="remove">Remove</string>
@@ -221,6 +222,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="live_chat">Live Chat</string>
     <string name="this_content_is_only_visible">This content is only available for premium members</string>
     <string name="unlock">Unlock</string>
+    <string name="all_post">All Post</string>
 
 
 </resources>

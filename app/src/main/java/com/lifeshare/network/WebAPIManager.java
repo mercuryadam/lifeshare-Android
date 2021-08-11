@@ -7,6 +7,7 @@ import com.lifeshare.model.ChannelArchive;
 import com.lifeshare.model.ChatMessage;
 import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.AgoraCreateRequest;
+import com.lifeshare.network.request.AllPostRequest;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.ChatHistoryRequest;
@@ -246,6 +247,10 @@ public class WebAPIManager {
 
     public void listChannelArchive(GetArchiveListRequest request, RemoteCallback<ArrayList<ChannelArchiveResponse>> callback) {
         mService.listChannelArchive(request).enqueue(callback);
+    }
+
+    public void allPostList(AllPostRequest request, RemoteCallback<ArrayList<ChannelArchiveResponse>> callback) {
+        mService.allPostList(request).enqueue(callback);
     }
 
     public void saveSubscription(SaveSubscriptionRequest request, RemoteCallback<CommonResponse> callback) {

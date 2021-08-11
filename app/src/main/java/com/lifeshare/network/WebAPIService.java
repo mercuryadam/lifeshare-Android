@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.lifeshare.model.ChatMessage;
 import com.lifeshare.network.request.AcceptInvitation;
 import com.lifeshare.network.request.AgoraCreateRequest;
+import com.lifeshare.network.request.AllPostRequest;
 import com.lifeshare.network.request.BlockUnblockRequest;
 import com.lifeshare.network.request.ChangePasswordRequest;
 import com.lifeshare.network.request.ChatHistoryRequest;
@@ -178,6 +179,9 @@ public interface WebAPIService {
 
     @POST("channel/list")
     Call<ArrayList<ChannelArchiveResponse>> listChannelArchive(@Body GetArchiveListRequest request);
+
+    @POST("channel/list")
+    Call<ArrayList<ChannelArchiveResponse>> allPostList(@Body AllPostRequest request);
 
     @POST("user/storeSubscription")
     Call<CommonResponse> saveSubscription(@Body SaveSubscriptionRequest request);
