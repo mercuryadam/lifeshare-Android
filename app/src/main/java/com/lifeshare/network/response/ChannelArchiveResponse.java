@@ -25,7 +25,7 @@ public class ChannelArchiveResponse implements Parcelable {
     private String video_url;
     private String referenceId;
 
-    protected ChannelArchiveResponse(Parcel in) {
+    public ChannelArchiveResponse(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
         } else {

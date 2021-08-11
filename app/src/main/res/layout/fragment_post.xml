@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".ui.ui.post.PostFragment">
 
     <RelativeLayout
@@ -27,6 +28,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAllPost"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/size_8dp" />
 
 </LinearLayout>

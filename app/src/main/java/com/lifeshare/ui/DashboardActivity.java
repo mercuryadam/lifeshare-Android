@@ -67,10 +67,12 @@ public class DashboardActivity extends AppCompatActivity {
                     fm.beginTransaction().hide(active).add(R.id.nav_host_fragment, fragment1, "1").commit();
                     active = fragment1;
                     return true;
+
                 case R.id.navigation_post:
                     fm.beginTransaction().hide(active).show(fragment5).commit();
                     active = fragment5;
                     return true;
+
                 case R.id.navigation_requests:
                     fm.beginTransaction().hide(active).show(fragment2).commit();
                     active = fragment2;

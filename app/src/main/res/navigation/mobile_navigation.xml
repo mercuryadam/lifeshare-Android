@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/navigation_post"
+        android:name="com.lifeshare.ui.ui.post.PostFragment"
+        android:label="@string/post"
+        tools:layout="@layout/fragment_post" />
+
+    <fragment
         android:id="@+id/navigation_requests"
         android:name="com.lifeshare.ui.ui.RequestsFragment"
         android:label="@string/title_requests"

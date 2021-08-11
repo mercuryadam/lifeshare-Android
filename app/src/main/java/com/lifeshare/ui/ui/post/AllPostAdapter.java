@@ -1,5 +1,7 @@
 package com.lifeshare.ui.ui.post;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +26,13 @@ import java.util.ArrayList;
 public class AllPostAdapter extends RecyclerView.Adapter<AllPostAdapter.AllPostViewHolder> {
 
     private final ArrayList<ChannelArchiveResponse> postList = new ArrayList<>();
+    private Context context;
 
     @NonNull
     @NotNull
     @Override
     public AllPostViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.all_post_layout, parent, false);
         return new AllPostViewHolder(view);
@@ -74,6 +78,11 @@ public class AllPostAdapter extends RecyclerView.Adapter<AllPostAdapter.AllPostV
             }
         }
 
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CommentActivity.class);
+            intent.putExtra("postData", postList.get(position));
+            context.startActivity(intent);
+        });
     }
 
 

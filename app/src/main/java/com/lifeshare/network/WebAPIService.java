@@ -11,10 +11,15 @@ import com.lifeshare.network.request.ChatHistoryRequest;
 import com.lifeshare.network.request.CheckSocialMediaRequest;
 import com.lifeshare.network.request.CheckVersionRequest;
 import com.lifeshare.network.request.CityRequest;
+import com.lifeshare.network.request.CommentLikeOrLoveRequest;
+import com.lifeshare.network.request.CommentRequest;
+import com.lifeshare.network.request.CommentUpdateRequest;
 import com.lifeshare.network.request.ContactInvitationRequest;
 import com.lifeshare.network.request.ContactInvitationViaMobileRequest;
+import com.lifeshare.network.request.CreateCommentRequest;
 import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
+import com.lifeshare.network.request.DeleteCommentRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
 import com.lifeshare.network.request.DeleteStreamingRequest;
 import com.lifeshare.network.request.DeleteStreamingTwilioRequest;
@@ -40,6 +45,7 @@ import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CheckSubscriptionResponse;
 import com.lifeshare.network.response.CheckVersionResponse;
 import com.lifeshare.network.response.CityResponse;
+import com.lifeshare.network.response.CommentResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
 import com.lifeshare.network.response.CreateRoomResponse;
@@ -182,6 +188,21 @@ public interface WebAPIService {
 
     @POST("channel/list")
     Call<ArrayList<ChannelArchiveResponse>> allPostList(@Body AllPostRequest request);
+
+    @POST("comment/list")
+    Call<CommentResponse> getCommentList(@Body CommentRequest request);
+
+    @POST("comment/create")
+    Call<CommonResponse> createComment(@Body CreateCommentRequest request);
+
+    @POST("comment/delete")
+    Call<CommonResponse> deleteComment(@Body DeleteCommentRequest request);
+
+    @POST("comment/like-love")
+    Call<CommonResponse> commentLikeOrLove(@Body CommentLikeOrLoveRequest request);
+
+    @POST("comment/update")
+    Call<CommonResponse> updateComment(@Body CommentUpdateRequest request);
 
     @POST("user/storeSubscription")
     Call<CommonResponse> saveSubscription(@Body SaveSubscriptionRequest request);

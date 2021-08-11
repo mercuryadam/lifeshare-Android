@@ -36,6 +36,7 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="message_invalid_user">Your account is not recognized</string>
     <string name="message_invalid_session">Invalid session</string>
     <string name="logout_message">Are you sure you want to logout?</string>
+    <string name="delete_comment_text">Are you sure you want to delete comment?</string>
     <string name="save_broadcast_message">Do you want to save this broadcast into your channel archives?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -223,6 +224,9 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="this_content_is_only_visible">This content is only available for premium members</string>
     <string name="unlock">Unlock</string>
     <string name="all_post">All Post</string>
+    <string name="comments">Comments</string>
+    <string name="enter_comment">Enter comment</string>
+    <string name="please_add_comment">Please add comment</string>
 
 
 </resources>

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lifeshare.BaseFragment;
@@ -24,32 +25,18 @@ import java.util.ArrayList;
 
 public class PostFragment extends BaseFragment {
 
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     View rootView;
     RecyclerView rvAllPost;
     AllPostAdapter allPostAdapter;
-    private String mParam1;
-    private String mParam2;
     private ArrayList<ChannelArchiveResponse> channelArchiveList = new ArrayList<>();
-
-    public static PostFragment newInstance(String param1, String param2) {
-        PostFragment fragment = new PostFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private final int totalPages = 10;
+    private int pageNo = 0;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -70,9 +57,27 @@ public class PostFragment extends BaseFragment {
 
     private void initView() {
         rvAllPost = rootView.findViewById(R.id.rvAllPost);
-        rvAllPost.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        LinearLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        rvAllPost.setLayoutManager(layoutManager);
         allPostAdapter = new AllPostAdapter();
         rvAllPost.setAdapter(allPostAdapter);
+
+        rvAllPost.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                if (!isLoading && !isLastPage) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
+                        pageNo++;
+                        isLoading = true;
+                        getPostList();
+                    }
+                }
+            }
+        });
         getPostList();
     }
 
@@ -81,12 +86,18 @@ public class PostFragment extends BaseFragment {
         AllPostRequest request = new AllPostRequest();
         request.setUserId(PreferenceHelper.getInstance().getUser().getUserId());
         request.setAll("1");
-        request.setPageNo("0");
+        request.setPageNo(String.valueOf(pageNo));
         WebAPIManager.getInstance().allPostList(request, new RemoteCallback<ArrayList<ChannelArchiveResponse>>() {
             @Override
             public void onSuccess(ArrayList<ChannelArchiveResponse> response) {
                 channelArchiveList = response;
                 allPostAdapter.addItems(channelArchiveList);
+                if (pageNo < totalPages) {
+
+                } else {
+                    isLastPage = true;
+                }
+                isLoading = false;
                 hideLoading();
             }
 

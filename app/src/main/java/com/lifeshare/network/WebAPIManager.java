@@ -14,10 +14,15 @@ import com.lifeshare.network.request.ChatHistoryRequest;
 import com.lifeshare.network.request.CheckSocialMediaRequest;
 import com.lifeshare.network.request.CheckVersionRequest;
 import com.lifeshare.network.request.CityRequest;
+import com.lifeshare.network.request.CommentLikeOrLoveRequest;
+import com.lifeshare.network.request.CommentRequest;
+import com.lifeshare.network.request.CommentUpdateRequest;
 import com.lifeshare.network.request.ContactInvitationRequest;
 import com.lifeshare.network.request.ContactInvitationViaMobileRequest;
+import com.lifeshare.network.request.CreateCommentRequest;
 import com.lifeshare.network.request.CreateRoomWithUserRequest;
 import com.lifeshare.network.request.DeleteArchivesRequest;
+import com.lifeshare.network.request.DeleteCommentRequest;
 import com.lifeshare.network.request.DeleteConnectionRequest;
 import com.lifeshare.network.request.DeleteStreamingRequest;
 import com.lifeshare.network.request.DeleteStreamingTwilioRequest;
@@ -44,6 +49,7 @@ import com.lifeshare.network.response.ChannelArchiveResponse;
 import com.lifeshare.network.response.CheckSubscriptionResponse;
 import com.lifeshare.network.response.CheckVersionResponse;
 import com.lifeshare.network.response.CityResponse;
+import com.lifeshare.network.response.CommentResponse;
 import com.lifeshare.network.response.CommonResponse;
 import com.lifeshare.network.response.CountryResponse;
 import com.lifeshare.network.response.CreateRoomResponse;
@@ -251,6 +257,26 @@ public class WebAPIManager {
 
     public void allPostList(AllPostRequest request, RemoteCallback<ArrayList<ChannelArchiveResponse>> callback) {
         mService.allPostList(request).enqueue(callback);
+    }
+
+    public void getCommentList(CommentRequest request, RemoteCallback<CommentResponse> callback) {
+        mService.getCommentList(request).enqueue(callback);
+    }
+
+    public void deleteComment(DeleteCommentRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.deleteComment(request).enqueue(callback);
+    }
+
+    public void createComment(CreateCommentRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.createComment(request).enqueue(callback);
+    }
+
+    public void commentLikeOrLove(CommentLikeOrLoveRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.commentLikeOrLove(request).enqueue(callback);
+    }
+
+    public void updateComment(CommentUpdateRequest request, RemoteCallback<CommonResponse> callback) {
+        mService.updateComment(request).enqueue(callback);
     }
 
     public void saveSubscription(SaveSubscriptionRequest request, RemoteCallback<CommonResponse> callback) {
