@@ -17,6 +17,10 @@ public class Const {
     public static final String NEW_INVITATION = "NEW_INVITATION";
     public static final String NEW_INVITATION_ACTION = "NEW_INVITATION_ACTION";
     public static final String INVITATION_ACCEPT = "INVITATION_ACCEPT";
+    public static final String LIKE_COMMENT = "LIKE_COMMENT";
+    public static final String LOVE_COMMENT = "LOVE_COMMENT";
+    public static final String NEW_COMMENT = "NEW_COMMENT";
+    public static final String COMMENT_ADD_LIKE_LOVE = "COMMENT_ADD_LIKE_LOVE";
     public static final String INVITATION_ACCEPT_ACTION = "INVITATION_ACCEPT_ACTION";
     public static final String STREAM_STARTED = "STREAM_STARTED";
     public static final String MY_PROFILE = "MY_PROFILE";

@@ -89,8 +89,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         return commentResponses.size();
     }
 
-    public void addItems(List<CommentData> items) {
-        this.commentResponses.clear();
+    public void addItems(List<CommentData> items, boolean isRefresh) {
+        if (isRefresh) {
+            this.commentResponses.clear();
+        }
         this.commentResponses.addAll(items);
         notifyDataSetChanged();
     }

@@ -91,9 +91,12 @@ public class AllPostAdapter extends RecyclerView.Adapter<AllPostAdapter.AllPostV
         return postList.size();
     }
 
-    public void addItems(ArrayList<ChannelArchiveResponse> items) {
-        this.postList.clear();
+    public void addItems(ArrayList<ChannelArchiveResponse> items, boolean isRefresh) {
+        if (isRefresh) {
+            this.postList.clear();
+        }
         this.postList.addAll(items);
+        notifyDataSetChanged();
     }
 
     public static class AllPostViewHolder extends RecyclerView.ViewHolder {

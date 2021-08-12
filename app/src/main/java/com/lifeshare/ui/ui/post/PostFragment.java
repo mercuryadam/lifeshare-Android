@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lifeshare.BaseFragment;
 import com.lifeshare.R;
@@ -33,6 +34,7 @@ public class PostFragment extends BaseFragment {
     private int pageNo = 0;
     private boolean isLoading = false;
     private boolean isLastPage = false;
+    private SwipeRefreshLayout swipeRefreshLayoutRegister;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class PostFragment extends BaseFragment {
 
     private void initView() {
         rvAllPost = rootView.findViewById(R.id.rvAllPost);
+        swipeRefreshLayoutRegister = rootView.findViewById(R.id.swipeRefreshLayoutRegister);
         LinearLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         rvAllPost.setLayoutManager(layoutManager);
         allPostAdapter = new AllPostAdapter();
@@ -73,15 +76,20 @@ public class PostFragment extends BaseFragment {
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= 10) {
                         pageNo++;
                         isLoading = true;
-                        getPostList();
+                        getPostList(false);
                     }
                 }
             }
         });
-        getPostList();
+        getPostList(false);
+        swipeRefreshLayoutRegister.setOnRefreshListener(() -> {
+            pageNo = 0;
+            getPostList(true);
+            swipeRefreshLayoutRegister.setRefreshing(false);
+        });
     }
 
-    private void getPostList() {
+    private void getPostList(boolean isRefresh) {
         showLoading();
         AllPostRequest request = new AllPostRequest();
         request.setUserId(PreferenceHelper.getInstance().getUser().getUserId());
@@ -91,11 +99,11 @@ public class PostFragment extends BaseFragment {
             @Override
             public void onSuccess(ArrayList<ChannelArchiveResponse> response) {
                 channelArchiveList = response;
-                allPostAdapter.addItems(channelArchiveList);
-                if (pageNo < totalPages) {
-
-                } else {
+                allPostAdapter.addItems(channelArchiveList, isRefresh);
+                if (channelArchiveList.isEmpty()) {
                     isLastPage = true;
+                } else {
+                    isLastPage = false;
                 }
                 isLoading = false;
                 hideLoading();
@@ -104,6 +112,7 @@ public class PostFragment extends BaseFragment {
             @Override
             public void onEmptyResponse(String message) {
                 hideLoading();
+                isLastPage = false;
             }
         });
 

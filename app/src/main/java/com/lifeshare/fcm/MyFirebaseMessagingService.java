@@ -15,6 +15,7 @@ import com.lifeshare.R;
 import com.lifeshare.network.response.StreamUserListResponse;
 import com.lifeshare.ui.DashboardActivity;
 import com.lifeshare.ui.show_broadcast.AgoraShowStreamActivity;
+import com.lifeshare.ui.ui.post.CommentActivity;
 import com.lifeshare.utils.Const;
 import com.lifeshare.utils.PreferenceHelper;
 
@@ -42,7 +43,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.v(TAG, String.valueOf(remoteMessage));
+        Log.e(TAG, remoteMessage.getData().toString());
 
         Map<String, String> notifData = remoteMessage.getData();
         String json = notifData.get("message");
@@ -63,11 +64,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         try {
             JSONObject jsonObject = new JSONObject(object);
-            Log.v("notificationData", String.valueOf(jsonObject));
+            Log.e("notificationData", String.valueOf(jsonObject));
             String type = jsonObject.getString("type");
-            String message = jsonObject.getString("message");
-            Random rand = new Random();
-            int mNotifId = rand.nextInt(1000) + Integer.MAX_VALUE;
+            String message = jsonObject.getString("msg");
+            JSONObject channelDataJsonObject = new JSONObject(jsonObject.getString("channel_data"));
+            String channelId = channelDataJsonObject.getString("id");
+            String title = channelDataJsonObject.getString("title");
+            String link = channelDataJsonObject.getString("link");
+            String image = channelDataJsonObject.getString("image");
+            String createdAt = channelDataJsonObject.getString("createdAt");
+            String channelType = channelDataJsonObject.getString("type");
+            String video_url = channelDataJsonObject.getString("video_url");
+//            String room_s_id = channelDataJsonObject.getString("room_s_id");
+//            String file_type = channelDataJsonObject.getString("file_type");
+//            String save_broadcast = channelDataJsonObject.getString("save_broadcast");
+//            String is_video_download = channelDataJsonObject.getString("is_video_download");
             Intent intent;
             switch (type) {
                 case Const.INVITATION_ACCEPT:
@@ -90,6 +101,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     util.show();
 
                     LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Const.NEW_INVITATION_ACTION));
+                    break;
+                case Const.COMMENT_ADD_LIKE_LOVE:
+                    intent = new Intent(getApplicationContext(), CommentActivity.class);
+                    intent.putExtra(Const.FROM_NOTIFICATION, true);
+                    intent.putExtra("channelId", channelId);
+                    intent.putExtra("title", title);
+                    intent.putExtra("link", link);
+                    intent.putExtra("image", image);
+                    intent.putExtra("createdAt", createdAt);
+                    intent.putExtra("video_url", video_url);
+                    intent.putExtra("type", channelType);
+                    NotificationUtil notification =
+                            new NotificationUtil(getApplicationContext(), Const.COMMENT_ADD_LIKE_LOVE,
+                                    getString(R.string.app_name), message, intent, new Random().nextInt());
+                    notification.show();
                     break;
             }
 

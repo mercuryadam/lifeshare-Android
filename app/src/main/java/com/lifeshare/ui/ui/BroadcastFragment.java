@@ -835,33 +835,33 @@ public class BroadcastFragment extends BaseFragment
     private void checkAudioPermissionAndStartBroadCast() {
 
         playAudio(requireContext(), R.raw.jingle_two);
-        isSaveBroadcast = true;
-        RuntimeEasyPermission.newInstance(permissions_audio,
-                REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
+//        isSaveBroadcast = true;
+//        RuntimeEasyPermission.newInstance(permissions_audio,
+//                REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
 
-//        if (isSubscriptionActive) {
-//            otherDialog(requireContext(), getResources().getString(R.string.save_broadcast_message), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DismissListenerWithStatus() {
-//                @Override
-//                public void onDismissed(String message) {
-//                    if (message.equalsIgnoreCase(getResources().getString(R.string.yes))) {
-//                        isSaveBroadcast = true;
-//                        RuntimeEasyPermission.newInstance(permissions_audio,
-//                                REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
-//
-//                    } else {
-//                        isSaveBroadcast = false;
-//                        RuntimeEasyPermission.newInstance(permissions_audio,
-//                                REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
-//
-//                    }
-//                }
-//            });
-//        } else {
-//            isSaveBroadcast = false;
-//            RuntimeEasyPermission.newInstance(permissions_audio,
-//                    REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
-//
-//        }
+        if (isSubscriptionActive) {
+            otherDialog(requireContext(), getResources().getString(R.string.save_broadcast_message), getResources().getString(R.string.yes), getResources().getString(R.string.no), new DismissListenerWithStatus() {
+                @Override
+                public void onDismissed(String message) {
+                    if (message.equalsIgnoreCase(getResources().getString(R.string.yes))) {
+                        isSaveBroadcast = true;
+                        RuntimeEasyPermission.newInstance(permissions_audio,
+                                REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
+
+                    } else {
+                        isSaveBroadcast = false;
+                        RuntimeEasyPermission.newInstance(permissions_audio,
+                                REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
+
+                    }
+                }
+            });
+        } else {
+            isSaveBroadcast = false;
+            RuntimeEasyPermission.newInstance(permissions_audio,
+                    REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
+
+        }
 
 
     }
