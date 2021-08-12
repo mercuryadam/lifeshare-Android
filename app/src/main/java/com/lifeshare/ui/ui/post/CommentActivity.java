@@ -164,14 +164,6 @@ public class CommentActivity extends BaseActivity {
                         DialogFragment dialogFragment = ImageFullScreenDialogFragment.newInstance(image);
                         dialogFragment.show(getSupportFragmentManager(), "ImageFullScreenDialogFragment");
                     }
-                } else {
-                    ChannelArchiveResponse postData = null;
-                    Intent intent = new Intent(this, ShowPreviousBroadcastAndChatActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(Const.CHANNAL_DATA, postData);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-
                 }
             } else {
                 if (postData.getType().equals("1")) {
