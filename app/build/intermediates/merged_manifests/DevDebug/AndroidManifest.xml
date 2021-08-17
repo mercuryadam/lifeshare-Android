@@ -38,6 +38,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true" >
         <activity
+            android:name="com.lifeshare.ui.ui.post.CommentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/splashTheme" />
+        <activity
             android:name="com.lifeshare.ui.DashboardActivity"
             android:label="@string/title_activity_dashboard"
             android:screenOrientation="portrait"
