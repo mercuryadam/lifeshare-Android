@@ -66,15 +66,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JSONObject jsonObject = new JSONObject(object);
             Log.e("notificationData", String.valueOf(jsonObject));
             String type = jsonObject.getString("type");
-            String message = jsonObject.getString("msg");
-            JSONObject channelDataJsonObject = new JSONObject(jsonObject.getString("channel_data"));
-            String channelId = channelDataJsonObject.getString("id");
-            String title = channelDataJsonObject.getString("title");
-            String link = channelDataJsonObject.getString("link");
-            String image = channelDataJsonObject.getString("image");
-            String createdAt = channelDataJsonObject.getString("createdAt");
-            String channelType = channelDataJsonObject.getString("type");
-            String video_url = channelDataJsonObject.getString("video_url");
+            String message = jsonObject.getString("message");
+
+
 //            String room_s_id = channelDataJsonObject.getString("room_s_id");
 //            String file_type = channelDataJsonObject.getString("file_type");
 //            String save_broadcast = channelDataJsonObject.getString("save_broadcast");
@@ -103,6 +97,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Const.NEW_INVITATION_ACTION));
                     break;
                 case Const.COMMENT_ADD_LIKE_LOVE:
+                    JSONObject channelDataJsonObject = new JSONObject(jsonObject.getString("channel_data"));
+                    String channelId = channelDataJsonObject.getString("id");
+                    String title = channelDataJsonObject.getString("title");
+                    String link = channelDataJsonObject.getString("link");
+                    String image = channelDataJsonObject.getString("image");
+                    String createdAt = channelDataJsonObject.getString("createdAt");
+                    String channelType = channelDataJsonObject.getString("type");
+                    String video_url = channelDataJsonObject.getString("video_url");
                     intent = new Intent(getApplicationContext(), CommentActivity.class);
                     intent.putExtra(Const.FROM_NOTIFICATION, true);
                     intent.putExtra("channelId", channelId);
@@ -150,7 +152,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             notifyUtil.show();
         } catch (Exception e) {
-            Log.v(TAG, "showStreamNotification: " + e.getMessage());
+            Log.e(TAG, "showStreamNotification: " + e.getMessage());
         }
     }
 
