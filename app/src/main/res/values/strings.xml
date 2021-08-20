@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">LifeShare</string>
 
-    <string name="facebook_app_id">341635573866778</string>
-    <string name="fb_login_protocol_scheme">fb341635573866778</string>
+    <string name="facebook_app_id">1079635295847776</string>
+    <string name="fb_login_protocol_scheme">fb1079635295847776</string>
     <string name="client_id">232809425212015</string>
     <string name="client_secret">447b03a69ce41eaee55c6175b8383532</string>
     <string name="redirect_url">https://turftalk.staging9.com/admin/login/</string>
