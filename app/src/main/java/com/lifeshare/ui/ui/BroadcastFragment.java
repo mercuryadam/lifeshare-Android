@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
@@ -936,6 +937,11 @@ public class BroadcastFragment extends BaseFragment
         changeBroadcastButtonView();
         rlBroadcast.setOnClickListener(this);
         checkSubscription();
+
+        //Banner ad
+        AdView mAdView = rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
 

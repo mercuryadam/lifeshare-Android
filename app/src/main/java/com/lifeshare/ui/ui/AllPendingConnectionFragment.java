@@ -15,6 +15,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.lifeshare.BaseFragment;
 import com.lifeshare.R;
 import com.lifeshare.ui.inviteFriends.InviteViaMobileActivity;
@@ -108,6 +110,11 @@ public class AllPendingConnectionFragment extends BaseFragment implements View.O
 
             }
         });
+
+        //Banner ad
+        AdView mAdView = rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     @Override

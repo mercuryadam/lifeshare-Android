@@ -20,6 +20,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/banner_adv_id">
+            </com.google.android.gms.ads.AdView>
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile"
                 android:layout_width="@dimen/size_100dp"

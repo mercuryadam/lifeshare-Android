@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.lifeshare.BaseFragment;
 import com.lifeshare.R;
 import com.lifeshare.network.RemoteCallback;
@@ -87,6 +89,11 @@ public class PostFragment extends BaseFragment {
             getPostList(true);
             swipeRefreshLayoutRegister.setRefreshing(false);
         });
+
+        //Banner ad
+        AdView mAdView = rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void getPostList(boolean isRefresh) {

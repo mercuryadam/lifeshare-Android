@@ -38,6 +38,8 @@ import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.lifeshare.BaseFragment;
 import com.lifeshare.LifeShare;
@@ -383,6 +385,11 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
 
 
         tvTotalViewer = (AppCompatTextView) rootView.findViewById(R.id.tv_total_viewer);
+
+        //Banner ad
+        AdView mAdView = rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void setRecyclerView() {
