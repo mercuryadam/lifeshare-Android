@@ -101,10 +101,10 @@
             android:id="@+id/ivVolume"
             android:layout_width="@dimen/size_50dp"
             android:layout_height="@dimen/size_50dp"
-            android:padding="@dimen/size_8dp"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/size_20dp"
             android:layout_marginBottom="@dimen/size_95dp"
+            android:padding="@dimen/size_8dp"
             android:src="@drawable/ic_mute" />
 
 

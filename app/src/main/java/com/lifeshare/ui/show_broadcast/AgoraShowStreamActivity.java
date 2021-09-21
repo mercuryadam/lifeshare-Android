@@ -177,7 +177,14 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
         new InitTrueTimeAsyncTask().execute();
         if (getIntent() != null && getIntent().getExtras() != null) {
             currentVisibleStram = getIntent().getParcelableExtra(Const.STREAM_DATA);
-
+//            For hide mic button (20/9/2021)
+            if(currentVisibleStram.getIsGlobal() != null && currentVisibleStram.getIsGlobal().trim().length() > 0){
+                if(currentVisibleStram.getIsGlobal().equalsIgnoreCase("1")) {
+                    ivVolume.setVisibility(View.GONE) ;
+                }else{
+                    ivVolume.setVisibility(View.VISIBLE);
+                }
+            }
             if (currentVisibleStram == null && Build.VERSION.SDK_INT == 30) {
                 currentVisibleStram = PreferenceHelper.getInstance().getNotificationIntent();
             }

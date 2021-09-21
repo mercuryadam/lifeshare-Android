@@ -95,7 +95,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class BroadcastFragment extends BaseFragment
         implements EasyPermissions.PermissionCallbacks, View.OnClickListener, RuntimeEasyPermission.PermissionCallbacks {
 
-    private Boolean isBroadCastStoped = false;
+    private Boolean isBroadCastStoped = false, isGlobalBroadcast = false;
     View rootView;
     private static final int MEDIA_PROJECTION_REQUEST_CODE = 1;
     private static final int VIEW_PROFILE_REQUEST_CODE = 188;
@@ -180,9 +180,9 @@ public class BroadcastFragment extends BaseFragment
     private Boolean showErrorDialog = false;
     private FrameLayout container;
     private FloatingActionButton fabMessage;
-    private RelativeLayout rlBroadcast;
+    private RelativeLayout rlBroadcast, rl_global_broadcast;
     private LinearLayout llShareYourScreen;
-    private AppCompatTextView tvBroadcast;
+    private AppCompatTextView tvBroadcast,tv_global_broadcast;
     private boolean isSubscriptionActive = false;
     private String selectedUsers;
     private String opnTokID = "";
@@ -237,21 +237,50 @@ public class BroadcastFragment extends BaseFragment
     private void changeBroadcastButtonView() {
         if (isBroadcasting) {
             llShareYourScreen.setVisibility(View.GONE);
-            tvBroadcast.setText(getResources().getString(R.string.stop_broadcast));
             final int sdk = Build.VERSION.SDK_INT;
             if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
-                rlBroadcast.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_red));
+                if (isGlobalBroadcast) {//for Global broadcast receiver button Ui Change(20/9/2021)
+                    rlBroadcast.setVisibility(View.GONE);
+                    rl_global_broadcast.setVisibility(View.VISIBLE);
+                    tv_global_broadcast.setText(getResources().getString(R.string.stop_global_broadcast));
+                    rl_global_broadcast.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_red));
+                }else {
+                    rl_global_broadcast.setVisibility(View.GONE);
+                    rlBroadcast.setVisibility(View.VISIBLE);
+                    tvBroadcast.setText(getResources().getString(R.string.stop_broadcast));
+                    rlBroadcast.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_red));
+                }
             } else {
-                rlBroadcast.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_red));
+                if (isGlobalBroadcast) {//for Global broadcast receiver button Ui Change(20/9/2021)
+                    rlBroadcast.setVisibility(View.GONE);
+                    rl_global_broadcast.setVisibility(View.VISIBLE);
+                    tv_global_broadcast.setText(getResources().getString(R.string.stop_global_broadcast));
+                    rl_global_broadcast.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_red));
+                }else {
+                    rl_global_broadcast.setVisibility(View.GONE);
+                    rlBroadcast.setVisibility(View.VISIBLE);
+                    tvBroadcast.setText(getResources().getString(R.string.stop_broadcast));
+                    rlBroadcast.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_red));
+                }
             }
         } else {
+            isGlobalBroadcast=false;
             llShareYourScreen.setVisibility(View.VISIBLE);
-            tvBroadcast.setText(getResources().getString(R.string.start_broadcast));
             final int sdk = Build.VERSION.SDK_INT;
             if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
-                rlBroadcast.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_green));
+                    rl_global_broadcast.setVisibility(View.VISIBLE);
+                    tv_global_broadcast.setText(getResources().getString(R.string.global_broadcast));
+                    rl_global_broadcast.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_green));
+                    rlBroadcast.setVisibility(View.VISIBLE);
+                    tvBroadcast.setText(getResources().getString(R.string.start_broadcast));
+                    rlBroadcast.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_green));
             } else {
-                rlBroadcast.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_green));
+                    rl_global_broadcast.setVisibility(View.VISIBLE);
+                    tv_global_broadcast.setText(getResources().getString(R.string.global_broadcast));
+                    rl_global_broadcast.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_green));
+                    rlBroadcast.setVisibility(View.VISIBLE);
+                    tvBroadcast.setText(getResources().getString(R.string.start_broadcast));
+                    rlBroadcast.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.dashboard_button_background_green));
             }
 
         }
@@ -483,12 +512,16 @@ public class BroadcastFragment extends BaseFragment
         }
     }
 
-    private void createRoomAndGetId() {
+    private void createRoomAndGetId(boolean isGlobal) {
         if (!checkInternetConnection()) {
             return;
         }
         showLoading(requireActivity(), getString(R.string.waiting_for_connection_msg));
-
+        if(isGlobal){
+           // selectedUsers="";
+            onLiveSharingScreenClicked(true);
+            return;
+        }
         if (selectedUsers != null) {
             onLiveSharingScreenClicked(true);
         }
@@ -723,11 +756,21 @@ public class BroadcastFragment extends BaseFragment
                 }
 
                 break;
+            case R.id.rl_global_broadcast: //For global start broadcast button (20/9/2021)
+                isGlobalBroadcast = true;
+                if (!isBroadcasting) {
+                    isBroadCastStoped = false;
+                    checkAudioPermissionAndStartBroadCast();
+                } else {
+                    stopBroadcast();
+                }
+
+                break;
         }
     }
 
     private void stopBroadcast() {
-
+      //  rl_global_broadcast.setVisibility(View.VISIBLE);//For visible global start broadcast button (20/9/2021)
         if (!isBroadCastStoped) {
             isBroadCastStoped = true;
 //            if (Build.VERSION.SDK_INT >= 29) {
@@ -846,13 +889,15 @@ public class BroadcastFragment extends BaseFragment
                 public void onDismissed(String message) {
                     if (message.equalsIgnoreCase(getResources().getString(R.string.yes))) {
                         isSaveBroadcast = true;
-                        RuntimeEasyPermission.newInstance(permissions_audio,
-                                REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
+                        if (isGlobalBroadcast) {////for Global broadcast receiver(20/9/2021)
+                            startBroadCast();
+                            return;
+                        }
+                        RuntimeEasyPermission.newInstance(permissions_audio, REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
 
                     } else {
                         isSaveBroadcast = false;
-                        RuntimeEasyPermission.newInstance(permissions_audio,
-                                REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
+                        RuntimeEasyPermission.newInstance(permissions_audio, REQUEST_AUDIO_PERM_PUBLISH_BROADCAST, "Allow microphone permission").show(getChildFragmentManager());
 
                     }
                 }
@@ -932,9 +977,12 @@ public class BroadcastFragment extends BaseFragment
         messageFragment = MessageFragment.newInstance();
         container.setVisibility(View.GONE);
         rlBroadcast = (RelativeLayout) rootView.findViewById(R.id.rl_broadcast);
+        rl_global_broadcast = (RelativeLayout) rootView.findViewById(R.id.rl_global_broadcast);
         llShareYourScreen = (LinearLayout) rootView.findViewById(R.id.llShareYourScreen);
         tvBroadcast = (AppCompatTextView) rootView.findViewById(R.id.tv_broadcast);
+        tv_global_broadcast = (AppCompatTextView) rootView.findViewById(R.id.tv_global_broadcast);
         changeBroadcastButtonView();
+        rl_global_broadcast.setOnClickListener(this);
         rlBroadcast.setOnClickListener(this);
         checkSubscription();
 
@@ -978,7 +1026,7 @@ public class BroadcastFragment extends BaseFragment
         screenCapturerManager.startForeground();
 //        }
         if (checkInternetConnection()) {
-            createRoomAndGetId();
+            createRoomAndGetId(isGlobalBroadcast);
         } else {
             stopBroadcast();
         }
@@ -1025,6 +1073,12 @@ public class BroadcastFragment extends BaseFragment
         request.setSaveBroadcast(isSaveBroadcast);
         request.setSaveChat(isSaveBroadcast);
         request.setUsers(users);
+        if(isGlobalBroadcast){
+            request.setIsGlobal("1");
+        }
+        else {
+            request.setIsGlobal("0");
+        }
 
         WebAPIManager.getInstance().agoraCreate(request, new RemoteCallback<AgoraCreateResponse>() {
             @Override

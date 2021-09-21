@@ -9,6 +9,15 @@ public class AgoraCreateRequest {
     private boolean saveBroadcast;
     private boolean saveChat;
     private String users;
+    private String isGlobal;
+
+    public String getIsGlobal() {
+        return isGlobal;
+    }
+
+    public void setIsGlobal(String isGlobal) {
+        this.isGlobal = isGlobal;
+    }
 
     public String getSessionId() {
         return sessionId;

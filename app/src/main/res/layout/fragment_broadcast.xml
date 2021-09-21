@@ -67,8 +67,8 @@
             android:id="@+id/rl_viewers_inner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_viewers"
-            android:layout_above="@id/llBottom">
+            android:layout_above="@id/llBottom"
+            android:layout_below="@+id/rl_viewers">
 
             <com.lifeshare.customview.recyclerview.FilterRecyclerView
                 android:id="@+id/rv_viewer"
@@ -161,9 +161,27 @@
                 style="@style/TextMedium.White.size16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_centerVertical="true"
+                android:gravity="center"
                 android:text="@string/start_broadcast" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_global_broadcast"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:background="@drawable/dashboard_button_background_green">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_global_broadcast"
+                style="@style/TextMedium.White.size16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/global_broadcast" />
 
         </RelativeLayout>
     </LinearLayout>

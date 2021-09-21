@@ -138,6 +138,8 @@ violate any international, federal, provincial or state regulations, rules, laws
     <string name="friend_s_live_broadcast">Friends\' Live Broadcasts</string>
     <string name="live_broadcast">Live Broadcasts</string>
     <string name="start_broadcast">Start Broadcasting</string>
+    <string name="global_broadcast">Global Broadcasting</string>
+    <string name="stop_global_broadcast">Stop Global Broadcasting</string>
     <string name="stop_broadcast">Stop Broadcasting</string>
     <string name="your_channel_viewer">Your Channel Viewers</string>
     <string name="broadcast_viewer">Broadcast Your Phone Live</string>

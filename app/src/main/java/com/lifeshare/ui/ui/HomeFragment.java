@@ -239,8 +239,8 @@ public class HomeFragment extends BaseFragment
 
             }
         });
-        rvPosts.setAdapter(postAdapter);
         getListChannelArchive();
+        rvPosts.setAdapter(postAdapter);
     }
 
 
