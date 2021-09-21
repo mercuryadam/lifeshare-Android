@@ -64,16 +64,16 @@
             android:id="@+id/cb_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_checkbox_transparent"
             android:layout_alignParentRight="true"
-            android:button="@null"
-            android:text="@string/add"
-            android:textSize="@dimen/size_16sp"
-            android:textColor="@drawable/selectable_color"
             android:layout_marginTop="@dimen/size_24dp"
+            android:background="@drawable/bg_checkbox_transparent"
+            android:button="@null"
             android:gravity="center"
             android:paddingHorizontal="@dimen/size_20dp"
-            android:paddingVertical="@dimen/size_4dp"/>
+            android:paddingVertical="@dimen/size_4dp"
+            android:text="@string/add"
+            android:textColor="@drawable/selectable_color"
+            android:textSize="@dimen/size_16sp" />
 
     </RelativeLayout>
 

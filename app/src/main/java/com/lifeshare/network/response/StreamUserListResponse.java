@@ -13,6 +13,16 @@ public class StreamUserListResponse implements Parcelable {
     private String avatar;
     private String firstName;
     private String lastName;
+    private String isGlobal;
+
+    public String getIsGlobal() {
+        return isGlobal;
+    }
+
+    public void setIsGlobal(String isGlobal) {
+        this.isGlobal = isGlobal;
+    }
+
     public static final Creator<StreamUserListResponse> CREATOR = new Creator<StreamUserListResponse>() {
         @Override
         public StreamUserListResponse createFromParcel(Parcel in) {
@@ -39,6 +49,7 @@ public class StreamUserListResponse implements Parcelable {
         lastName = in.readString();
         roomName = in.readString();
         channelName = in.readString();
+        isGlobal = in.readString();
     }
 
     @Override
@@ -59,6 +70,7 @@ public class StreamUserListResponse implements Parcelable {
         dest.writeString(lastName);
         dest.writeString(roomName);
         dest.writeString(channelName);
+        dest.writeString(isGlobal);
     }
 
     public String getChannelName() {
