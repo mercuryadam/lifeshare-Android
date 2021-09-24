@@ -276,7 +276,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             return false;
         }
         if (TextUtils.isEmpty(etUsername.getText().toString().trim())) {
-            showToast(getResources().getString(R.string.please_enter_username));
+            showToast(getResources().getString(R.string.please_enter_channel_name));
             return false;
         }
         if (TextUtils.isEmpty(etEmail.getText().toString().trim())) {
