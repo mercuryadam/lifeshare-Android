@@ -8,8 +8,8 @@ public final class BuildConfig {
   public static final String APPLICATION_ID = "com.lifeshare";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "Dev";
-  public static final int VERSION_CODE = 16;
-  public static final String VERSION_NAME = "1.5";
+  public static final int VERSION_CODE = 18;
+  public static final String VERSION_NAME = "2.0";
   // Field from product flavor: Dev
   public static final String BASE_URL = "http://3.136.176.13/public/qa/public/api/v1/";
 }
