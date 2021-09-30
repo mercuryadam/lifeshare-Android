@@ -687,7 +687,7 @@ public class ViewProfileFragment extends BaseFragment implements View.OnClickLis
                                 public void onSkuDetailsResponse(BillingResult billingResult,
                                                                  List<SkuDetails> skuDetailsList) {
 //                                    Toast.makeText(ViewProfileActivity.this, "list size - " + skuDetailsList.size(), Toast.LENGTH_SHORT).show();
-                                    if (skuDetailsList.size() > 0) {
+                                    if (!skuDetailsList.isEmpty() && skuDetailsList.size() > 0) {
 //                                        Toast.makeText(ViewProfileActivity.this, "SKU - " + skuDetailsList.get(0).getSku(), Toast.LENGTH_SHORT).show();
                                     }
                                     skuDetails = skuDetailsList;

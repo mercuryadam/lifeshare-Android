@@ -192,7 +192,9 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
 
         if (currentVisibleStram != null) {
             onLiveSharingScreenClicked(true, currentVisibleStram.getChannelName());
-            messageFragment.setCurrentStream(currentVisibleStram.getUserId(), currentVisibleStram.getOpentokId(), currentVisibleStram.getToken(), false);
+            if(currentVisibleStram.getUserId() != null && currentVisibleStram.getUserId().trim().length() > 0){
+                messageFragment.setCurrentStream(currentVisibleStram.getUserId(), currentVisibleStram.getOpentokId(), currentVisibleStram.getToken(), false);
+            }
             tvToolbarTitle.setText(currentVisibleStram.getChannelName());
 
             Glide.with(LifeShare.getInstance())
@@ -211,81 +213,102 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
     }
 
     private void addViewerToStream() {
-        Log.v(TAG, "addViewerToStream: ");
-        LoginResponse user = PreferenceHelper.getInstance().getUser();
-        DatabaseReference databaseReference = LifeShare.getFirebaseReference()
-                .child(Const.TABLE_PUBLISHER)
-                .child(currentVisibleStram.getUserId())
-                .child(Const.TABLE_VIEWER)
-                .child(user.getUserId());
-        HashMap<String, String> startRequestMap = new HashMap<>();
-        startRequestMap.put("userId", user.getUserId());
-        startRequestMap.put("firstName", user.getFirstName());
-        startRequestMap.put("lastName", user.getLastName());
-        startRequestMap.put("username", user.getUsername());
-        startRequestMap.put("profileUrl", user.getAvatar());
-        startRequestMap.put("lastViewTime", String.valueOf(TrueTime.now().getTime()));
-        databaseReference.setValue(startRequestMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.v(TAG, "onSuccess:addViewerToStream ");
-                registerViewerValueEventListener();
-                startViewerLastTimeUpdateHandler();
-            }
-        });
+        if(currentVisibleStram.getUserId() != null && currentVisibleStram.getUserId().trim().length() > 0) {
+            Log.v(TAG, "addViewerToStream: ");
+            LoginResponse user = PreferenceHelper.getInstance().getUser();
+            DatabaseReference databaseReference = LifeShare.getFirebaseReference()
+                    .child(Const.TABLE_PUBLISHER)
+                    .child(currentVisibleStram.getUserId())
+                    .child(Const.TABLE_VIEWER)
+                    .child(user.getUserId());
+            HashMap<String, String> startRequestMap = new HashMap<>();
+            startRequestMap.put("userId", user.getUserId());
+            startRequestMap.put("firstName", user.getFirstName());
+            startRequestMap.put("lastName", user.getLastName());
+            startRequestMap.put("username", user.getUsername());
+            startRequestMap.put("profileUrl", user.getAvatar());
+            startRequestMap.put("lastViewTime", String.valueOf(TrueTime.now().getTime()));
+            databaseReference.setValue(startRequestMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.v(TAG, "onSuccess:addViewerToStream ");
+                    registerViewerValueEventListener();
+                    startViewerLastTimeUpdateHandler();
+                }
+            });
+        }else {
+            onBackPressed();
+        }
+
     }
 
     private void updateCountForViewer() {
-        Log.v(TAG, "updateCountForViewer: ");
-        LoginResponse user = PreferenceHelper.getInstance().getUser();
-        DatabaseReference databaseReference = LifeShare.getFirebaseReference()
-                .child(Const.TABLE_PUBLISHER)
-                .child(currentVisibleStram.getUserId())
-                .child(Const.TABLE_COUNT_VIEWER).push();
-        databaseReference.setValue("").addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.v(TAG, "onSuccess:updateCountForViewer ");
-                countViewerDatabaseReference = LifeShare.getFirebaseReference()
-                        .child(Const.TABLE_PUBLISHER)
-                        .child(currentVisibleStram.getUserId())
-                        .child(Const.TABLE_COUNT_VIEWER);
-                countViewerDatabaseReference.addValueEventListener(countViewerValueEventListener);
-            }
-        });
-
+        if(currentVisibleStram.getUserId() != null && currentVisibleStram.getUserId().trim().length() > 0){
+            Log.v(TAG, "updateCountForViewer: ");
+            LoginResponse user = PreferenceHelper.getInstance().getUser();
+            DatabaseReference databaseReference = LifeShare.getFirebaseReference()
+                    .child(Const.TABLE_PUBLISHER)
+                    .child(currentVisibleStram.getUserId())
+                    .child(Const.TABLE_COUNT_VIEWER).push();
+            databaseReference.setValue("").addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.v(TAG, "onSuccess:updateCountForViewer ");
+                    countViewerDatabaseReference = LifeShare.getFirebaseReference()
+                            .child(Const.TABLE_PUBLISHER)
+                            .child(currentVisibleStram.getUserId())
+                            .child(Const.TABLE_COUNT_VIEWER);
+                    countViewerDatabaseReference.addValueEventListener(countViewerValueEventListener);
+                }
+            });
+        }
+        else {
+            onBackPressed();
+        }
     }
 
     private void registerViewerValueEventListener() {
-        Log.v(TAG, "registerViewerValueEventListener: ");
-        viewerDatabaseReference = LifeShare.getFirebaseReference()
-                .child(Const.TABLE_PUBLISHER)
-                .child(currentVisibleStram.getUserId())
-                .child(Const.TABLE_VIEWER);
-        viewerDatabaseReference.addValueEventListener(viewerValuEventListener);
+        if(currentVisibleStram.getUserId() != null && currentVisibleStram.getUserId().trim().length() > 0) {
+            Log.v(TAG, "registerViewerValueEventListener: ");
+            viewerDatabaseReference = LifeShare.getFirebaseReference()
+                    .child(Const.TABLE_PUBLISHER)
+                    .child(currentVisibleStram.getUserId())
+                    .child(Const.TABLE_VIEWER);
+            viewerDatabaseReference.addValueEventListener(viewerValuEventListener);
+        }
+        else {
+            onBackPressed();
+        }
+
     }
 
     private void startLastViewTimeUpdate() {
-        Log.v(TAG, "startLastViewTimeUpdate: " + String.valueOf(TrueTime.now().getTime()));
-        LoginResponse user = PreferenceHelper.getInstance().getUser();
-        DatabaseReference databaseReference = LifeShare.getFirebaseReference()
-                .child(Const.TABLE_PUBLISHER)
-                .child(currentVisibleStram.getUserId())
-                .child(Const.TABLE_VIEWER)
-                .child(user.getUserId());
+        if(currentVisibleStram.getUserId() != null && currentVisibleStram.getUserId().trim().length() > 0) {
+            Log.v(TAG, "startLastViewTimeUpdate: " + String.valueOf(TrueTime.now().getTime()));
+            LoginResponse user = PreferenceHelper.getInstance().getUser();
+            DatabaseReference databaseReference = LifeShare.getFirebaseReference()
+                    .child(Const.TABLE_PUBLISHER)
+                    .child(currentVisibleStram.getUserId())
+                    .child(Const.TABLE_VIEWER)
+                    .child(user.getUserId());
 
-        databaseReference.child("lastViewTime").setValue(String.valueOf(TrueTime.now().getTime()));
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            databaseReference.child("lastViewTime").setValue(String.valueOf(TrueTime.now().getTime()));
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+        else {
+            onBackPressed();
+        }
+
     }
 
     @Override
@@ -300,20 +323,23 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
     }
 
     private void removeUserFromViewer() {
-        Log.v(TAG, "removeUserFromViewer: ");
-        if (countDownTimerViewerLastTime != null) {
-            countDownTimerViewerLastTime.cancel();
+        if(currentVisibleStram.getUserId() != null && currentVisibleStram.getUserId().trim().length() > 0) {
+            Log.v(TAG, "removeUserFromViewer: ");
+            if (countDownTimerViewerLastTime != null) {
+                countDownTimerViewerLastTime.cancel();
+            }
+            if (currentVisibleStram != null) {
+                DatabaseReference databaseReference = LifeShare.getFirebaseReference()
+                        .child(Const.TABLE_PUBLISHER)
+                        .child(currentVisibleStram.getUserId())
+                        .child(Const.TABLE_VIEWER)
+                        .child(PreferenceHelper.getInstance().getUser().getUserId());
+                databaseReference.removeValue();
+            }
+            rvViewer.setVisibility(View.INVISIBLE);
+        }else {
+            onBackPressed();
         }
-        if (currentVisibleStram != null) {
-            DatabaseReference databaseReference = LifeShare.getFirebaseReference()
-                    .child(Const.TABLE_PUBLISHER)
-                    .child(currentVisibleStram.getUserId())
-                    .child(Const.TABLE_VIEWER)
-                    .child(PreferenceHelper.getInstance().getUser().getUserId());
-            databaseReference.removeValue();
-        }
-        rvViewer.setVisibility(View.INVISIBLE);
-
     }
 
 
@@ -396,127 +422,133 @@ public class AgoraShowStreamActivity extends BaseActivity implements View.OnClic
 
     private void initModules() {
         if (mRtcEngine == null) {
-            try {
-                mRtcEngine = RtcEngine.create(getApplicationContext(), getString(R.string.agora_app_id), new IRtcEngineEventHandler() {
-                    @Override
-                    public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+            if(currentVisibleStram.getUserId() != null && currentVisibleStram.getUserId().trim().length() > 0) {
+                try {
+                    mRtcEngine = RtcEngine.create(getApplicationContext(), getString(R.string.agora_app_id), new IRtcEngineEventHandler() {
+                        @Override
+                        public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d(LOG_TAG, "onJoinChannelSuccess " + channel + " " + elapsed);
-                                Log.d(LOG_TAG, "CHANNEL UID " + channel + " " + uid);//848532066
-                                Log.d(LOG_TAG, "Publisher CHANNEL UID " + channel + " " + currentVisibleStram.getUserId());//848532066
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(LOG_TAG, "onJoinChannelSuccess " + channel + " " + elapsed);
+                                    Log.d(LOG_TAG, "CHANNEL UID " + channel + " " + uid);//848532066
+                                    Log.d(LOG_TAG, "Publisher CHANNEL UID " + channel + " " + currentVisibleStram.getUserId());//848532066
 
 //                                boradcaster -
 //                                broadcaster = 123
 //                                audiance = 456
-                                addViewerToStream();
-                                updateCountForViewer();
-                                llStreamProgress.setVisibility(View.GONE);
-                                fabMessage.show();
-                            }
-                        });
-
-                    }
-
-
-                    @Override
-                    public void onWarning(int warn) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d(LOG_TAG, "onWarn " + warn);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(int err) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d(LOG_TAG, "onError " + err);
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onAudioRouteChanged(int routing) {
-                        Log.d(LOG_TAG, "onAudioRouteChanged " + routing);
-                    }
-
-                    @Override
-                    // Listen for the onFirstRemoteVideoDecoded callback.
-                    // This callback occurs when the first video frame of the host is received and decoded after the host successfully joins the channel.
-                    // You can call the setupRemoteVideo method in this callback to set up the remote video view.
-                    public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d(LOG_TAG, "First remote video decoded, uid: " + uid);
-                                joinedUID = uid;
-                                setupVideoView(uid);
-                            }
-                        });
-                    }
-
-                    @Override
-                    // Listen for the onUserOffline callback.
-                    // This callback occurs when the host leaves the channel or drops offline.
-                    public void onUserOffline(final int uid, int reason) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d(LOG_TAG, "User offline, uid: " + uid);
-
-                                if (joinedUID != 0) {
-                                    if (joinedUID == uid) {
-                                        if (container.getVisibility() == View.VISIBLE) {
-                                            Log.d(LOG_TAG, "User offline, Need to hide " + uid);
-
-                                            container.setVisibility(View.GONE);
-
-                                        }
-                                        ivVolume.setVisibility(View.INVISIBLE);
-                                        onLiveSharingScreenClicked(false, "");
-                                    }
+                                    addViewerToStream();
+                                    updateCountForViewer();
+                                    llStreamProgress.setVisibility(View.GONE);
+                                    fabMessage.show();
                                 }
+                            });
+
+                        }
 
 
-                                //onJoinChannelSuccess kundan101_95678 858
-                                //CHANNEL UID kundan101_95678 1530740516
-                                //onWarn 1032
-                                //First remote video decoded, uid: -1946480708
-                                //User offline, uid: -742590126
+                        @Override
+                        public void onWarning(int warn) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(LOG_TAG, "onWarn " + warn);
+                                }
+                            });
+                        }
 
-                                //onJoinChannelSuccess kundan101_27028 720
-                                //CHANNEL UID kundan101_27028 -1901407855
-                                //onWarn 1032
-                                //First remote video decoded, uid: 761256269
-                                //User offline, uid: 761256269
-                            }
-                        });
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
+                        @Override
+                        public void onError(int err) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(LOG_TAG, "onError " + err);
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onAudioRouteChanged(int routing) {
+                            Log.d(LOG_TAG, "onAudioRouteChanged " + routing);
+                        }
+
+                        @Override
+                        // Listen for the onFirstRemoteVideoDecoded callback.
+                        // This callback occurs when the first video frame of the host is received and decoded after the host successfully joins the channel.
+                        // You can call the setupRemoteVideo method in this callback to set up the remote video view.
+                        public void onFirstRemoteVideoDecoded(final int uid, int width, int height, int elapsed) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(LOG_TAG, "First remote video decoded, uid: " + uid);
+                                    joinedUID = uid;
+                                    setupVideoView(uid);
+                                }
+                            });
+                        }
+
+                        @Override
+                        // Listen for the onUserOffline callback.
+                        // This callback occurs when the host leaves the channel or drops offline.
+                        public void onUserOffline(final int uid, int reason) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(LOG_TAG, "User offline, uid: " + uid);
+
+                                    if (joinedUID != 0) {
+                                        if (joinedUID == uid) {
+                                            if (container.getVisibility() == View.VISIBLE) {
+                                                Log.d(LOG_TAG, "User offline, Need to hide " + uid);
+
+                                                container.setVisibility(View.GONE);
+
+                                            }
+                                            ivVolume.setVisibility(View.INVISIBLE);
+                                            onLiveSharingScreenClicked(false, "");
+                                        }
+                                    }
+
+
+                                    //onJoinChannelSuccess kundan101_95678 858
+                                    //CHANNEL UID kundan101_95678 1530740516
+                                    //onWarn 1032
+                                    //First remote video decoded, uid: -1946480708
+                                    //User offline, uid: -742590126
+
+                                    //onJoinChannelSuccess kundan101_27028 720
+                                    //CHANNEL UID kundan101_27028 -1901407855
+                                    //onWarn 1032
+                                    //First remote video decoded, uid: 761256269
+                                    //User offline, uid: 761256269
+                                }
+                            });
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
+                mRtcEngine.enableVideo();
+
+                if (mRtcEngine.isTextureEncodeSupported()) {
+                    mRtcEngine.setExternalVideoSource(true, true, true);
+                } else {
+                    throw new RuntimeException("Can not work on device do not supporting texture" + mRtcEngine.isTextureEncodeSupported());
+                }
+
+                mRtcEngine.setVideoEncoderConfiguration(mVEC);
+                ClientRoleOptions clientRoleOptions = new ClientRoleOptions();
+                clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
+                mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_AUDIENCE, clientRoleOptions);
+            }
+            else {
+                onBackPressed();
             }
 
-            mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
-            mRtcEngine.enableVideo();
-
-            if (mRtcEngine.isTextureEncodeSupported()) {
-                mRtcEngine.setExternalVideoSource(true, true, true);
-            } else {
-                throw new RuntimeException("Can not work on device do not supporting texture" + mRtcEngine.isTextureEncodeSupported());
-            }
-
-            mRtcEngine.setVideoEncoderConfiguration(mVEC);
-            ClientRoleOptions clientRoleOptions = new ClientRoleOptions();
-            clientRoleOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
-            mRtcEngine.setClientRole(IRtcEngineEventHandler.ClientRole.CLIENT_ROLE_AUDIENCE, clientRoleOptions);
 
         }
     }
